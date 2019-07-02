@@ -22,9 +22,9 @@ header {
     justify-content: center
 }
 
-.site-logo p {
-    font-size: 40px;
-    margin: 0;
+.site-logo-image {
+    width: 40px;
+    height: 40px;
 }
 
 .site-name {
@@ -68,7 +68,7 @@ nav {
     justify-content: center
 }
 
-.menu p{
+.menu p {
     font-size: 16px;
     font-family: "Source Sans Pro";
     color: rgb(255, 255, 255);
@@ -131,5 +131,7 @@ nav {
     text-transform: uppercase;
     line-height: 1.2;
 }
+
+/* ---------- ---------- ---------- */
 
   
