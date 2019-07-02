@@ -1,0 +1,41 @@
+html {
+    font-family: 'Source Sans Pro';
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.site-logo {
+    margin: 10px;
+    border-radius: 50%;
+    background-color: rgb(3, 168, 203);
+    width: 89px;
+    height: 89px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.site-logo p {
+    font-size: 40px;
+    margin: 0;
+}
+
+.site-name {
+    font-weight: 700;
+    font-size: 44px;
+    color: #3b3e4a;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.site-description {
+    font-weight: 300;
+    font-size: 18px;
+    color: #828282;
+    margin-top: 0px;
+}
