@@ -7,6 +7,36 @@
         <link rel="shortcut icon" type="image/x-icon" href="images/icon.ico">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+        
+        <script type="text/javascript">
+ 
+            var countPress = 0;
+            var backgroundColors = new Array('#3b3e4a','#ffffff');
+            var textColors = new Array('#ffffff', '#828282');
+            var borderColors = new Array('#3b3e4a', 'rgb(230, 230, 230)');
+             
+            function setListItemStyle(el) {
+                el.parentNode.style.backgroundColor = backgroundColors[countPress];
+                el.parentNode.style.color = textColors[countPress];
+                el.parentNode.style.borderColor = borderColors[countPress];
+                switch (countPress) {
+                    case 0:
+                        el.parentNode.style.borderBottom = 0;
+                        el.parentNode.style.borderRadius = '5px 5px 0px 0px';
+                        el.style.borderRadius = '0 5px 0 0';
+                        break;
+                    case 1:
+                        el.parentNode.style.borderBottom = '1px solid rgb(230, 230, 230)';
+                        el.parentNode.style.borderRadius = '5px';
+                        el.style.borderRadius = '5px';
+                        break;
+                }
+                countPress++;
+                if (countPress == backgroundColors.length) { countPress = 0;}
+            }
+             
+        </script>
+    
     </head>
     <header class="d-flex">
         <div class="site-logo">
@@ -68,41 +98,41 @@
         </div>
 
         <div>
-            <div>
+            <div class="list">
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        Cras justo odio
-                        <button class="btn" id="button" type="button" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapseExample">+</button>
+                    <li class="list-group-item" id="list-group-item">
+                        Donec quis dui at dolor tempor
+                        <button class="btn" id="button" type="button" onClick="return setListItemStyle(this)" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapseExample">+</button>
                     </li>
                     <div class="collapse" id="collapse-1">
-                        <div class="card card-body">
+                        <div class="collapse-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                         </div>
                     </div>
-                    <li class="list-group-item">
-                        Dapibus ac facilisis in
-                        <button class="btn" id="button" type="button" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapseExample">+</button>                        
+                    <li class="list-group-item" id="list-group-item">
+                        Vivamus molestie gravida turpis
+                        <button class="btn" id="button" type="button" data-toggle="collapse" onClick="return setListItemStyle(this)" data-target="#collapse-2" aria-expanded="false" aria-controls="collapseExample">+</button>                        
                     </li>
                     <div class="collapse" id="collapse-2">
-                        <div class="card card-body">
+                        <div class="collapse-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                         </div>
                     </div>
-                    <li class="list-group-item">
-                        Morbi leo risus
-                        <button class="btn" id="button" type="button" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapseExample">+</button>
+                    <li class="list-group-item" id="list-group-item">
+                        Fusce lobortis lorem at ipsum semper
+                        <button class="btn" id="button" type="button" data-toggle="collapse" onClick="return setListItemStyle(this)" data-target="#collapse-3" aria-expanded="false" aria-controls="collapseExample">+</button>
                     </li>
                     <div class="collapse" id="collapse-3">
-                        <div class="card card-body">
+                        <div class="collapse-body">
                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                         </div>
                     </div>
-                    <li class="list-group-item">
-                        Porta ac consectetur ac
-                        <button class="btn" id="button" type="button" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapseExample">+</button>
+                    <li class="list-group-item" id="list-group-item">
+                        Nam convallis pellentesque nisl
+                        <button class="btn" id="button" type="button" data-toggle="collapse" onClick="return setListItemStyle(this)" data-target="#collapse-4" aria-expanded="false" aria-controls="collapseExample">+</button>
                     </li>
                     <div class="collapse" id="collapse-4">
-                        <div class="card card-body">
+                        <div class="collapse-body">
                           Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                         </div>
                     </div>

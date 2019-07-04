@@ -71,7 +71,7 @@ nav {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .menu p {
@@ -139,6 +139,8 @@ nav {
 
 /* ---------- ---------- ---------- */
 
+/* ---------- Person cards area ---------- */
+
 .cards {
     margin-top: 30px;
     width: 1170px;
@@ -157,7 +159,7 @@ nav {
 }
 
 #card-title {
-    font-size: 18px;
+    font-size: 16px;
     color: rgb(59, 62, 74);
     font-weight: bold;
     text-transform: uppercase;
@@ -174,8 +176,68 @@ nav {
   
 .cards #button {
     padding: 3px 3px;
-    font-size: 12px;
+    font-size: 11px;
     width: 54px;
     height: 26px;
     letter-spacing: 0.5px;
 }
+
+/* ---------- ---------- ---------- */
+
+/* ---------- Collapse cards area ---------- */
+
+.list {
+    width: 574px;
+}
+
+.list #button {
+    margin: -1px -1px 0 0;
+    padding: 0;
+    font-size: 34px;
+    text-transform: uppercase;
+    font-weight: 300;
+    line-height: 0;
+
+    height: 44px;
+    width: 44px;
+
+    border-radius: 5px;
+    position: absolute;
+    right: 0;
+}  
+
+#list-group-item {
+    height: 44px;
+    margin: 7px 0px;
+    padding: 0 20px;
+    line-height: 44px;
+
+    font-size: 16px;
+    color: rgb(130, 130, 130);
+
+    border-color: rgb(230, 230, 230);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.collapse-body {
+    margin-top: -7px;
+    margin-bottom: 7px;
+    background-color: rgb(240, 240, 240);
+    font-size: 14px;
+    font-weight: 300;
+    color: rgb(130, 130, 130);
+    text-align: left;
+    padding: 20px;
+
+    border-style: solid;
+    border-top: 0;
+    border-width: 1px;
+    border-color: rgb(230, 230, 230);
+    border-radius: 0 0 5px 5px;
+}
+
+ /* ---------- ---------- ---------- */ 
+
+  
