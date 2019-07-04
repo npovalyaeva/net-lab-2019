@@ -251,6 +251,9 @@ nav {
 
 .table .card-body {
     padding: 0;
+    width: 170px;
+    position: absolute;
+    right: 0;
 }
  
 
