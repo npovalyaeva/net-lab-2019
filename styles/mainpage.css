@@ -14,6 +14,8 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    margin-bottom: 20px;
 }
 
 .site-logo {
@@ -25,7 +27,7 @@ header {
 
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .site-logo-image {
@@ -141,6 +143,10 @@ nav {
     width: 135px;
     height: 49px;
     letter-spacing: 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ---------- ---------- ---------- */
@@ -186,6 +192,10 @@ nav {
     width: 54px;
     height: 26px;
     letter-spacing: 0.5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ---------- ---------- ---------- */
@@ -423,6 +433,10 @@ nav {
     width: 54px;
     height: 26px;
     letter-spacing: 0.5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ---------- ---------- ---------- */
@@ -471,6 +485,7 @@ nav {
 
  footer nav #nav-caption {
     padding: .5rem 35px;
+    padding-top: 0 !important;
     font-size: 18px;
     color: rgb(69, 72, 85);
     font-weight: bold;
@@ -494,13 +509,87 @@ nav {
     text-decoration: underline;
  }  
 
- .contact-us {
+/* ---------- Contacts area ---------- */
+
+.contact-us {
+    flex-basis: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+
+ .contact-us h2 {
+    font-size: 18px;
+    color: rgb(69, 72, 85);
+    font-weight: bold;
+    text-transform: uppercase;
+ }
+
+ .contact-us .subscription {
+    flex-basis: 100%;
+
+    margin-right: 30px;
+ }
+
+ .contact-us .subscription .form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 35px;
+    margin-top: 30px;
+ }
+
+ .contact-us .subscription .form-group #email {
+    border-radius: 17.5px 0px 0px 17.5px;
+    border: none;
+    height: 35px;
+ }
+
+ .contact-us .subscription .form-group #subscribe-button {
+    border-radius: 0px 17.5px 17.5px 0px;
+    border: none;
+    height: 35px;
+
+    background-color: #03a8cb;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+ }
+
+ .contact-us .social-networks {
     flex-basis: 100%;
  }
 
-/* ---------- Contacts area ---------- */
+ .contact-us .social-networks .our-social {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 35px;
+    margin-top: 30px;
+ }
 
+ .contact-us .social-networks .our-social #network-button {
+    margin-right: 10px;
+    
+    border: none;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    background-color: rgb(3, 168, 203);   
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .contact-us .social-networks .our-social .network-img {
+    height: 15px;
+    width: 15px;
+ }
 
 /* ---------- ---------- ---------- */
 
@@ -510,19 +599,17 @@ nav {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: space-between; 
-    
+    justify-content: space-between;
  }
 
  footer .site-resources p {
     flex-basis: 100%;
 
-    margin: 40px 0;
+    margin-top: 40px;
 
     font-size: 14px;
     font-weight: 300;
     color: rgb(3, 168, 203);
-    line-height: 1.857;
     text-align: left;
  }
 
