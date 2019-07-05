@@ -3,48 +3,15 @@
     <head>
         <meta charset="utf-8">
         <title>Sitename</title>
+
         <link href="styles/mainpage.css" rel="stylesheet" type="text/css">
         <link rel="shortcut icon" type="image/x-icon" href="images/icon.ico">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
-        
-        <script type="text/javascript">
-
-            const backgroundColors = new Array('#3b3e4a','#ffffff');
-            const textColors = new Array('#ffffff', '#828282');
-            const borderColors = new Array('#3b3e4a', 'rgb(230, 230, 230)');
-            const {length} = backgroundColors;
-
-            
-            
-            const setListItemStyle = (event) => {
-                let countPress = 0;
-                return function() {
-                    el.parentNode.style.backgroundColor = backgroundColors[countPress];
-                    el.parentNode.style.color = textColors[countPress];
-                    el.parentNode.style.borderColor = borderColors[countPress];
-                    switch (countPress) {
-                        case 0:
-                            el.parentNode.style.borderBottom = 0;
-                            el.parentNode.style.borderRadius = '5px 5px 0px 0px';
-                            el.style.borderRadius = '0 5px 0 0';
-                            el.style.value = '-';
-                            break;
-                        case 1:
-                            el.parentNode.style.borderBottom = '1px solid rgb(230, 230, 230)';
-                            el.parentNode.style.borderRadius = '5px';
-                            el.style.borderRadius = '5px';
-                            el.style.value = '+';
-                        break;
-                    }
-                    countPress++;
-                    if (countPress == backgroundColors.length) { countPress = 0;}
-                }
-            }     
-
-        </script>
+        <script src="scripts/setPageStyle.js"></script>
     
     </head>
+
     <header class="d-flex">
         <div class="site-logo">
             <img class="site-logo-image" src="images/rocket.png">
@@ -52,7 +19,9 @@
         <h2 class="site-name">Sitename</h2>
         <h4 class="site-description">lorem ipsum dolor sit amet vivamus</h4>    
     </header>
+
     <body class="d-flex">
+
         <nav>
             <div class="menu">
                 <p>Home</p>
@@ -68,8 +37,9 @@
                     tas augue eu vulputate</h3>
                 <a href="#" class="btn" id="button">Facilis</a>
             </div>
-        </nav> 
-        <div class="section-1">
+        </nav>
+
+        <section class="section-1">
             <div class="card" id="card">
                 <img src="images/person-1.png" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -102,10 +72,10 @@
                   <a href="#" class="btn btn-primary" id="button">More</a>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="section-2">
-            <div class="table">
+        <section class="section-2">
+            <div class="section-2-column-1">
                 <h2>Cras ornare tristi</h2>
                 <h4>Vivamus vestibulum nulla nec ante  pellentesque</h4>
                 <div class="card" id="card">
@@ -150,9 +120,9 @@
                         <p class="card-text" id="card-text">Lorem ipsum dolor sit amet, consectetuer</p>
                     </div>
                 </div>
-
             </div>
-            <div class="list">
+
+            <div class="section-2-column-2">
                 <h2>Aliquam tincidunt</h2>
                 <h4>Integer vitae libero ac risus egestas placerat</h4>
                 <ul class="list-group">
@@ -194,9 +164,9 @@
                     </div>
                   </ul>
             </div>
-        </div>
+        </section>
 
-        <div class="section-3">
+        <section class="section-3">
             <div class="column">
                 <div class="card" id="card">
                     <div class="card-img"><img src="images/work-process-1.png" class="card-img" alt="..."></div>
@@ -227,14 +197,15 @@
                     <a href="#" class="btn btn-primary" id="button">More</a>
                 </div>
             </div>
-        </div>
+        </section>
     
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
     </body>
 
-    <footer>
+    <footer class="d-flex">
         <div class="main-footer">
                 <div class="navigation" id="column">
                     <nav class="nav flex-column" id="footer-nav">
