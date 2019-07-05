@@ -348,9 +348,15 @@ nav {
     justify-content: space-between;
 }
 
+.column {
+    width: 570px;
+    display: flex;
+    flex-direction: column;
+}
+
 .section-3 #card {
     border: none;
-    width: 270px;
+    width: 570px;
     height: 70px;
     margin: 10px 0;
     
@@ -368,6 +374,7 @@ nav {
 }
 
 .section-3 #card-title {
+    margin: 0;
     font-size: 18px;
     color: rgb(69, 72, 85);
     font-weight: bold;
@@ -378,6 +385,7 @@ nav {
     font-size: 18px;
     color: #828282;
     font-weight: 300;
+    margin-bottom: 20px;
 }
 
 .section-3 #card-text {
@@ -388,9 +396,15 @@ nav {
 
 .section-3 .card-body {
     padding: 0;
-    width: 170px;
+    width: 270px;
     position: absolute;
     right: 0;
 }
 
-  
+.paragraph {
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+    font-weight: 300;
+}
+
+/* ---------- ---------- ---------- */
