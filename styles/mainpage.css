@@ -126,7 +126,7 @@ nav {
     background: #03a8cb;
     border-radius: 30px;
 
-    font-weight: 900;
+    font-weight: 700;
     color: rgb(255, 255, 255);
     text-transform: uppercase;
 }
@@ -352,12 +352,13 @@ nav {
     width: 570px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .section-3 #card {
     border: none;
     width: 570px;
-    height: 70px;
     margin: 10px 0;
     
     display: flex;
@@ -401,10 +402,22 @@ nav {
     right: 0;
 }
 
+.section-3 .column-footer {
+    margin-top: 15px;
+}
+
 .paragraph {
     font-size: 14px;
     color: rgb(130, 130, 130);
     font-weight: 300;
+}
+
+.column-footer #button {
+    padding: 3px 3px;
+    font-size: 11px;
+    width: 54px;
+    height: 26px;
+    letter-spacing: 0.5px;
 }
 
 /* ---------- ---------- ---------- */
