@@ -1,11 +1,17 @@
 html {
     font-family: 'Source Sans Pro';
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 body {
     flex-direction: column;
     width: 100%;
     align-items: center;
+
+    width: 1170px !important;
 }
 
 /* ---------- Header area ---------- */
@@ -135,7 +141,7 @@ nav {
 }
 
 #button:focus {
-    outline: none; 
+    outline: none;
 }
 
 .welcome #button {
@@ -177,7 +183,7 @@ nav {
     text-transform: uppercase;
     line-height: 1.2;
     text-align: left;
-}  
+}
 
 .section-1 #card-text {
     font-size: 14px;
@@ -185,7 +191,7 @@ nav {
     line-height: 1.657;
     text-align: left;
 }
-  
+
 .section-1 #button {
     padding: 3px 3px;
     font-size: 11px;
@@ -247,7 +253,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-}  
+}
 
 .section-2-column-1 .card-img {
     width: 25px;
@@ -265,7 +271,7 @@ nav {
     font-size: 14px;
     color: rgb(130, 130, 130);
     font-weight: 300;
-} 
+}
 
 .section-2-column-1 .card-body {
     padding: 0;
@@ -273,7 +279,7 @@ nav {
     position: absolute;
     right: 0;
 }
- 
+
 /* ---------- ---------- ---------- */
 
 /* ---------- Collapse cards area ---------- */
@@ -297,7 +303,7 @@ nav {
     font-weight: 300;
     letter-spacing: 1px;
 }
-  
+
 .section-2-column-2 #button {
     margin: -1px -1px 0 0;
     padding: 0;
@@ -312,7 +318,7 @@ nav {
     border-radius: 5px;
     position: absolute;
     right: 0;
-}  
+}
 
 #list-group-item {
     height: 44px;
@@ -346,11 +352,11 @@ nav {
     border-radius: 0 0 5px 5px;
 }
 
- /* ---------- ---------- ---------- */ 
+ /* ---------- ---------- ---------- */
 
  /* ---------- ---------- ---------- */
 
- /* ---------- Section 3 area ---------- */ 
+ /* ---------- Section 3 area ---------- */
 
  .section-3 {
     padding: 30px 0 10px 0;
@@ -375,7 +381,7 @@ nav {
     border: none;
     width: 570px;
     margin: 10px 0;
-    
+
     display: flex;
     flex-direction: row;
 }
@@ -408,7 +414,7 @@ nav {
     font-size: 14px;
     color: rgb(130, 130, 130);
     font-weight: 300;
-} 
+}
 
 .section-3 .card-body {
     padding: 0;
@@ -441,12 +447,12 @@ nav {
 
 /* ---------- ---------- ---------- */
 
- /* ---------- Footer area ---------- */ 
+ /* ---------- Footer area ---------- */
 
  footer {
     margin: 30px 0;
 
-    width: 1170px;
+
 
     display: flex;
     flex-direction: column;
@@ -458,6 +464,7 @@ nav {
     padding: 40px 0;
     background-color: #ececec;
 
+    width: 1170px !important;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -495,19 +502,19 @@ nav {
  #nav-link {
     padding: .25rem 35px;
  }
-  
+
 
  footer a {
     font-size: 14px;
     color: rgb(130, 130, 130);
     text-decoration: underline;
- }  
+ }
 
  footer a:hover {
     font-size: 14px;
     color: #03a8cb;
     text-decoration: underline;
- }  
+ }
 
 /* ---------- Contacts area ---------- */
 
@@ -579,12 +586,12 @@ nav {
 
  .contact-us .social-networks .our-social #network-button {
     margin-right: 10px;
-    
+
     border: none;
     height: 35px;
     width: 35px;
     border-radius: 50%;
-    background-color: rgb(3, 168, 203);   
+    background-color: rgb(3, 168, 203);
 
     display: flex;
     align-items: center;
@@ -601,6 +608,8 @@ nav {
 /* ---------- Resources area ---------- */
 
  footer .site-resources {
+    width: 1170px !important;
+
     display: flex;
     flex-direction: row;
     align-items: flex-start;
