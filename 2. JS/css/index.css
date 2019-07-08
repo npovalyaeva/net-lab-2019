@@ -6,7 +6,7 @@ body {
     left: 0;
     
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     align-content: center; 
     justify-content: center;
@@ -17,11 +17,12 @@ input {
     width: 300px !important;
 }
 
-#inputState {
-    width: 300px !important;
-}
 
 button {
     width: 300px !important;
+}
+
+.sign-in-teacher-form {
+    margin-right: 300px;
 }
 

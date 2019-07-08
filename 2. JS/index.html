@@ -2,10 +2,9 @@
 <html class="d-flex">
     <head>
         <meta charset="utf-8">
-        <title>Sitename</title>
+        <title>Teacher/Pupil</title>
 
-        <link href="styles/index.css" rel="stylesheet" type="text/css">
-        <link rel="shortcut icon" type="image/x-icon" href="images/icon.ico">
+        <link href="css/index.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
     
@@ -14,24 +13,36 @@
 
     <body class="d-flex">
 
-        <div class="sign-in-form">
+        <div class="sign-in-teacher-form">
             <form>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="input" placeholder="First Name">
+                  <input type="text" class="form-control" id="teacher-first-name" placeholder="First Name">
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" id="input" placeholder="Last Name">
+                  <input type="text" class="form-control" id="teacher-last-name" placeholder="Last Name">
                 </div>
-                <select id="inputState" class="form-control">
-                    <option selected>Choose...</option>
-                    <option>Teacher</option>
-                    <option>Pupil</option>
-                  </select>
+                <input class="form-control" type="text" placeholder="Your role is Teacher" readonly>
                 <br>
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="submit" class="btn btn-primary" id="teacher-sign-in">Sign in</button>
+            </form>
+        </div>
+
+        <div class="sign-in-pupil-form">
+            <form>
+                <div class="form-group">
+                  <input type="text" class="form-control" id="input" id="pupil-first-name" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" id="input" id="pupil-last-name" placeholder="Last Name">
+                </div>
+                <input class="form-control" type="text" placeholder="You're are Pupil" readonly>
+                <br>
+                <button type="submit" class="btn btn-primary" id="pupil-sign-in">Sign in</button>
             </form>
         </div>
       
+        <script src="js/app.js"></script>
+
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
