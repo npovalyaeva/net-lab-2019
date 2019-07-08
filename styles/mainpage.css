@@ -1,5 +1,17 @@
 html {
     font-family: 'Source Sans Pro';
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+
+    width: 1170px !important;
 }
 
 /* ---------- Header area ---------- */
@@ -8,6 +20,8 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    margin-bottom: 20px;
 }
 
 .site-logo {
@@ -19,7 +33,7 @@ header {
 
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .site-logo-image {
@@ -55,7 +69,7 @@ nav {
 
 .menu {
     background-color: rgb(3, 168, 203);
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .12);
     border-radius: 5px 5px 0px 0px;
     width: 1170px;
     height: 80px;
@@ -65,7 +79,7 @@ nav {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .menu p {
@@ -74,64 +88,556 @@ nav {
     color: rgb(255, 255, 255);
     font-weight: bold;
     text-transform: uppercase;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 0px 20px;
 }
 
 .welcome {
-    background-image: url("../images/hello.png");
+    background-image: url(../images/hello.png);
     margin: 0px;
     width: 1170px;
     height: 430px;
     border-radius: 0px 0px 5px 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .12);
 
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center
+    justify-content: space-between;
+    padding-top: 148px;
+    padding-bottom: 71px;
 }
 
 .welcome-caption {
+    margin: 0px;
     font-size: 60px;
     font-weight: 700;
     letter-spacing: 2px;
     color: rgb(255, 255, 255);
     text-transform: uppercase;
     line-height: 1.2;
-    text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 20px;
-    margin-bottom: 0px;
+    text-shadow: 0px 3px 5px rgba(0, 0, 0, .2);
 }
 
 .welcome-description {
+    margin: 0px;
     font-size: 28px;
     font-weight: 300;
     letter-spacing: 4px;
     text-align: center;
     color: rgb(255, 255, 255);
     line-height: 1.2;
-    text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 0px;
-    margin-bottom: 0px;
+    text-shadow: 0px 3px 5px rgba(0, 0, 0, .2);
 }
 
-.explore-button {
-    width: 160px;
-    height: 60px;
+#button {
     background: #03a8cb;
-    border: none;
     border-radius: 30px;
+    border: none;
 
-    margin-top: 40px;
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 2px;
+    font-weight: 700;
     color: rgb(255, 255, 255);
     text-transform: uppercase;
-    line-height: 1.2;
+}
+
+#button:focus {
+    outline: none;
+}
+
+.welcome #button {
+    font-size: 22px;
+    width: 135px;
+    height: 49px;
+    letter-spacing: 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ---------- ---------- ---------- */
 
-  
+/* ---------- Person cards area ---------- */
+
+.section-1 {
+    margin-top: 30px;
+    width: 1170px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-1 #card {
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(230, 230, 230);
+    border-radius: 5px;
+    width: 270px;
+}
+
+.section-1 #card-title {
+    font-size: 16px;
+    color: rgb(59, 62, 74);
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.section-1 #card-text {
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+    line-height: 1.657;
+    text-align: left;
+}
+
+.section-1 #button {
+    padding: 3px 3px;
+    font-size: 11px;
+    width: 54px;
+    height: 26px;
+    letter-spacing: .5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- ---------- ---------- */
+
+/* ---------- Section 2 area ---------- */
+
+.section-2 {
+    margin-top: 40px;
+    padding: 30px 0 10px 0;
+    border-top: 1px solid rgb(230, 230, 230);
+    border-bottom: 1px solid rgb(230, 230, 230);
+
+    width: 1170px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+/* ---------- Table with icons area ---------- */
+
+.section-2-column-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    width: 570px !important;
+}
+
+.section-2-column-1 #card {
+    border: none;
+    width: 270px;
+    height: 70px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.section-2-column-1 .card-icon {
+    border-radius: 5px;
+    background-color: rgb(59, 62, 74);
+    width: 70px !important;
+    margin: 0 20px 20px 0;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-2-column-1 .card-img {
+    width: 25px;
+    height: 25px;
+}
+
+.section-2-column-1 #card-title {
+    font-size: 16px;
+    color: rgb(3, 168, 203);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.section-2-column-1 #card-text {
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+    font-weight: 300;
+}
+
+.section-2-column-1 .card-body {
+    padding: 0;
+    width: 170px;
+    position: absolute;
+    right: 0;
+}
+
+/* ---------- ---------- ---------- */
+
+/* ---------- Collapse cards area ---------- */
+
+.section-2-column-2 {
+    width: 570px;
+}
+
+.section-2 h2 {
+    margin-bottom: 0;
+    font-size: 28px;
+    color: rgb(69, 72, 85);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.section-2 h4 {
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: rgb(130, 130, 130);
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.section-2-column-2 #button {
+    margin: -1px -1px 0 0;
+    padding: 0;
+    font-size: 34px;
+    text-transform: uppercase;
+    font-weight: 300;
+    line-height: 0;
+
+    height: 44px;
+    width: 44px;
+
+    border-radius: 5px;
+    position: absolute;
+    right: 0;
+}
+
+#list-group-item {
+    height: 44px;
+    margin: 14px 0 0 0;
+    padding: 0 20px;
+    line-height: 44px;
+
+    font-size: 16px;
+    color: rgb(130, 130, 130);
+
+    border-color: rgb(230, 230, 230);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+.collapse-body {
+    margin-top: -7px;
+    margin-bottom: 7px;
+    background-color: rgb(240, 240, 240);
+    font-size: 14px;
+    font-weight: 300;
+    color: rgb(130, 130, 130);
+    text-align: left;
+    padding: 20px;
+
+    border-style: solid;
+    border-top: 0;
+    border-width: 1px;
+    border-color: rgb(230, 230, 230);
+    border-radius: 0 0 5px 5px;
+}
+
+ /* ---------- ---------- ---------- */
+
+ /* ---------- ---------- ---------- */
+
+ /* ---------- Section 3 area ---------- */
+
+ .section-3 {
+    padding: 30px 0 10px 0;
+
+    width: 1170px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.column {
+    width: 570px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.section-3 #card {
+    border: none;
+    width: 570px;
+    margin: 10px 0;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.section-3 .card-img {
+    width: 270px;
+    height: 210px;
+
+    border-width: 1px;
+    border-radius: 5px;
+    background-color: #e6e6e6;
+}
+
+.section-3 #card-title {
+    margin: 0;
+    font-size: 18px;
+    color: rgb(69, 72, 85);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.section-3 #card-description {
+    font-size: 18px;
+    color: #828282;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.section-3 #card-text {
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+    font-weight: 300;
+}
+
+.section-3 .card-body {
+    padding: 0;
+    width: 270px;
+    position: absolute;
+    right: 0;
+}
+
+.section-3 .column-footer {
+    margin-top: 15px;
+}
+
+.paragraph {
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+    font-weight: 300;
+}
+
+.column-footer #button {
+    padding: 3px 3px;
+    font-size: 11px;
+    width: 54px;
+    height: 26px;
+    letter-spacing: .5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- ---------- ---------- */
+
+ /* ---------- Footer area ---------- */
+
+ footer {
+    margin: 30px 0;
+
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+
+ .main-footer {
+    padding: 40px 0;
+    background-color: #ececec;
+
+    width: 1170px !important;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+
+ .main-footer .column {
+     width: 270px;
+ }
+
+ .navigation {
+    flex-basis: 100%;
+
+    margin-right: 30px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+
+ footer nav {
+    align-items: flex-start;
+ }
+
+ footer nav #nav-caption {
+    padding: .5rem 35px;
+    padding-top: 0 !important;
+    font-size: 18px;
+    color: rgb(69, 72, 85);
+    font-weight: bold;
+    text-transform: uppercase;
+ }
+
+ #nav-link {
+    padding: .25rem 35px;
+ }
+
+
+ footer a {
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+    text-decoration: underline;
+ }
+
+ footer a:hover {
+    font-size: 14px;
+    color: #03a8cb;
+    text-decoration: underline;
+ }
+
+/* ---------- Contacts area ---------- */
+
+.contact-us {
+    flex-basis: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+
+ .contact-us h2 {
+    font-size: 18px;
+    color: rgb(69, 72, 85);
+    font-weight: bold;
+    text-transform: uppercase;
+ }
+
+ .contact-us .subscription {
+    flex-basis: 100%;
+
+    margin-right: 30px;
+ }
+
+ .contact-us .subscription .form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 35px;
+    margin-top: 30px;
+ }
+
+ .contact-us .subscription .form-group #email {
+    border-radius: 17.5px 0px 0px 17.5px;
+    border: none;
+    height: 35px;
+ }
+
+#email:focus, #email:active {
+    outline: none !important;
+    box-shadow: none !important;
+ }
+
+ .contact-us .subscription .form-group #subscribe-button {
+    border-radius: 0px 17.5px 17.5px 0px;
+    border: none;
+    height: 35px;
+
+    background-color: #03a8cb;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+ }
+
+ .contact-us .social-networks {
+    flex-basis: 100%;
+ }
+
+ .contact-us .social-networks .our-social {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 35px;
+    margin-top: 30px;
+ }
+
+ .contact-us .social-networks .our-social #network-button {
+    margin-right: 10px;
+
+    border: none;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    background-color: rgb(3, 168, 203);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .contact-us .social-networks .our-social .network-img {
+    height: 15px;
+    width: 15px;
+ }
+
+/* ---------- ---------- ---------- */
+
+/* ---------- Resources area ---------- */
+
+ footer .site-resources {
+    width: 1170px !important;
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+ }
+
+ footer .site-resources p {
+    flex-basis: 100%;
+
+    margin-top: 40px;
+
+    font-size: 14px;
+    font-weight: 300;
+    color: rgb(3, 168, 203);
+    text-align: left;
+ }
+
+footer .site-resources .column-1 {
+    margin-left: 35px;
+}
+
+/* ---------- ---------- ---------- */
+
+/* ---------- ---------- ---------- */
+
+#button:focus, #button:active,
+#network-button:focus, #network-button:active,
+#subscribe-button:focus, #subscribe-button:active {
+    outline: none !important;
+    box-shadow: 0 0 5px rgb(3, 168, 203) !important;
+  }
