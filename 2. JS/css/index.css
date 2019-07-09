@@ -6,6 +6,19 @@ body {
     left: 0;
     
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center; 
+    justify-content: center;
+    overflow: auto; 
+}
+
+#welcome-label {
+    margin-bottom: 30px;
+}
+
+.sign-in-forms {
+    display: flex;
     flex-direction: row;
     align-items: center;
     align-content: center; 
@@ -14,15 +27,15 @@ body {
 }
 
 input {
-    width: 300px !important;
+    width: 500px !important;
 }
 
 
 button {
-    width: 300px !important;
+    width: 1200px !important;
 }
 
 .sign-in-teacher-form {
-    margin-right: 300px;
+    margin-right: 200px;
 }
 
