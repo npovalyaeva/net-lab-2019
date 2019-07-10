@@ -11,6 +11,9 @@ User.prototype.sayHi = function() {
 function Teacher(firstName, lastName) {
 
     User.call(this, firstName, lastName);
+
+    this.lastQuestion = "";
+    this.lastSetMark = -1;
 }
 Teacher.prototype = Object.create(User.prototype);
 Teacher.prototype.constructor = Teacher;
@@ -18,6 +21,10 @@ Teacher.prototype.constructor = Teacher;
 function Pupil(firstName, lastName) {
 
     User.call(this, firstName, lastName);
+
+    this.lastAnswer = "";
+    this.marks = [];
+
 }
 Pupil.prototype = Object.create(User.prototype);
 Pupil.prototype.constructor = Pupil;
@@ -126,7 +133,7 @@ function answerQuestion() {
     if (checkbox.checked == true) {
         pupil.isAnswerForLastQuestionKnown = true;
         // TODO: Implement answerQuestion() function
-        pupil.answer = document.getElementById("answer").value;
+        pupil.lastAnswer = document.getElementById("answer").value;
     }
     else {
         pupil.isAnswerForLastQuestionKnown = false;
@@ -137,9 +144,40 @@ function answerQuestion() {
 }
 
 function loadSetMarkPage() {
-    
+    var pupil = JSON.parse(sessionStorage.getItem("pupilAnswerObject"));
+    if (typeof pupil.isAnswerForLastQuestionKnown == 'undefined') {
+        window.open("./index.html","_self");
+        // & first running !
+    }
+    else {
+        if (pupil.isAnswerForLastQuestionKnown == true) {
+            document.getElementById("answer").innerHTML = "Pupil answer is \"" + pupil.answer + "\"";
+        }
+        else {
+            document.getElementById("answer").innerHTML = "The pupil doesn't know the answer";
+        }
+    }
 }
 
 function setMark() {
+    if (document.getElementById("mark") != null)
+        var mark = document.getElementById("mark").value.trim();
 
+    if (isNaN(mark)) {
+        alert("Please Input A Number");
+        return false;
+    }
+
+    if (mark <= 1 || mark >= 10) {
+        alert("Please Input A Mark (1 <= Mark >= 10)");
+        return false;
+    }
+
+    var teacher = JSON.parse(sessionStorage.getItem("teacherAnswerObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilAnswerObject"));
+    teacher.lastSetMark = mark;
+    pupil.marks.push(mark);
+
+
+    window.open("./askquestion.html","_self");
 }

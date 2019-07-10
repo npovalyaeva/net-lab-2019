@@ -11,16 +11,16 @@
     
     </head>
 
-    <body class="d-flex">
+    <body class="d-flex" onload="loadSetMarkPage()">
         <section class="teacher-area">
             <h1 class="display-4" id="label">Teacher</h1>
             <br>
-            <p class="answer">{Some text}</p>
+            <p class="answer" id="answer">{Some text}</p>
             <form>
                 <label for="answer-question-label">Your mark is ...</label>
                 <input type="mark" class="form-control" id="mark">
                 <br>
-                <button type="submit" class="btn btn-primary" id="btn">Set mark</button>
+                <button type="submit" class="btn btn-primary" id="btn" onclick="setMark()">Set mark</button>
             </form>
         </section>
         
