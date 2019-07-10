@@ -13,7 +13,7 @@ body {
     overflow: auto; 
 }
 
-textarea {
+textarea, .marks-list {
     width: 500px !important;
 }
 

@@ -32,8 +32,7 @@ function signIn() {
     if (document.getElementById("teacher-last-name") != null)
         var teacherLastName = document.getElementById("teacher-last-name").value.trim();
 
-    if (teacherFirstName == "" || teacherLastName == "")
-    {
+    if (teacherFirstName == "" || teacherLastName == "") {
         alert("Please Fill Teacher Name");
         return false;
     }
@@ -44,34 +43,69 @@ function signIn() {
     if (document.getElementById("pupil-last-name") != null)
         var pupilLastName = document.getElementById("pupil-last-name").value.trim();
 
-    if (pupilFirstName == "" || pupilLastName == "")
-    {
+    if (pupilFirstName == "" || pupilLastName == "") {
         alert("Please Fill Pupil Name");
         return false;
     }
 
     var teacher = new Teacher(teacherFirstName, teacherLastName);
     var pupil = new Pupil(pupilFirstName, pupilLastName);
-    sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
-    sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
+    sessionStorage.setItem("teacherSignInObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilSignInObject", JSON.stringify(pupil));
+    sessionStorage.setItem("firstRunning", "true");
     window.open("./askquestionpage.html","_self");
 } 
 
+function loadAskQuestionPage() {
+    // TODO: Call in a loop 
+    var pupil = JSON.parse(sessionStorage.getItem("pupilSignInObject"));
+
+    if (typeof pupil.marks == 'undefined') {
+        document.getElementById("marks-list").value = "You don't have marks!";
+    }
+    else {
+        // TODO: Load pupil marks
+    }
+}   
+
 function askQuestion() {
- 
-    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
-    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
+    var firstRunning = sessionStorage.getItem("firstRunning");
+    if (firstRunning) {
+        // TODO: Think about firstRunning value and state saving after new page opening
+        var teacher = JSON.parse(sessionStorage.getItem("teacherSignInObject"));
+        var pupil = JSON.parse(sessionStorage.getItem("pupilSignInObject"));
+    }
+    else {
+        var teacher = JSON.parse(sessionStorage.getItem("teacherSignInObject"));
+        var pupil = JSON.parse(sessionStorage.getItem("pupilSignInObject"));
+    }
 
     if (document.getElementById("textarea") != null)
-        var question = document.getElementById("textarea").value.trim();
+        teacher.lastQuestion = document.getElementById("textarea").value.trim();
 
-    if (question == "")
-        {
-            alert("Please Fill Question Field");
-            return false;
-        }
-    alert(question);
+    if (teacher.lastQuestion == "") {
+        alert("Please Fill Question Field");
+        return false;
+    }
+
+    sessionStorage.setItem("teacherAskObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilAskObject", JSON.stringify(pupil));
+    sessionStorage.setItem("firstRunning", "false");
+    window.open("./answerquestionpage.html","_self");
 }
+
+function loadAnswerQuestionPage() {
+    var teacher = JSON.parse(sessionStorage.getItem("teacherAskObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilAskObject"));
+    if (typeof teacher.lastSetMark == 'undefined') {
+        document.getElementById("last-set-mark").innerHTML = "-";
+    }
+    else {
+        // TODO: Load pupil marks
+    }
+
+    document.getElementById("question").innerHTML = teacher.lastQuestion;
+}    
 
 function setTextareaMode(checkbox) {
     var textarea = document.getElementById("textarea");

@@ -11,7 +11,7 @@
     
     </head>
 
-    <body class="d-flex">
+    <body class="d-flex" onload="loadAnswerQuestionPage()">
         <section class="teacher-area">
             <h1 class="display-4" id="label">Teacher</h1>
             <br>
@@ -22,7 +22,7 @@
         <section class="pupil-area">
             <h1 class="display-4" id="label">Pupil</h1>
             <br>
-            <p class="question">{Some text}</p>
+            <p class="question" id="question">{Some text}</p>
             <form>
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="setTextareaMode(this)">
@@ -33,7 +33,7 @@
                 <textarea readonly class="form-control" id="textarea" rows="3"></textarea>
             </form>
             <br>
-            <button type="submit" class="btn btn-primary" id="answer-btn">Answer</button>
+            <button type="submit" class="btn btn-primary" id="answer-btn" onclick="answerQuestion()">Answer</button>
         </section>
       
         <script src="js/app.js"></script>
