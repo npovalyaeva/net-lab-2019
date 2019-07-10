@@ -22,6 +22,7 @@ function Pupil(firstName, lastName) {
 
     User.call(this, firstName, lastName);
 
+    this.isAnswerForLastQuestionKnown = true;
     this.lastAnswer = "";
     this.marks = [];
 
@@ -29,9 +30,38 @@ function Pupil(firstName, lastName) {
 Pupil.prototype = Object.create(User.prototype);
 Pupil.prototype.constructor = Pupil;
 
+// --------------- --------------- --------------- --------------- --------------- --------------- ---------------
+
+function checkIsSignedIn() {
+    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+    if (teacher == undefined) {
+        alert("Please Sign In");
+        window.open("./index.html","_self");
+        return false;
+    }
+}
+
+function checkIsQuestionAsked() {
+    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+    if (teacher.lastQuestion == "") {
+        alert("You can't answer the question because the question isn't exist.");
+        window.open("./askquestionpage.html","_self");
+        return false;
+    }
+}
+
+function checkIsQuestionAnswered() {
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
+    if (pupil.lastAnswer == "" && pupil.isAnswerForLastQuestionKnown == true) {
+        alert("You can't set a mark because the pupil hasn't answered the question yet.");
+        window.open("./answerquestionpage.html","_self");
+        return false;
+    }
+}
+
 function signIn() {
 
-    // TODO: implement checkElementIsEmpty function
+    // TODO: Implement checkElementIsEmpty function
 
     if (document.getElementById("teacher-first-name") != null)
         var teacherFirstName = document.getElementById("teacher-first-name").value.trim();
@@ -57,15 +87,17 @@ function signIn() {
 
     var teacher = new Teacher(teacherFirstName, teacherLastName);
     var pupil = new Pupil(pupilFirstName, pupilLastName);
-    sessionStorage.setItem("teacherSignInObject", JSON.stringify(teacher));
-    sessionStorage.setItem("pupilSignInObject", JSON.stringify(pupil));
-    sessionStorage.setItem("firstRunning", "true");
+    sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
     window.open("./askquestionpage.html","_self");
 } 
 
 function loadAskQuestionPage() {
+    
+    checkIsSignedIn();
+
     // TODO: Call in a loop 
-    var pupil = JSON.parse(sessionStorage.getItem("pupilSignInObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
 
     if (typeof pupil.marks == 'undefined') {
         document.getElementById("marks-list").value = "You don't have marks!";
@@ -79,12 +111,12 @@ function askQuestion() {
     var firstRunning = sessionStorage.getItem("firstRunning");
     if (firstRunning) {
         // TODO: Think about firstRunning value and state saving after new page opening
-        var teacher = JSON.parse(sessionStorage.getItem("teacherSignInObject"));
-        var pupil = JSON.parse(sessionStorage.getItem("pupilSignInObject"));
+        var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+        var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
     }
     else {
-        var teacher = JSON.parse(sessionStorage.getItem("teacherSignInObject"));
-        var pupil = JSON.parse(sessionStorage.getItem("pupilSignInObject"));
+        var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+        var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
     }
 
     if (document.getElementById("textarea") != null)
@@ -95,15 +127,20 @@ function askQuestion() {
         return false;
     }
 
-    sessionStorage.setItem("teacherAskObject", JSON.stringify(teacher));
-    sessionStorage.setItem("pupilAskObject", JSON.stringify(pupil));
+    sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
     sessionStorage.setItem("firstRunning", "false");
     window.open("./answerquestionpage.html","_self");
 }
 
 function loadAnswerQuestionPage() {
-    var teacher = JSON.parse(sessionStorage.getItem("teacherAskObject"));
-    var pupil = JSON.parse(sessionStorage.getItem("pupilAskObject"));
+
+    checkIsSignedIn();
+
+    checkIsQuestionAsked();
+
+    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
     if (typeof teacher.lastSetMark == 'undefined') {
         document.getElementById("last-set-mark").innerHTML = "-";
     }
@@ -126,8 +163,8 @@ function setTextareaMode(checkbox) {
 }   
 
 function answerQuestion() {
-    var teacher = JSON.parse(sessionStorage.getItem("teacherAskObject"));
-    var pupil = JSON.parse(sessionStorage.getItem("pupilAskObject"));
+    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
 
     var checkbox = document.getElementById("switch");
     if (checkbox.checked == true) {
@@ -138,13 +175,18 @@ function answerQuestion() {
     else {
         pupil.isAnswerForLastQuestionKnown = false;
     }
-    sessionStorage.setItem("teacherAnswerObject", JSON.stringify(teacher));
-    sessionStorage.setItem("pupilAnswerObject", JSON.stringify(pupil));
+    sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
     window.open("./setmarkpage.html","_self");
 }
 
 function loadSetMarkPage() {
-    var pupil = JSON.parse(sessionStorage.getItem("pupilAnswerObject"));
+
+    checkIsSignedIn();
+
+    checkIsQuestionAnswered()
+
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
     if (typeof pupil.isAnswerForLastQuestionKnown == 'undefined') {
         window.open("./index.html","_self");
         // & first running !
@@ -173,8 +215,8 @@ function setMark() {
         return false;
     }
 
-    var teacher = JSON.parse(sessionStorage.getItem("teacherAnswerObject"));
-    var pupil = JSON.parse(sessionStorage.getItem("pupilAnswerObject"));
+    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
     teacher.lastSetMark = mark;
     pupil.marks.push(mark);
 
