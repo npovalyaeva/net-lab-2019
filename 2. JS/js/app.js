@@ -105,10 +105,10 @@ function loadAnswerQuestionPage() {
     }
 
     document.getElementById("question").innerHTML = teacher.lastQuestion;
-}    
+}
 
 function setTextareaMode(checkbox) {
-    var textarea = document.getElementById("textarea");
+    var textarea = document.getElementById("answer");
 
     if (checkbox.checked == true) {
         textarea.readOnly = false;
@@ -116,4 +116,30 @@ function setTextareaMode(checkbox) {
     else {
         textarea.readOnly = true;
     }
-}        
+}   
+
+function answerQuestion() {
+    var teacher = JSON.parse(sessionStorage.getItem("teacherAskObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilAskObject"));
+
+    var checkbox = document.getElementById("switch");
+    if (checkbox.checked == true) {
+        pupil.isAnswerForLastQuestionKnown = true;
+        // TODO: Implement answerQuestion() function
+        pupil.answer = document.getElementById("answer").value;
+    }
+    else {
+        pupil.isAnswerForLastQuestionKnown = false;
+    }
+    sessionStorage.setItem("teacherAnswerObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilAnswerObject", JSON.stringify(pupil));
+    window.open("./setmarkpage.html","_self");
+}
+
+function loadSetMarkPage() {
+    
+}
+
+function setMark() {
+
+}

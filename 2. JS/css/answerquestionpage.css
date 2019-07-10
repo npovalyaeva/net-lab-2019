@@ -13,7 +13,7 @@ body {
     overflow: auto; 
 }
 
-textarea {
+textarea, .answer {
     width: 500px !important;
 }
 

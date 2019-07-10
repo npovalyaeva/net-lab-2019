@@ -25,12 +25,12 @@
             <p class="question" id="question">{Some text}</p>
             <form>
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="setTextareaMode(this)">
-                    <label class="custom-control-label" for="customSwitches">I know the answer</label>
+                    <input type="checkbox" class="custom-control-input" id="switch" onclick="setTextareaMode(this)">
+                    <label class="custom-control-label" for="switch">I know the answer</label>
                 </div>
                 <br>
                 <label for="answer-question-label">Your answer is ...</label>
-                <textarea readonly class="form-control" id="textarea" rows="3"></textarea>
+                <textarea readonly class="form-control" id="answer" rows="3"></textarea>
             </form>
             <br>
             <button type="submit" class="btn btn-primary" id="answer-btn" onclick="answerQuestion()">Answer</button>
