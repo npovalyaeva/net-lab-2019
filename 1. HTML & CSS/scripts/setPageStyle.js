@@ -21,7 +21,7 @@ function highlight(node) {
         node.parentNode.style.borderBottom = '1px solid rgb(230, 230, 230)';
         node.parentNode.style.borderRadius = '5px';
         node.style.borderRadius = '5px';
-        node.style.value = '+';
+        node.innerHTML = '+';
     }
     else {
         node.parentNode.style.backgroundColor = '#3b3e4a';
@@ -30,6 +30,6 @@ function highlight(node) {
         node.parentNode.style.borderBottom = 0;
         node.parentNode.style.borderRadius = '5px 5px 0px 0px';
         node.style.borderRadius = '0 5px 0 0';
-        node.style.value = '-';
+        node.innerHTML = '-';
     }  
 }
