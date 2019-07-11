@@ -12,7 +12,7 @@ function Teacher(firstName, lastName) {
 
     User.call(this, firstName, lastName);
 
-    this.lastQuestion = "";
+    this.lastQuestion = null;
     this.lastSetMark = -1;
 }
 Teacher.prototype = Object.create(User.prototype);
@@ -22,8 +22,8 @@ function Pupil(firstName, lastName) {
 
     User.call(this, firstName, lastName);
 
-    this.isAnswerForLastQuestionKnown = true;
-    this.lastAnswer = "";
+    this.isAnswerForLastQuestionKnown = null;
+    this.lastAnswer = null;
     this.marks = [];
 
 }
@@ -43,7 +43,7 @@ function checkIsSignedIn() {
 
 function checkIsQuestionAsked() {
     var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
-    if (teacher.lastQuestion == "") {
+    if (typeof teacher.lastQuestion == null) {
         alert("You can't answer the question because the question isn't exist.");
         window.open("./askquestionpage.html","_self");
         return false;
@@ -52,7 +52,8 @@ function checkIsQuestionAsked() {
 
 function checkIsQuestionAnswered() {
     var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
-    if (pupil.lastAnswer == "" && pupil.isAnswerForLastQuestionKnown == true) {
+    // !!!!!!!!!!!!!!!!!
+    if (typeof pupil.lastAnswer == null) {
         alert("You can't set a mark because the pupil hasn't answered the question yet.");
         window.open("./answerquestionpage.html","_self");
         return false;
@@ -93,31 +94,27 @@ function signIn() {
 } 
 
 function loadAskQuestionPage() {
-    
+
     checkIsSignedIn();
 
     // TODO: Call in a loop 
     var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
 
-    if (typeof pupil.marks == 'undefined') {
+    if (pupil.marks.length == 0) {
         document.getElementById("marks-list").value = "You don't have marks!";
     }
     else {
-        // TODO: Load pupil marks
+        document.getElementById("marks-list").value = "Your marks are ";
+        for (i = 0; i < pupil.marks.length; i++) { 
+            document.getElementById("marks-list").value += pupil.marks[i] + (i == pupil.marks.length - 1) ? ", " : "";
+        }
     }
 }   
 
 function askQuestion() {
-    var firstRunning = sessionStorage.getItem("firstRunning");
-    if (firstRunning) {
-        // TODO: Think about firstRunning value and state saving after new page opening
-        var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
-        var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
-    }
-    else {
-        var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
-        var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
-    }
+    // TODO: Think about firstRunning value and state saving after new page opening
+    var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
+    var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
 
     if (document.getElementById("textarea") != null)
         teacher.lastQuestion = document.getElementById("textarea").value.trim();
@@ -129,24 +126,19 @@ function askQuestion() {
 
     sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
     sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
-    sessionStorage.setItem("firstRunning", "false");
     window.open("./answerquestionpage.html","_self");
 }
 
 function loadAnswerQuestionPage() {
-
+    
     checkIsSignedIn();
 
     checkIsQuestionAsked();
 
     var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
     var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
-    if (typeof teacher.lastSetMark == 'undefined') {
-        document.getElementById("last-set-mark").innerHTML = "-";
-    }
-    else {
-        // TODO: Load pupil marks
-    }
+
+    document.getElementById("last-set-mark").innerHTML = (teacher.lastSetMark == -1) ? "-" : teacher.lastSetMark; 
 
     document.getElementById("question").innerHTML = teacher.lastQuestion;
 }
@@ -175,6 +167,9 @@ function answerQuestion() {
     else {
         pupil.isAnswerForLastQuestionKnown = false;
     }
+
+    teacher.lastQuestion = null;
+
     sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
     sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
     window.open("./setmarkpage.html","_self");
@@ -187,21 +182,12 @@ function loadSetMarkPage() {
     checkIsQuestionAnswered()
 
     var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
-    if (typeof pupil.isAnswerForLastQuestionKnown == 'undefined') {
-        window.open("./index.html","_self");
-        // & first running !
-    }
-    else {
-        if (pupil.isAnswerForLastQuestionKnown == true) {
-            document.getElementById("answer").innerHTML = "Pupil answer is \"" + pupil.answer + "\"";
-        }
-        else {
-            document.getElementById("answer").innerHTML = "The pupil doesn't know the answer";
-        }
-    }
+    
+    document.getElementById("answer").innerHTML = (pupil.isAnswerForLastQuestionKnown == true) ? "Pupil answer is \"" + pupil.lastAnswer + "\"" : "The pupil doesn't know the answer";    
 }
 
 function setMark() {
+
     if (document.getElementById("mark") != null)
         var mark = document.getElementById("mark").value.trim();
 
@@ -210,16 +196,19 @@ function setMark() {
         return false;
     }
 
-    if (mark <= 1 || mark >= 10) {
+    if (mark < 1 || mark > 10) {
         alert("Please Input A Mark (1 <= Mark >= 10)");
         return false;
     }
 
     var teacher = JSON.parse(sessionStorage.getItem("teacherObject"));
     var pupil = JSON.parse(sessionStorage.getItem("pupilObject"));
+
     teacher.lastSetMark = mark;
+    pupil.lastAnswer = null;
     pupil.marks.push(mark);
 
-
-    window.open("./askquestion.html","_self");
+    sessionStorage.setItem("teacherObject", JSON.stringify(teacher));
+    sessionStorage.setItem("pupilObject", JSON.stringify(pupil));
+    window.open("./askquestionpage.html","_self");
 }
