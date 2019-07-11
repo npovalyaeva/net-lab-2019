@@ -7,6 +7,30 @@ html {
 }
 
 body {
+    width: 100%;
+    top: 0;
+    left: 0;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-start;
+    justify-content: center;
+    overflow: auto;
+
+    background-color: #3b3e4a !important;
+}
+
+.main-content {
+    width: 1230px;
+    padding: 30px;
+    margin: 50px 0;
+    background-color: #fff;
+    box-shadow: 5px rgba(0, 0, 0);
+    border-radius: 5px;
+}
+
+#content-body {
     flex-direction: column;
     width: 100%;
     align-items: center;
@@ -25,7 +49,6 @@ header {
 }
 
 .site-logo {
-    margin: 10px;
     border-radius: 50%;
     background-color: rgb(3, 168, 203);
     width: 89px;
@@ -82,7 +105,7 @@ nav {
     justify-content: center;
 }
 
-.menu p {
+.menu #menu-lbl {
     font-size: 16px;
     font-family: "Source Sans Pro";
     color: rgb(255, 255, 255);
@@ -450,10 +473,7 @@ nav {
  /* ---------- Footer area ---------- */
 
  footer {
-    margin: 30px 0;
-
-
-
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -461,7 +481,7 @@ nav {
  }
 
  .main-footer {
-    padding: 40px 0;
+    padding: 30px 0;
     background-color: #ececec;
 
     width: 1170px !important;
