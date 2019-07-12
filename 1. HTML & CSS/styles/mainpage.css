@@ -651,6 +651,13 @@ footer .site-resources .column-1 {
     margin-left: 35px;
 }
 
+.site-resources a {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgb(3, 168, 203);
+    text-decoration: none;
+}
+
 /* ---------- ---------- ---------- */
 
 /* ---------- ---------- ---------- */
