@@ -15,6 +15,8 @@ function Teacher(firstName, lastName) {
     var lastSetMark = -1;
 
     this.getLastSetMark = function() {
+        if (lastSetMark == -1)
+            return false;
         return lastSetMark;
     }
 
@@ -23,10 +25,16 @@ function Teacher(firstName, lastName) {
     }
 
     this.setMark = function(pupil, mark) {
-        if (pupil.marks(mark)) {
-            lastSetMark = mark;
-            pupil.lastAnswer(null);
+        if (pupil.lastAnswer != null)
+        {
+            if (pupil.marks(mark)) {
+                lastSetMark = mark;
+                pupil.lastAnswer(null);
+                return true;
+            }
+            return false;
         }
+        return false;
     }
 }
 
@@ -96,9 +104,13 @@ function Pupil(firstName, lastName) {
     }
 
     this.answerQuestion = function(isAnswerKnown, answer) {
-        this.isAnswerForLastQuestionKnown(isAnswerKnown);
-        lastAnswer = answer;
-        lastQuestion = null;
+        if (lastQuestion != null) {
+            this.isAnswerForLastQuestionKnown(isAnswerKnown);
+            lastAnswer = answer;
+            lastQuestion = null;
+            return true;
+        }
+        return false;   
     }
 }
 
