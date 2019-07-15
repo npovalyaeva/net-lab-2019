@@ -97,6 +97,8 @@ function Pupil(firstName, lastName) {
             lastQuestion = null;
             if (isAnswerKnown)
                 lastAnswer = answer;
+            else 
+                lastAnswer = "";
             return true;
         }
         return false;   
