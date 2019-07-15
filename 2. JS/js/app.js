@@ -29,7 +29,9 @@ function Teacher(firstName, lastName) {
                 lastSetMark = mark;
                 return true;
         }
-        return false;
+        else{
+            return false;
+        }
     }
 }
 
@@ -72,17 +74,21 @@ function Pupil(firstName, lastName) {
         if (!arguments.length) return marks;
 
         // setter
-        if (isNaN(mark)) {
-            alert("Please Input A Number");
-            return false;
+        if (lastAnswer != null) {
+            if (isNaN(mark)) {
+                alert("Please Input A Number");
+                return false;
+            }
+            if (mark < 1 || mark > 10) {
+                alert("Please Input A Mark (1 <= Mark >= 10)");
+                return false;
+            }
+            marks.push(mark);
+            lastAnswer = null;
+            return true;
         }
-        if (mark < 1 || mark > 10) {
-            alert("Please Input A Mark (1 <= Mark >= 10)");
+        else
             return false;
-        }
-        marks.push(mark);
-        lastAnswer = null;
-        return true;
     }
 
     this.answerQuestion = function(isAnswerKnown, answer) {
