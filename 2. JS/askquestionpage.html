@@ -11,23 +11,25 @@
     </head>
 
     <body class="d-flex" onload="loadAskQuestionPage()">
-        <section class="teacher-area">
-            <h1 class="display-4" id="label">Teacher</h1>
-            <form>
-                <label for="ask-question-label">Your question is ...</label>
-                <textarea class="form-control" id="textarea" rows="3"></textarea>
-            </form>
-            <br>
-            <button class="btn btn-primary" id="btn" onclick="askQuestion()">Ask</button>
-        </section>
-        
-        <section class="pupil-area">
-            <h1 class="display-4" id="label">Pupil</h1>
-            <form>
-                    <label for="ask-question-label">Your marks are ...</label>
-                    <textarea readonly class="form-control" id="marks-list" rows="5"></textarea>
-            </form>
-        </section>
+        <div class="ask-question-part">
+            <section class="teacher-area">
+                <h1 class="display-4" id="label">Teacher</h1>
+                <form>
+                    <label for="ask-question-label">Your question is ...</label>
+                    <textarea class="form-control" id="textarea" rows="3"></textarea>
+                </form>
+                <br>
+                <button class="btn btn-primary" id="btn" onclick="askQuestion()">Ask</button>
+            </section>
+            
+            <section class="pupil-area">
+                <h1 class="display-4" id="label">Pupil</h1>
+                <form>
+                        <label for="ask-question-label">Your marks are ...</label>
+                        <textarea readonly class="form-control" id="marks-list" rows="5"></textarea>
+                </form>
+            </section>
+        </div>
       
         <script src="js/app.js"></script>
 

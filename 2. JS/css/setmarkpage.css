@@ -4,7 +4,18 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    
+}
+
+.sign-in-page {       
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center; 
+    justify-content: center;
+    overflow: auto; 
+}
+
+.ask-question-page, .answer-question-page, .set-mark-page {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -13,8 +24,33 @@ body {
     overflow: auto; 
 }
 
-textarea {
+#welcome-label {
+    margin-bottom: 30px;
+}
+
+.sign-in-forms {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center; 
+    justify-content: center;
+    overflow: auto; 
+}
+
+textarea, .answer, .marks-list {
     width: 500px !important;
+}
+
+input {
+    width: 500px !important;
+}
+
+#sign-in-btn {
+    width: 1200px !important;
+}
+
+.sign-in-teacher-form {
+    margin-right: 200px;
 }
 
 button {
@@ -42,6 +78,14 @@ button {
 
 .answer {
     color: #936C00;
+}
+
+.question {
+    color: #936C00;
+}
+
+#last-set-mark {
+    font-size: 28px;
 }
 
 

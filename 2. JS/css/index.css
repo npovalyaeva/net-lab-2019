@@ -4,11 +4,28 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    
+
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+#sign-in-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    align-content: center; 
+    align-content: center;
+    justify-content: center;
+    overflow: auto; 
+}
+
+#ask-question-page, #answer-question-page, #set-mark-page {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
     justify-content: center;
     overflow: auto; 
 }
@@ -26,12 +43,15 @@ body {
     overflow: auto; 
 }
 
+textarea, .answer, .marks-list {
+    width: 500px !important;
+}
+
 input {
     width: 500px !important;
 }
 
-
-button {
+#sign-in-btn {
     width: 1200px !important;
 }
 
@@ -39,3 +59,33 @@ button {
     margin-right: 200px;
 }
 
+button {
+    width: 500px !important;
+}
+
+.teacher-area {
+    margin-right: 200px;
+    width: 500px !important;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden; 
+}
+
+.pupil-area {
+    width: 500px !important;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden; 
+}
+
+.answer, .question {
+    color: #936C00;
+}
+
+#last-set-mark {
+    font-size: 28px;
+}
