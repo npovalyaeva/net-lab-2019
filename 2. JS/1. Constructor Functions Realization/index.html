@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="d-flex">
+    <head>
+        <meta charset="utf-8">
+        <title>Teacher/Pupil</title>
+
+        <link href="css/index.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+    
+    </head>
+
+    <body class="d-flex" onload="loadIndexPage()">
+        <div id="sign-in-page">
+            <h1 class="display-4" id="welcome-label">You're welcome!</h1>
+            <div class="sign-in-forms">
+                <div class="sign-in-teacher-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="teacher-first-name" placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="teacher-last-name" placeholder="Last Name">
+                        </div>
+                        <input class="form-control" type="text" placeholder="Your role is Teacher" readonly>
+                    </form>
+                </div>
+              
+                <div class="sign-in-pupil-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="pupil-first-name" placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="pupil-last-name" placeholder="Last Name">
+                        </div>
+                        <input class="form-control" type="text" placeholder="You're are Pupil" readonly>
+                    </form>
+                </div>
+            </div>
+            <div class="sign-in-button">
+                <br>
+                <button class="btn btn-primary" id="sign-in-btn" onclick="signIn()">Sign in</button>
+            </div>
+        </div>
+
+        <div id="ask-question-page">
+            <section class="teacher-area">
+                <h1 class="display-4" id="label">Teacher</h1>
+                <form>
+                    <label for="ask-question-label">Your question is ...</label>
+                    <textarea class="form-control" id="textarea" rows="3"></textarea>
+                </form>
+                <br>
+                <button class="btn btn-primary" id="btn" onclick="askQuestion()">Ask</button>
+            </section>
+            
+            <section class="pupil-area">
+                <h1 class="display-4" id="label">Pupil</h1>
+                <form>
+                        <label for="ask-question-label">Your marks are ...</label>
+                        <textarea readonly class="form-control" id="marks-list" rows="5"></textarea>
+                </form>
+            </section>
+        </div>
+
+        <div id="answer-question-page">
+            <section class="teacher-area">
+                <h1 class="display-4" id="label">Teacher</h1>
+                <br>
+                <label>Your last set mark is ...</label>
+                <p id="last-set-mark">{LastSetMark}</p>
+            </section>
+            
+            <section class="pupil-area">
+                <h1 class="display-4" id="label">Pupil</h1>
+                <br>
+                <p class="question" id="question">{Some text}</p>
+                <form>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="switch" onclick="setTextareaMode(this)">
+                        <label class="custom-control-label" for="switch">I know the answer</label>
+                    </div>
+                    <br>
+                    <label for="answer-question-label">Your answer is ...</label>
+                    <textarea readonly class="form-control" id="pupil-answer" rows="3"></textarea>
+                </form>
+                <br>
+                <button class="btn btn-primary" id="answer-btn" onclick="answerQuestion()">Answer</button>
+            </section> 
+        </div>
+
+        <div id="set-mark-page">
+            <section class="teacher-area">
+                <h1 class="display-4" id="label">Teacher</h1>
+                <br>
+                <p class="answer" id="pupil-answer-for-mark">{Some text}</p>
+                <form>
+                    <label for="answer-question-label">Your mark is ...</label>
+                    <input type="mark" class="form-control" id="mark">
+                    <br>
+                    <button class="btn btn-primary" id="btn" type='button' onclick="setMark()">Set mark</button>
+                </form>
+            </section>
+            
+            <section class="pupil-area">
+                <h1 class="display-4" id="label">Pupil</h1>
+                <br>
+                <label>Thanks for your answer!</label>
+            </section>
+        </div>
+        
+        <script src="js/constructor-functions.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    </body>
+
+    
+</html>
