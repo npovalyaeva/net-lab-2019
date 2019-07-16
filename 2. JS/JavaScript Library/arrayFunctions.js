@@ -1,50 +1,50 @@
-function each(arr, action) {
-    for (let i = 0; i < arr.length; i++)
-        action(arr[i], i, arr);
+Array.prototype.each = function(action) {
+    for (let i = 0; i < this.length; i++)
+        action(this[i], i, this);
 }
 
-function map(arr, mapper) {
+Array.prototype.map = function(mapper) {
     const mapArr = [];
-    for (let i = 0; i < arr.length; i++) {
-        const result = mapper(arr[i], i);
+    for (let i = 0; i < this.length; i++) {
+        const result = mapper(this[i], i);
         mapArr.push(result);
     }
     return mapArr;
 }
 
-function reduce(arr, reducer, initialValue) {   
+Array.prototype.reduce = function(reducer, initialValue) {   
     let accumulator = (initialValue === undefined) ? undefined : initialValue;
-    for (let i = 0; i < arr.length; i++)        
+    for (let i = 0; i < this.length; i++)        
         if (accumulator !== undefined)
-            accumulator = reducer.call(undefined, accumulator, arr[i], i, a);
+            accumulator = reducer.call(undefined, accumulator, this[i], i, a);
         else
-            accumulator = arr[i];
+            accumulator = this[i];
     return accumulator;
 }
 
-function find(arr, predicateToFindFirstMatchingElement) {
-    for (let i = 0; i < arr.length; i++) {
-        const result = predicateToFindFirstMatchingElement(arr[i]);
+Array.prototype.find = function(predicateToFindFirstMatchingElement) {
+    for (let i = 0; i < this.length; i++) {
+        const result = predicateToFindFirstMatchingElement(this[i]);
         if (result)
-            return arr[i];
+            return this[i];
     }
 }
 
-function filter(arr, filteringPredicate) {
+Array.prototype.filter = function(filteringPredicate) {
     const filterArr = [];
-    for (let i = 0; i < arr.length; i++) {
-        const result = filteringPredicate(arr[i]);
+    for (let i = 0; i < this.length; i++) {
+        const result = filteringPredicate(this[i]);
         if (result)
-            filterArr.push(arr[i]);
+            filterArr.push(this[i]);
     }
     return filterArr;
 }
 
-function where(arr, matchingObject) {
+Array.prototype.where = function(matchingObject) {
     const whereArr = [];
-    for (let i = 0; i < arr.length; i++)
-        if (compareObjects(arr[i], matchingObject))
-            whereArr.push(arr[i]);
+    for (let i = 0; i < this.length; i++)
+        if (compareObjects(this[i], matchingObject))
+            whereArr.push(this[i]);
     return whereArr;
 }
 
@@ -56,28 +56,28 @@ function compareObjects(obj1, obj2) {
     return true;
 }
 
-function first(arr) {
-    return arr[0];
+Array.prototype.first = function() {
+    return this[0];
 }
 
-function last(arr) {
-    return arr[arr.length - 1];
+Array.prototype.last = function() {
+    return this[this.length - 1];
 }
 
-function min(arr, selector) {
+Array.prototype.min = function(selector) {
     const selectArr = [];
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i][selector] != undefined)
-            selectArr.push(arr[i][selector]);
+    for (let i = 0; i < this.length; i++) {
+        if (this[i][selector] != undefined)
+            selectArr.push(this[i][selector]);
     }
     return Math.min(...selectArr);
 }
 
-function max(arr, selector) {
+Array.prototype.max = function(selector) {
     const selectArr = [];
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i][selector] != undefined)
-            selectArr.push(arr[i][selector]);
+    for (let i = 0; i < this.length; i++) {
+        if (this[i][selector] != undefined)
+            selectArr.push(this[i][selector]);
     }
     return Math.max(...selectArr);
 }
