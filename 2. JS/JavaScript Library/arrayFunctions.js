@@ -1,3 +1,10 @@
+function swap(a, b)
+{
+    let temp = a;
+    a = b;
+    b = temp;
+}
+
 Array.prototype.each = function(action) {
     for (let i = 0; i < this.length; i++)
         action(this[i], i, this);
@@ -12,14 +19,16 @@ Array.prototype.map = function(mapper) {
     return mapArr;
 }
 
-Array.prototype.reduce = function(reducer, initialValue) {   
-    let accumulator = (initialValue === undefined) ? undefined : initialValue;
-    for (let i = 0; i < this.length; i++)        
-        if (accumulator !== undefined)
-            accumulator = reducer.call(undefined, accumulator, this[i], i, a);
-        else
-            accumulator = this[i];
-    return accumulator;
+Array.prototype.reduce = function(reducer) {
+    return (initialValue) => {
+        let accumulator = (initialValue === undefined) ? undefined : initialValue;
+        for (let i = 0; i < this.length; i++)        
+            if (accumulator !== undefined)
+                accumulator = reducer.call(undefined, accumulator, this[i], i, a);
+            else
+                accumulator = this[i];
+        return accumulator; 
+    } 
 }
 
 Array.prototype.find = function(predicateToFindFirstMatchingElement) {
@@ -48,12 +57,14 @@ Array.prototype.where = function(matchingObject) {
     return whereArr;
 }
 
-function compareObjects(obj1, obj2) {
-    for (var key in obj2) {
-        if (obj2[key] !== obj1[key])
-            return false;
+function compareObjects(obj1) {
+    return (obj2) => {
+        for (var key in obj2) {
+            if (obj2[key] !== obj1[key])
+                return false;
+        }
+        return true;
     }
-    return true;
 }
 
 Array.prototype.first = function() {
