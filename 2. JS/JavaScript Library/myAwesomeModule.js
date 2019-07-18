@@ -2,7 +2,7 @@ var myAwesomeModule = (function() {
 
     var innerArr;
 
-    var compareObjects = function(obj1) {
+    var _compareObjects = function(obj1) {
         return (obj2) => {
             for (var key in obj2) {
                 if (obj2[key] !== obj1[key])
@@ -12,107 +12,109 @@ var myAwesomeModule = (function() {
         }
     }
 
-    asChain = function(arr) {
+    var asChain = function(arr) {
         innerArr = arr;
         return innerArr;
     }
 
-    Array.prototype.awesomeEach = function(action) {
-        for (let i = 0; i < this.length; i++)
-            action(this[i], i, this);
+    var awesomeEach = function(action) {
+        for (let i = 0; i < innerArr.length; i++)
+            action(innerArr[i], i, innerArr);
     }
 
-    Array.prototype.awesomeMap = function(mapper) {
+    var awesomeMap = function(mapper) {
         const mapArr = [];
-        for (let i = 0; i < this.length; i++) {
-            const result = mapper(this[i], i);
+        for (let i = 0; i < innerArr.length; i++) {
+            const result = mapper(innerArr[i], i);
             mapArr.push(result);
         }
-        return mapArr;
+        innerArr = mapArr;
+        return innerArr;
     }
 
-    Array.prototype.awesomeReduce = function(reducer) {
+    var awesomeReduce = function(reducer) {
         return (initialValue) => {
             let accumulator = (initialValue === undefined) ? undefined : initialValue;
-            for (let i = 0; i < this.length; i++)        
+            for (let i = 0; i < innerArr.length; i++)        
                 if (accumulator !== undefined)
-                    accumulator = reducer.call(undefined, accumulator, this[i], i, this);
+                    accumulator = reducer.call(undefined, accumulator, innerArr[i], i, innerArr);
                 else
-                    accumulator = this[i];
+                    accumulator = innerArr[i];
             return accumulator; 
         } 
     }
 
-    Array.prototype.awesomeFind = function(predicateToFindFirstMatchingElement) {
-        for (let i = 0; i < this.length; i++) {
-            const result = predicateToFindFirstMatchingElement(this[i]);
+    var awesomeFind = function(predicateToFindFirstMatchingElement) {
+        for (let i = 0; i < innerArr.length; i++) {
+            const result = predicateToFindFirstMatchingElement(innerArr[i]);
             if (result)
-                return this[i];
+                return innerArr[i];
         }
     }
 
-    Array.prototype.awesomeFilter = function(filteringPredicate) {
+    var awesomeFilter = function(filteringPredicate) {
         const filterArr = [];
-        for (let i = 0; i < this.length; i++) {
-            const result = filteringPredicate(this[i]);
+        for (let i = 0; i < innerArr.length; i++) {
+            const result = filteringPredicate(innerArr[i]);
             if (result)
-                filterArr.push(this[i]);
+                filterArr.push(innerArr[i]);
         }
-        return filterArr;
+        innerArr = filterArr;
+        return innerArr;
     }
 
-    Array.prototype.awesomeWhere = function(matchingObject) {
+    var awesomeWhere = function(matchingObject) {
         const whereArr = [];
-        for (let i = 0; i < this.length; i++)
-            if (compareObjects(this[i], matchingObject))
-                whereArr.push(this[i]);
-        return whereArr;
+        for (let i = 0; i < innerArr.length; i++)
+            if (_compareObjects(innerArr[i], matchingObject))
+                whereArr.push(innerArr[i]);
+        innerArr = whereArr;
+        return innerArr;
     }
 
-    Array.prototype.awesomeFirst = function() {
-        return this[0];
+    var awesomeFirst = function() {
+        return innerArr[0];
     }
         
-    Array.prototype.awesomeLast = function() {
-        return this[this.length - 1];
+    var awesomeLast = function() {
+        return innerArr[innerArr.length - 1];
     }
         
-    Array.prototype.awesomeMin = function() {
+    var awesomeMin = function() {
         return (selector) => {
             const selectArr = [];
-            for (let i = 0; i < this.length; i++) {
-                if (this[i][selector] != undefined)
-                    selectArr.push(this[i][selector]);
+            for (let i = 0; i < innerArr.length; i++) {
+                if (innerArr[i][selector] != undefined)
+                    selectArr.push(innerArr[i][selector]);
             }
             return Math.min(...selectArr);
         }
     }
         
-    Array.prototype.awesomeMax = function() {
+    var awesomeMax = function() {
         return (selector) => {
             const selectArr = [];
-            for (let i = 0; i < this.length; i++) {
-                if (this[i][selector] != undefined)
-                    selectArr.push(this[i][selector]);
+            for (let i = 0; i < innerArr.length; i++) {
+                if (innerArr[i][selector] != undefined)
+                    selectArr.push(innerArr[i][selector]);
             }
-            return selectArr;
-            //return Math.max(...selectArr);
+            return Math.max(...selectArr);
         }
     }
 
     return {
         asChain: asChain,
 
-        each: Array.prototype.awesomeEach(),
-        map: Array.prototype.awesomeMap(),
-        reduce: Array.prototype.awesomeReduce(),
-        find: Array.prototype.awesomeFind(),
-        filter: Array.prototype.awesomeFilter(),
-        where: Array.prototype.awesomeWhere(),
-        first: Array.prototype.awesomeFirst(),
-        last: Array.prototype.awesomeLast(),
-        min: Array.prototype.awesomeMin(),
-        max: Array.prototype.awesomeMax(),
+        awesomeEach: awesomeEach,
+        awesomeMap: awesomeMap,
+        awesomeReduce: awesomeReduce,
+        awesomeFind: awesomeFind,
+        awesomeFilter: awesomeFilter,
+        awesomeWhere: awesomeWhere,
+        awesomeFirst: awesomeFirst,
+        awesomeLast: awesomeLast,
+        awesomeMin: awesomeMin,
+        awesomeMax: awesomeMax
     }
 
 })();
