@@ -1,11 +1,69 @@
+@font-face {
+	font-family: 'Maax Regular';
+	src: url('../resources/fonts/Maax.eot');
+	src: url('../resources/fonts/Maax.eot?#iefix') format('embedded-opentype'),
+	url('../resources/fonts/Maax.woff') format('woff'),
+	url('../resources/fonts/Maax.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	/* background: linear-gradient(to left, #D1DBDC, #BDCDCC); */
+	background-color: #FFFFFF;
+}
+
 .App {
-  text-align: center;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+
+.App .container, .row {
+	padding: 0;
+	margin: 0;
+	max-width: 100%;
+	height: 1007px;
+}
+
+.App .arrow {
+	width: 10%;
+	display: flex;
+  	align-items: center;
+  	justify-content: center
+}
+
+.App .main-content {
+	width: 70%;
+	margin: 0 5%;
+}
+
+.App .nav-strip, .App .nav-strip * {
+	height: 70px;
+	padding: 0;
+}
+
+.App .nav-strip {
+	margin: 20px 0;
 }
 
 .App #dropdown{
   border-radius: 0 !important;
   background-color: red;
 }
+
+h1 {
+	font-size: 84px;
+	margin: 10px 0;
+}
+
+.weather-content {
+	margin-top: 100px;
+	font-family: 'Maax Regular';
+	color: #333333;
+	
+}
+
 ul.dropdown-menu{
 	text-align: center;
 	min-width:100%;
