@@ -27,5 +27,5 @@ export function cities(state = citiesArr, action) {
 }
 
 var citiesArr = [
-        { name: "Minsk", zip: "625144" }
+        { name: "Minsk", id: "625144" }
     ]

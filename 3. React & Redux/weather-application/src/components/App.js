@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchData, setActivePlace } from '../actions/act';
 import "bootswatch/flatly/bootstrap.css";
-import { Navbar,NavDropdown, MenuItem, Nav, Grid, Row, Col } from "react-bootstrap";
+import { Navbar, Grid, Row, Col } from "react-bootstrap";
 import '../styles/App.css';
 
 import logo from '../resources/logo.svg';
@@ -12,7 +12,8 @@ import leftArrowImg from '../resources/left-arrow.svg';
 class WeatherDisplay extends Component{
 
     collectData(place){
-        let URL = `http://api.openweathermap.org/data/2.5/weather?q=${this.props.cities[place].name}&appid=e03fcde097d74790d2a8569aa4d88bd1&units=metric`;
+        let URL = `http://api.openweathermap.org/data/2.5/weather?id=${this.props.cities[place].id}&appid=e03fcde097d74790d2a8569aa4d88bd1&units=metric`;
+        // http://api.openweathermap.org/data/2.5/forecast?id=${this.props.cities[place].id}&appid=e03fcde097d74790d2a8569aa4d88bd1&units=metric
         this.props.fetchData(URL);
     }
 
