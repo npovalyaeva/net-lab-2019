@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { fetchData, setActivePlace } from '../actions/act';
 import "bootswatch/flatly/bootstrap.css";
@@ -31,17 +32,59 @@ class WeatherDisplay extends Component{
             if (weatherData.now) {
                 const weatherMain = weatherData.fact; 
                 const iconUrl = `https://yastatic.net/weather/i/icons/blueye/color/svg/${weatherMain.icon}.svg`;
+                const countOfDays = 3;
                 return (
-                    <div className="weather-content" >
-                        {/* Change city name code  */}
-                        <h1>{this.props.cities[0].name}</h1>
-                        <img src={iconUrl} width="250" height="250" alt={weatherMain.condition}/>
-                        <h2>
-                            {weatherMain.feels_like}°C
-                        </h2>
-                        <p>
-                            Wind Speed: {weatherMain.wind_speed} m/s
-                        </p>
+                    <div className="weather">
+                        <h1>{weatherMain.condition} in {this.props.cities[0].name}</h1>
+                        <div className="weather-content">
+                            {(() => {
+                                switch(countOfDays) {
+                                    case 1:
+                                        return <div className="one-day-weather" >
+                                            <img src={iconUrl} width="300" height="300" alt={weatherMain.condition}/>
+                                            <h2>
+                                                {weatherMain.temp}°C
+                                            </h2>
+                                            <h4>
+                                                Feels like {weatherMain.feels_like}°C
+                                            </h4>
+                                            <h6>
+                                                Wind Speed: {weatherMain.wind_speed} m/s
+                                            </h6>
+                                            <h6>
+                                                Humidity: {weatherMain.humidity} %
+                                            </h6>
+                                        </div>
+                                    default:
+                                        const weatherForecasts = weatherData.forecasts.slice(0, countOfDays);
+                                        return weatherForecasts.map(item =>
+                                            <div className="one-of-several-days-weather">
+                                                <h3>
+                                                    {moment(item.date).format('MMM Do')}
+                                                </h3>
+                                                {(() => {
+                                                    if (countOfDays < 6)
+                                                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                                                            width="250" height="250" alt={weatherMain.condition}/>
+                                                    else
+                                                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                                                            width="190" height="190" alt={weatherMain.condition}/>
+                                                })()}
+                                                <h2>
+                                                    {item.parts.day_short.temp}°C
+                                                </h2>
+                                                <h6>
+                                                    Wind Speed: {item.parts.day_short.wind_speed} m/s
+                                                </h6>
+                                                <h6>
+                                                    Humidity: {item.parts.day_short.humidity} %
+                                                </h6>
+                                            </div>
+                                        )
+                                }
+                            })()}
+                            
+                        </div>
                     </div>
                 );
             }
