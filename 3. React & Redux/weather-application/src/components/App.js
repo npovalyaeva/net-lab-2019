@@ -32,13 +32,12 @@ class WeatherDisplay extends Component{
             if (weatherData.now) {
                 const weatherMain = weatherData.fact; 
                 const iconUrl = `https://yastatic.net/weather/i/icons/blueye/color/svg/${weatherMain.icon}.svg`;
-                const countOfDays = 3;
                 return (
                     <div className="weather">
                         <h1>{weatherMain.condition} in {this.props.cities[0].name}</h1>
                         <div className="weather-content">
                             {(() => {
-                                switch(countOfDays) {
+                                switch(this.props.countOfDays) {
                                     case 1:
                                         return <div className="one-day-weather" >
                                             <img src={iconUrl} width="300" height="300" alt={weatherMain.condition}/>
@@ -56,14 +55,14 @@ class WeatherDisplay extends Component{
                                             </h6>
                                         </div>
                                     default:
-                                        const weatherForecasts = weatherData.forecasts.slice(0, countOfDays);
+                                        const weatherForecasts = weatherData.forecasts.slice(0, this.props.countOfDays);
                                         return weatherForecasts.map(item =>
                                             <div className="one-of-several-days-weather">
                                                 <h3>
                                                     {moment(item.date).format('MMM Do')}
                                                 </h3>
                                                 {(() => {
-                                                    if (countOfDays < 6)
+                                                    if (this.props.countOfDays < 6)
                                                         return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
                                                             width="250" height="250" alt={weatherMain.condition}/>
                                                     else
@@ -97,6 +96,40 @@ class WeatherDisplay extends Component{
 }
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {countOfDays: 1};
+
+        // Привязка необходима, чтобы сделать this доступным в коллбэке
+        this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
+        this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
+      }
+
+      changeCountOfDaysToTheLeft(){
+        this.setState((state) => {
+            let count;
+            switch (state.countOfDays) {
+                case 1: count = 7; break;
+                case 3: count = 1; break;
+                case 5: count = 3; break;
+                case 7: count = 5; break;
+            }
+            return {countOfDays: count}
+          });
+      }
+
+      changeCountOfDaysToTheRight(){
+        this.setState((state) => {
+            let count;
+            switch (state.countOfDays) {
+                case 1: count = 3; break;
+                case 3: count = 5; break;
+                case 5: count = 7; break;
+                case 7: count = 1; break;
+            }
+            return {countOfDays: count}
+          });
+      }
     render() {
         return (
             <div className="App">
@@ -109,6 +142,7 @@ class App extends Component {
                                 height="50"
                                 className="d-inline-block align-top"
                                 alt="SSAW Weather logo"
+                                onClick={this.changeCountOfDaysToTheLeft}
                             />
                             
                         </Col>
@@ -126,7 +160,7 @@ class App extends Component {
                                     </Navbar.Brand>
                                 </Navbar.Header>
                             </Navbar>
-                            <WeatherDisplay key={0} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
+                            <WeatherDisplay key={0} countOfDays={this.state.countOfDays} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
                         </Col>
                         <Col className="arrow">
                             <img
@@ -135,6 +169,7 @@ class App extends Component {
                                 height="50"
                                 className="d-inline-block align-top"
                                 alt="SSAW Weather logo"
+                                onClick={this.changeCountOfDaysToTheRight}
                             />
                         </Col>
                     </Row>
@@ -158,6 +193,10 @@ const mapDispatchToProps = (dispatch) => {
         setActivePlace: (index) => dispatch(setActivePlace(index))
     };
 };
+
+function changeCountOfDays(direction) {
+   
+  }
 
 export default connect(
 mapStateToProps,
