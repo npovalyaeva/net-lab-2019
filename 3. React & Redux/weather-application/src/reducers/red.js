@@ -27,5 +27,10 @@ export function cities(state = citiesArr, action) {
 }
 
 var citiesArr = [
-        { name: "Minsk", lat: "53.889092", lon : "27.542042" }
+        { name: "Minsk", lat: "53.889092", lon : "27.542042" },
+        { name: "Brest", lat: "52.093555", lon : "23.685681" },
+        { name: "Grodno", lat: "53.677834", lon : "23.829529" },
+        { name: "Gomel", lat: "52.424160", lon : "31.014272" },
+        { name: "Vitebsk", lat: "55.183672", lon : "30.204791" },
+        { name: "Mogilev", lat: "53.894548", lon : "30.330654" }
     ]

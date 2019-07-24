@@ -33,9 +33,8 @@ class WeatherDisplay extends Component{
                 const iconUrl = `https://yastatic.net/weather/i/icons/blueye/color/svg/${weatherMain.icon}.svg`;
                 return (
                     <div className="weather-content" >
-                        <h1>
-                            {weatherData.info.tzinfo.name}
-                        </h1>
+                        {/* Change city name code  */}
+                        <h1>{this.props.cities[0].name}</h1>
                         <img src={iconUrl} width="250" height="250" alt={weatherMain.condition}/>
                         <h2>
                             {weatherMain.feels_like}°C
@@ -68,6 +67,7 @@ class App extends Component {
                                 className="d-inline-block align-top"
                                 alt="SSAW Weather logo"
                             />
+                            
                         </Col>
                         <Col className="main-content">
                             <Navbar className="nav-strip">

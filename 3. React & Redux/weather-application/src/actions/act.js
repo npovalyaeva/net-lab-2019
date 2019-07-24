@@ -20,17 +20,6 @@ export function setCities(cities) {
     };
 }
 
-// export function fetchData(url) {
-//     return (dispatch) => {
-//         fetch(url)
-//         .then(res => res.json())
-//         .then(json => {
-//             dispatch(fetchDataSuccess(json));
-//         })
-//         .catch((err)=>console.log(err));
-//     };
-// }
-
 export function fetchData(url) {
     return (dispatch) => {
         fetch(url, {
