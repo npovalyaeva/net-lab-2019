@@ -12,8 +12,7 @@ import leftArrowImg from '../resources/left-arrow.svg';
 class WeatherDisplay extends Component{
 
     collectData(place){
-        let URL = `http://api.openweathermap.org/data/2.5/weather?id=${this.props.cities[place].id}&appid=e03fcde097d74790d2a8569aa4d88bd1&units=metric`;
-        // http://api.openweathermap.org/data/2.5/forecast?id=${this.props.cities[place].id}&appid=e03fcde097d74790d2a8569aa4d88bd1&units=metric
+        let URL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${this.props.cities[place].lat}&lon=${this.props.cities[place].lon}&lang=en_USlimit=7&hours=false&extra=false`;
         this.props.fetchData(URL);
     }
 
@@ -29,20 +28,20 @@ class WeatherDisplay extends Component{
 
     render() {
         let weatherData = this.props.weatherData;
-            if (weatherData.weather) {
-                const weatherMain = weatherData.weather[0]; 
-                const iconUrl = `http://openweathermap.org/img/w/${weatherMain.icon}.png`;
+            if (weatherData.now) {
+                const weatherMain = weatherData.fact; 
+                const iconUrl = `https://yastatic.net/weather/i/icons/blueye/color/svg/${weatherMain.icon}.svg`;
                 return (
                     <div className="weather-content" >
                         <h1>
-                            {weatherData.name}
+                            {weatherData.info.tzinfo.name}
                         </h1>
-                        <img src={iconUrl} width="250" height="250" alt={weatherData.description}/>
+                        <img src={iconUrl} width="250" height="250" alt={weatherMain.condition}/>
                         <h2>
-                            {weatherData.main.temp}°C
+                            {weatherMain.feels_like}°C
                         </h2>
                         <p>
-                            Wind Speed: {weatherData.wind.speed} m/s
+                            Wind Speed: {weatherMain.wind_speed} m/s
                         </p>
                     </div>
                 );

@@ -27,5 +27,5 @@ export function cities(state = citiesArr, action) {
 }
 
 var citiesArr = [
-        { name: "Minsk", id: "625144" }
+        { name: "Minsk", lat: "53.889092", lon : "27.542042" }
     ]
