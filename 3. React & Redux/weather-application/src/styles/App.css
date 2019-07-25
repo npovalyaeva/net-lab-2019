@@ -154,8 +154,17 @@ footer .sources-strip {
 	flex-wrap: wrap;
 }
 
+.logo {
+	margin-left: 60px;
+}
+
 .helpful-links {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+
+.helpful-links a {
+	margin-left: 20px;
 }

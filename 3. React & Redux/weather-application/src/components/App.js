@@ -10,8 +10,8 @@ import logo from '../resources/logo.svg';
 import whiteLogo from '../resources/logo-white.svg';
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
-import yandexLogo from '../resources/yandex_eng_logo.svg';
-import githubLogo from '../resources/yandex_eng_logo.svg';
+import githubLogo from '../resources/github-logo.svg';
+import yandexLogo from '../resources/yandex-eng-logo.svg';
 
 class WeatherDisplay extends Component{
 
@@ -209,8 +209,8 @@ class App extends Component {
                         <a href="https://npovalyaeva.github.io/">
                             <img
                                 src={whiteLogo}
-                                width="50"
-                                height="50"
+                                width="40"
+                                height="40"
                                 className="d-inline-block align-top"
                                 alt="SSAW Weather"
                             />
@@ -219,7 +219,7 @@ class App extends Component {
                             <a href="https://yandex.com/">
                                 <img
                                     src={yandexLogo}
-                                    height="100"
+                                    height="30"
                                     className="d-inline-block align-top"
                                     alt="GitHub"
                                 />
@@ -227,7 +227,7 @@ class App extends Component {
                             <a href="https://github.com/">
                                 <img
                                     src={githubLogo}
-                                    height="100"
+                                    height="30"
                                     className="d-inline-block align-top"
                                     alt="GitHub"
                                 />
