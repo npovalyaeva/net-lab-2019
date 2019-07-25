@@ -9,7 +9,6 @@
 }
 
 body {
-	/* background: linear-gradient(to left, #D1DBDC, #BDCDCC); */
 	background-color: #F3F1F0;
 }
 
@@ -18,6 +17,19 @@ body {
 	padding: 0;
 	margin: 0;
 }
+
+.App .cityInput {
+	background-color: #F3F1F0;
+	border: 0px;
+	border-bottom: 5px solid #94CFC4;
+	text-align: right;
+	color: #8B8A87;
+}
+
+.cityInput:focus, .cityInput:active {
+	outline: none !important;
+	box-shadow: none;
+ }
 
 .App .container, .row {
 	padding: 0;
@@ -30,7 +42,15 @@ body {
 	width: 10%;
 	display: flex;
   	align-items: center;
-  	justify-content: center
+  	justify-content: center;
+}
+
+.arrow:hover {
+	background-color: #FFF;
+}
+
+.arrow img:hover{
+	cursor: pointer;
 }
 
 .App .main-content {

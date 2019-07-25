@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { fetchData, setActivePlace } from '../actions/act';
 import "bootswatch/flatly/bootstrap.css";
-import { Navbar, Grid, Row, Col } from "react-bootstrap";
+import { Navbar, Grid, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../styles/App.css';
 
 import logo from '../resources/logo.svg';
@@ -96,6 +96,7 @@ class WeatherDisplay extends Component{
 }
 
 class App extends Component {
+
     constructor(props) {
         super(props);
         this.state = {countOfDays: 1};
@@ -105,7 +106,7 @@ class App extends Component {
         this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
       }
 
-      changeCountOfDaysToTheLeft(){
+    changeCountOfDaysToTheLeft(){
         this.setState((state) => {
             let count;
             switch (state.countOfDays) {
@@ -113,12 +114,13 @@ class App extends Component {
                 case 3: count = 1; break;
                 case 5: count = 3; break;
                 case 7: count = 5; break;
+                default: break;
             }
             return {countOfDays: count}
-          });
-      }
+        });
+    }
 
-      changeCountOfDaysToTheRight(){
+    changeCountOfDaysToTheRight(){
         this.setState((state) => {
             let count;
             switch (state.countOfDays) {
@@ -126,10 +128,18 @@ class App extends Component {
                 case 3: count = 5; break;
                 case 5: count = 7; break;
                 case 7: count = 1; break;
+                default: break;
             }
             return {countOfDays: count}
-          });
-      }
+        });
+    }
+
+    onKeyPress = event => {
+        if (event.key === 'Enter') {
+            console.log('Yaaaaaappy!');
+        }
+    }
+
     render() {
         return (
             <div className="App">
@@ -159,6 +169,9 @@ class App extends Component {
                                         />
                                     </Navbar.Brand>
                                 </Navbar.Header>
+                                <Form>
+                                    <FormControl type="city" placeholder="City" className="cityInput" onKeyPress={this.onKeyPress}/>
+                                </Form>
                             </Navbar>
                             <WeatherDisplay key={0} countOfDays={this.state.countOfDays} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
                         </Col>
@@ -193,10 +206,6 @@ const mapDispatchToProps = (dispatch) => {
         setActivePlace: (index) => dispatch(setActivePlace(index))
     };
 };
-
-function changeCountOfDays(direction) {
-   
-  }
 
 export default connect(
 mapStateToProps,
