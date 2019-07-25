@@ -22,6 +22,7 @@ body {
 	background-color: #F3F1F0;
 	border: 0px;
 	border-bottom: 5px solid #94CFC4;
+	border-radius: 0;
 	text-align: right;
 	color: #8B8A87;
 }
@@ -35,27 +36,29 @@ body {
 	padding: 0;
 	margin: 0;
 	max-width: 100%;
-	height: 1007px;
 }
 
 .App .arrow {
+	min-height: 1000px !important;
+
 	width: 10%;
 	display: flex;
-  	align-items: center;
+  	align-items: start;
   	justify-content: center;
 }
 
 .arrow:hover {
 	background-color: #FFF;
+	cursor: pointer;
 }
 
-.arrow img:hover{
-	cursor: pointer;
+.arrow img {
+	margin-top: 450px;
 }
 
 .App .main-content {
 	width: 70%;
-	margin: 0 5%;
+	margin: 0 5% 40px 5%;
 }
 
 .App .nav-strip, .App .nav-strip * {
@@ -65,11 +68,6 @@ body {
 
 .App .nav-strip {
 	margin: 20px 0;
-}
-
-.App #dropdown{
-  border-radius: 0 !important;
-  background-color: red;
 }
 
 h1 {
@@ -100,12 +98,35 @@ h3 {
 	flex-grow: 1;
 }
 
-ul.dropdown-menu{
-	text-align: center;
-	min-width:100%;
-	margin-bottom: 40px;
+footer {
+	width: 100%;
 }
 
-*{
-	border-radius: 0 !important;
+footer .author-strip {
+	height: 70px;
+	background-color: #e9e783;
+	padding: 0 15%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+footer h6 {
+	margin: 0;
+	color: #333333;
+}
+
+footer .sources-strip {
+	height: 200px;
+	background-color: #333;
+	padding: 0 15%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.helpful-links {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 }

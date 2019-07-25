@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { fetchData, setActivePlace } from '../actions/act';
+import { fetchData, fetchCity, setActivePlace } from '../actions/act';
 import "bootswatch/flatly/bootstrap.css";
 import { Navbar, Grid, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../styles/App.css';
 
 import logo from '../resources/logo.svg';
+import whiteLogo from '../resources/logo-white.svg';
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
+import yandexLogo from '../resources/yandex_eng_logo.svg';
+import githubLogo from '../resources/yandex_eng_logo.svg';
 
 class WeatherDisplay extends Component{
 
@@ -62,12 +65,15 @@ class WeatherDisplay extends Component{
                                                     {moment(item.date).format('MMM Do')}
                                                 </h3>
                                                 {(() => {
-                                                    if (this.props.countOfDays < 6)
+                                                    if (this.props.countOfDays > 5)
+                                                    return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                                                        width="150" height="150" alt={weatherMain.condition}/>
+                                                    else if (this.props.countOfDays > 3)
+                                                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                                                            width="210" height="210" alt={weatherMain.condition}/>
+                                                    else if (this.props.countOfDays > 1)
                                                         return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
                                                             width="250" height="250" alt={weatherMain.condition}/>
-                                                    else
-                                                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
-                                                            width="190" height="190" alt={weatherMain.condition}/>
                                                 })()}
                                                 <h2>
                                                     {item.parts.day_short.temp}°C
@@ -104,9 +110,10 @@ class App extends Component {
         // Привязка необходима, чтобы сделать this доступным в коллбэке
         this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
         this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
-      }
+        this.onKeyPress = this.onKeyPress.bind(this);
+    }
 
-    changeCountOfDaysToTheLeft(){
+    changeCountOfDaysToTheLeft() {
         this.setState((state) => {
             let count;
             switch (state.countOfDays) {
@@ -120,7 +127,7 @@ class App extends Component {
         });
     }
 
-    changeCountOfDaysToTheRight(){
+    changeCountOfDaysToTheRight() {
         this.setState((state) => {
             let count;
             switch (state.countOfDays) {
@@ -134,9 +141,18 @@ class App extends Component {
         });
     }
 
+    findCoordinates(cityName) {
+        console.log(cityName);
+        let URL = `https://geocode-maps.yandex.ru/1.x/?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+        fetchCity(URL);
+    }
+
     onKeyPress = event => {
-        if (event.key === 'Enter') {
-            console.log('Yaaaaaappy!');
+        if (event.key === ' ') {
+            
+            let cityName = this.cityName;
+            console.log(cityName.value);
+            this.findCoordinates(cityName);
         }
     }
 
@@ -145,48 +161,81 @@ class App extends Component {
             <div className="App">
                 <Grid>
                     <Row>
-                        <Col className="arrow">
-                            <img
-                                src={leftArrowImg}
-                                width="50"
-                                height="50"
-                                className="d-inline-block align-top"
-                                alt="SSAW Weather logo"
-                                onClick={this.changeCountOfDaysToTheLeft}
-                            />
-                            
+                        <Col className="arrow" onClick={this.changeCountOfDaysToTheLeft}>
+                                <img
+                                    src={leftArrowImg}
+                                    width="50"
+                                    height="50"
+                                    className="d-inline-block align-top"
+                                    alt="SSAW Weather logo"
+                                />
                         </Col>
                         <Col className="main-content">
                             <Navbar className="nav-strip">
                                 <Navbar.Header>
                                     <Navbar.Brand href="#home">
-                                        <img
-                                            src={logo}
-                                            width="100"
-                                            height="100"
-                                            className="d-inline-block align-top"
-                                            alt="SSAW Weather logo"
-                                        />
+                                        <a href="https://npovalyaeva.github.io/">
+                                            <img
+                                                src={logo}
+                                                width="100"
+                                                height="100"
+                                                className="d-inline-block align-top"
+                                                alt="SSAW Weather logo"
+                                            />
+                                        </a>
                                     </Navbar.Brand>
                                 </Navbar.Header>
                                 <Form>
-                                    <FormControl type="city" placeholder="City" className="cityInput" onKeyPress={this.onKeyPress}/>
+                                    <FormControl type="city" placeholder="City" className="cityInput" ref={(input) => this.cityName = input} onKeyPress={this.onKeyPress}/>
                                 </Form>
                             </Navbar>
                             <WeatherDisplay key={0} countOfDays={this.state.countOfDays} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
                         </Col>
-                        <Col className="arrow">
+                        <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
                                 src={rightArrowImg}
                                 width="50"
                                 height="50"
                                 className="d-inline-block align-top"
                                 alt="SSAW Weather logo"
-                                onClick={this.changeCountOfDaysToTheRight}
                             />
                         </Col>
                     </Row>
                 </Grid>
+                <footer>
+                    <div className="author-strip">
+                        <h6>Nadzeya Povalyaeva, 2019</h6>
+                    </div>
+                    <div className="sources-strip">
+                        <a href="https://npovalyaeva.github.io/">
+                            <img
+                                src={whiteLogo}
+                                width="50"
+                                height="50"
+                                className="d-inline-block align-top"
+                                alt="SSAW Weather"
+                            />
+                        </a>
+                        <div className="helpful-links">
+                            <a href="https://yandex.com/">
+                                <img
+                                    src={yandexLogo}
+                                    height="100"
+                                    className="d-inline-block align-top"
+                                    alt="GitHub"
+                                />
+                            </a>
+                            <a href="https://github.com/">
+                                <img
+                                    src={githubLogo}
+                                    height="100"
+                                    className="d-inline-block align-top"
+                                    alt="GitHub"
+                                />
+                            </a>
+                        </div>
+                    </div>
+                </footer>
             </div>
         )
     };

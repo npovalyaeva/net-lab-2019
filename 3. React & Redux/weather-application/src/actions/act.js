@@ -35,3 +35,16 @@ export function fetchData(url) {
         .catch((err)=>console.log(err));
     };
 }
+
+export function fetchCity(url) {
+    debugger;
+    return (dispatch) => {
+        fetch(url)
+        .then(res => res.json())
+        .then(json => console.log(json))
+        .then(json => {
+            dispatch(fetchDataSuccess(json));
+        })
+        .catch((err)=>console.log(err));
+    };
+}
