@@ -143,15 +143,13 @@ class App extends Component {
 
     findCoordinates(cityName) {
         console.log(cityName);
-        let URL = `https://geocode-maps.yandex.ru/1.x/?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+        let URL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
         fetchCity(URL);
     }
 
     onKeyPress = event => {
         if (event.key === ' ') {
-            
-            let cityName = this.cityName;
-            console.log(cityName.value);
+            let cityName = this.cityName.value;
             this.findCoordinates(cityName);
         }
     }
@@ -164,8 +162,8 @@ class App extends Component {
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheLeft}>
                                 <img
                                     src={leftArrowImg}
-                                    width="50"
-                                    height="50"
+                                    width="40"
+                                    height="40"
                                     className="d-inline-block align-top"
                                     alt="SSAW Weather logo"
                                 />
@@ -184,9 +182,10 @@ class App extends Component {
                                             />
                                         </a>
                                     </Navbar.Brand>
+                                    <h4 class="site-name">/ ssawinsp</h4>
                                 </Navbar.Header>
                                 <Form>
-                                    <FormControl type="city" placeholder="City" className="cityInput" ref={(input) => this.cityName = input} onKeyPress={this.onKeyPress}/>
+                                    <FormControl type="city" placeholder="Enter a City" className="cityInput" inputRef={(ref) => this.cityName =ref} onKeyPress={this.onKeyPress}/>
                                 </Form>
                             </Navbar>
                             <WeatherDisplay key={0} countOfDays={this.state.countOfDays} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
@@ -194,8 +193,8 @@ class App extends Component {
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
                                 src={rightArrowImg}
-                                width="50"
-                                height="50"
+                                width="40"
+                                height="40"
                                 className="d-inline-block align-top"
                                 alt="SSAW Weather logo"
                             />
@@ -204,7 +203,7 @@ class App extends Component {
                 </Grid>
                 <footer>
                     <div className="author-strip">
-                        <h6>Nadzeya Povalyaeva, 2019</h6>
+                        <h6>Nadya Povalyaeva, 2019</h6>
                     </div>
                     <div className="sources-strip">
                         <a href="https://npovalyaeva.github.io/">

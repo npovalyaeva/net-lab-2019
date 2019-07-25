@@ -8,6 +8,16 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: "Proza Display";
+    src: url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.eot");
+    src: url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.eot?#iefix") format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.woff2") format("woff2"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.woff") format("woff"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.ttf") format("truetype"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.svg#Proza Display") format("svg");
+}
+
 body {
 	background-color: #F3F1F0;
 }
@@ -36,6 +46,23 @@ body {
 	padding: 0;
 	margin: 0;
 	max-width: 100%;
+}
+
+.site-name {
+	font-family: "Proza Display";
+	color: #333333;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.navbar-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
 }
 
 .App .arrow {
@@ -109,6 +136,7 @@ footer .author-strip {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
 }
 
 footer h6 {
@@ -123,6 +151,7 @@ footer .sources-strip {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
 .helpful-links {
