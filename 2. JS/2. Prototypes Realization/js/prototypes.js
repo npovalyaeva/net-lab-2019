@@ -8,7 +8,8 @@ User.prototype.sayHi = function() {
 };
 
 function Teacher(firstName, lastName) {
-    User.apply(this, arguments);
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.lastSetMark = -1;
 }
 Teacher.prototype = Object.create(User.prototype);
@@ -37,7 +38,8 @@ Teacher.prototype.setMark = function(pupil, mark) {
 }
 
 function Pupil(firstName, lastName) {
-    User.apply(this, arguments);
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.isAnswerForLastQuestionKnown = null;
     this.lastQuestion = null;
     this.lastAnswer = null;
