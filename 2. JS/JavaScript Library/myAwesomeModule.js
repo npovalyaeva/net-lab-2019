@@ -1,8 +1,8 @@
 var myAwesomeModule = (function() {
 
-    var innerArr;
+    var innerArr = [];
 
-    var getValue = function(){
+    var getValue = function() {
         return innerArr;
     }
 
@@ -64,7 +64,7 @@ var myAwesomeModule = (function() {
                 filterArr.push(innerArr[i]);
         }
         innerArr = filterArr;
-        return innerArr;
+        return this;
     }
 
     var awesomeWhere = function(matchingObject) {
@@ -73,7 +73,7 @@ var myAwesomeModule = (function() {
             if (_compareObjects(innerArr[i], matchingObject))
                 whereArr.push(innerArr[i]);
         innerArr = whereArr;
-        return innerArr;
+        return this;
     }
 
     var awesomeFirst = function() {
