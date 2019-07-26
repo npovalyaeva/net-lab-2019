@@ -117,3 +117,77 @@ arr.min('title'); // NaN
 arr.max('height'); // 181
 arr.max('year'); // 2018
 arr.max('title'); // NaN
+
+
+
+
+// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+var val;
+myAwesomeModule.isUndefined(val); // true
+val = "value";
+myAwesomeModule.isUndefined(val); // false
+
+myAwesomeModule.isNumber(0.1); // true
+myAwesomeModule.isNumber(1); // true
+myAwesomeModule.isNumber(Math.PI); // true
+myAwesomeModule.isNumber(-100000); // true
+myAwesomeModule.isNumber(NaN); // false
+myAwesomeModule.isNumber(0); // true
+myAwesomeModule.isNumber('10'); // false
+
+myAwesomeModule.isBoolean(true); // true
+myAwesomeModule.isBoolean(false); // true
+myAwesomeModule.isBoolean(0); // false
+myAwesomeModule.isBoolean(1 > 0); // true
+myAwesomeModule.isBoolean("true"); // false
+
+myAwesomeModule.isString(''); // true
+myAwesomeModule.isString(""); // true
+myAwesomeModule.isString('73'); // true
+myAwesomeModule.isString(73); // false
+myAwesomeModule.isString('true'); // true
+myAwesomeModule.isString(true); // false
+myAwesomeModule.isString("string"); // true
+myAwesomeModule.isString(typeof "string"); // true
+
+
+var car = new Object();
+
+function Person(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+}
+var person = new Person();
+
+var func = function() {
+    console.log('Hello! I am a function!');
+};
+
+myAwesomeModule.isObject(car); // true
+myAwesomeModule.isObject(person); // true
+myAwesomeModule.isObject(13); // false
+myAwesomeModule.isObject("Object"); // false
+myAwesomeModule.isObject(null); // false
+myAwesomeModule.isObject(func); // true
+
+myAwesomeModule.isNull(null); // true
+myAwesomeModule.isNull(0); // false
+myAwesomeModule.isNull(1); // false
+myAwesomeModule.isNull("null"); // false
+myAwesomeModule.isNull(); // false
+myAwesomeModule.isNull(""); // false
+myAwesomeModule.isNull(undefined); // false
+
+var str = 'I am not a function!';
+
+myAwesomeModule.isFunction(func); // true
+myAwesomeModule.isFunction(str); // false
+
+myAwesomeModule.isNan(NaN);       // true
+myAwesomeModule.isNan(true);      // false
+myAwesomeModule.isNan(null);      // false
+myAwesomeModule.isNan(37);        // false
+myAwesomeModule.isNan("37");      // false
+myAwesomeModule.isNan("37.37");   // false
+myAwesomeModule.isNan("");        // false
+myAwesomeModule.isNan(" ");       // false

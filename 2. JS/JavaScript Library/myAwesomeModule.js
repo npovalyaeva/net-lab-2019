@@ -2,6 +2,10 @@ var myAwesomeModule = (function() {
 
     var innerArr;
 
+    var getValue = function(){
+        return innerArr;
+    }
+
     var _compareObjects = function(obj1) {
         return (obj2) => {
             for (var key in obj2) {
@@ -14,7 +18,7 @@ var myAwesomeModule = (function() {
 
     var asChain = function(arr) {
         innerArr = arr;
-        return innerArr;
+        return this;
     }
 
     var awesomeEach = function(action) {
@@ -29,7 +33,7 @@ var myAwesomeModule = (function() {
             mapArr.push(result);
         }
         innerArr = mapArr;
-        return innerArr;
+        return this;
     }
 
     var awesomeReduce = function(reducer) {
@@ -102,6 +106,42 @@ var myAwesomeModule = (function() {
         }
     }
 
+    // ---------- ---------- ---------- Data types Functions ---------- ---------- ----------
+
+    var isUndefined = function(value) {
+        return typeof value === 'undefined';
+    }
+    
+    var isNumber = function(value) {
+        return typeof value === 'number' && isFinite(value) || value instanceof Number;
+    }
+    
+    var isBoolean = function(value) {
+        return typeof value === 'boolean'|| value instanceof Boolean;
+    }
+    
+    var isString = function(value) {
+        return typeof value === 'string' || value instanceof String;
+    }
+    
+    var isObject = function(value) {
+        return (typeof value === "object" || typeof value === 'function') && (value !== null);
+    }
+    
+    var isNull = function(value) {
+        return value === null;
+    }
+    
+    var isFunction = function(value) {
+        return value && {}.toString.call(value) === '[object Function]';
+    }
+    
+    var isNan = function(value) {
+        return value !== value || value != value;
+    }
+
+    // ---------- ---------- ---------- ---------- ---------- ---------- ----------
+
     return {
         asChain: asChain,
 
@@ -114,7 +154,18 @@ var myAwesomeModule = (function() {
         awesomeFirst: awesomeFirst,
         awesomeLast: awesomeLast,
         awesomeMin: awesomeMin,
-        awesomeMax: awesomeMax
+        awesomeMax: awesomeMax,
+
+        isUndefined: isUndefined,
+        isNumber: isNumber,
+        isBoolean: isBoolean,
+        isString: isString,
+        isObject: isObject,
+        isNull: isNull,
+        isFunction: isFunction,
+        isNan: isNan,
+
+        value: getValue
     }
 
 })();
