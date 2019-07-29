@@ -1,0 +1,170 @@
+@font-face {
+	font-family: 'Maax Regular';
+	src: url('../resources/fonts/Maax.eot');
+	src: url('../resources/fonts/Maax.eot?#iefix') format('embedded-opentype'),
+	url('../resources/fonts/Maax.woff') format('woff'),
+	url('../resources/fonts/Maax.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Proza Display";
+    src: url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.eot");
+    src: url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.eot?#iefix") format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.woff2") format("woff2"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.woff") format("woff"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.ttf") format("truetype"),
+    url("//db.onlinewebfonts.com/t/c107202f3ecccc6fee25aabca831e096.svg#Proza Display") format("svg");
+}
+
+body {
+	background-color: #F3F1F0;
+}
+
+.App {
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+
+.App .cityInput {
+	background-color: #F3F1F0;
+	border: 0px;
+	border-bottom: 5px solid #94CFC4;
+	border-radius: 0;
+	text-align: right;
+	color: #8B8A87;
+}
+
+.cityInput:focus, .cityInput:active {
+	outline: none !important;
+	box-shadow: none;
+ }
+
+.App .container, .row {
+	padding: 0;
+	margin: 0;
+	max-width: 100%;
+}
+
+.site-name {
+	font-family: "Proza Display";
+	color: #333333;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.navbar-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.App .arrow {
+	min-height: 1000px !important;
+
+	width: 10%;
+	display: flex;
+  	align-items: start;
+  	justify-content: center;
+}
+
+.arrow:hover {
+	background-color: #FFF;
+	cursor: pointer;
+}
+
+.arrow img {
+	margin-top: 450px;
+}
+
+.App .main-content {
+	width: 70%;
+	margin: 0 5% 40px 5%;
+}
+
+.App .nav-strip, .App .nav-strip * {
+	height: 70px;
+	padding: 0;
+}
+
+.App .nav-strip {
+	margin: 20px 0;
+}
+
+h1 {
+	font-size: 84px;
+	margin-top: 50px;
+}
+
+h3 {
+	margin-top: 50px;
+}
+
+.weather-content {
+	font-family: 'Maax Regular';
+	color: #333333;
+
+	display: flex;
+	justify-content: center;
+	align-content: space-around;
+	flex-flow: row wrap;
+	
+}
+.weather-content img {
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+.one-of-several-days-weather {
+	flex-grow: 1;
+}
+
+footer {
+	width: 100%;
+}
+
+footer .author-strip {
+	height: 70px;
+	background-color: #e9e783;
+	padding: 0 15%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+footer h6 {
+	margin: 0;
+	color: #333333;
+}
+
+footer .sources-strip {
+	height: 200px;
+	background-color: #333;
+	padding: 0 15%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.logo {
+	margin-left: 60px;
+}
+
+.helpful-links {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+
+.helpful-links a {
+	margin-left: 20px;
+}
