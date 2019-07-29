@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { fetchData, fetchCity, setActivePlace } from '../actions/act';
-import "bootswatch/flatly/bootstrap.css";
+import "bootswatch/dist/flatly/bootstrap.css";
 import { Navbar, Grid, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../styles/App.css';
 

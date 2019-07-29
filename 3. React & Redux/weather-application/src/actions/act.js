@@ -25,7 +25,7 @@ export function fetchData(url) {
         fetch(url, {
             method: 'GET',
             headers: {
-                'X-Yandex-API-Key' : '-------'
+                'X-Yandex-API-Key' : 'b5a43458-5c75-4958-bb67-b59a4142f220'
             }
         })
         .then(res => res.json())
