@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import moment from 'moment';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { fetchData, fetchCity, setActivePlace } from '../actions/act';
 import "bootswatch/dist/flatly/bootstrap.css";
 import { Navbar, Grid, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../styles/App.css';
 
-import logo from '../resources/logo.svg';
-import whiteLogo from '../resources/logo-white.svg';
+import { Header } from './Header';
+import { OneDayWeather, SeveralDaysWeather } from './WeatherForecast';
+import { Footer } from './Footer';
+
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
-import githubLogo from '../resources/github-logo.svg';
-import yandexLogo from '../resources/yandex-eng-logo.svg';
 
-class WeatherDisplay extends Component{
+// TODO: РАЗБИТЬ НА БОЛЕЕ МЕЛКИЕ КОМПОНЕНТЫ И ДОБАВИТЬ ИХ В РАЗНЫЕ ФАЙЛЫ
+
+class WeatherDisplay extends PureComponent{
 
     collectData(place){
         let URL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${this.props.cities[place].lat}&lon=${this.props.cities[place].lon}&lang=en_USlimit=7&hours=false&extra=false`;
@@ -33,59 +34,16 @@ class WeatherDisplay extends Component{
     render() {
         let weatherData = this.props.weatherData;
             if (weatherData.now) {
-                const weatherMain = weatherData.fact; 
-                const iconUrl = `https://yastatic.net/weather/i/icons/blueye/color/svg/${weatherMain.icon}.svg`;
                 return (
                     <div className="weather">
-                        <h1>{weatherMain.condition} in {this.props.cities[0].name}</h1>
+                        <h1>{weatherData.fact.condition} in {this.props.cities[0].name}</h1>
                         <div className="weather-content">
                             {(() => {
                                 switch(this.props.countOfDays) {
                                     case 1:
-                                        return <div className="one-day-weather" >
-                                            <img src={iconUrl} width="300" height="300" alt={weatherMain.condition}/>
-                                            <h2>
-                                                {weatherMain.temp}°C
-                                            </h2>
-                                            <h4>
-                                                Feels like {weatherMain.feels_like}°C
-                                            </h4>
-                                            <h6>
-                                                Wind Speed: {weatherMain.wind_speed} m/s
-                                            </h6>
-                                            <h6>
-                                                Humidity: {weatherMain.humidity} %
-                                            </h6>
-                                        </div>
+                                        return ( <OneDayWeather oneDayWeather={weatherData.fact}/> );
                                     default:
-                                        const weatherForecasts = weatherData.forecasts.slice(0, this.props.countOfDays);
-                                        return weatherForecasts.map(item =>
-                                            <div className="one-of-several-days-weather">
-                                                <h3>
-                                                    {moment(item.date).format('MMM Do')}
-                                                </h3>
-                                                {(() => {
-                                                    if (this.props.countOfDays > 5)
-                                                    return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
-                                                        width="150" height="150" alt={weatherMain.condition}/>
-                                                    else if (this.props.countOfDays > 3)
-                                                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
-                                                            width="210" height="210" alt={weatherMain.condition}/>
-                                                    else if (this.props.countOfDays > 1)
-                                                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
-                                                            width="250" height="250" alt={weatherMain.condition}/>
-                                                })()}
-                                                <h2>
-                                                    {item.parts.day_short.temp}°C
-                                                </h2>
-                                                <h6>
-                                                    Wind Speed: {item.parts.day_short.wind_speed} m/s
-                                                </h6>
-                                                <h6>
-                                                    Humidity: {item.parts.day_short.humidity} %
-                                                </h6>
-                                            </div>
-                                        )
+                                        return ( <SeveralDaysWeather countOfDays={this.props.countOfDays} sevenDaysWeather={weatherData.forecasts}/> );
                                 }
                             })()}
                             
@@ -101,13 +59,13 @@ class WeatherDisplay extends Component{
     }  
 }
 
-class App extends Component {
+class App extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {countOfDays: 1};
 
-        // Привязка необходима, чтобы сделать this доступным в коллбэке
+        // Эта привязка обязательна для работы `this` в колбэке.
         this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
         this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
@@ -165,27 +123,14 @@ class App extends Component {
                                     width="40"
                                     height="40"
                                     className="d-inline-block align-top"
-                                    alt="SSAW Weather logo"
+                                    alt="Prev"
                                 />
                         </Col>
                         <Col className="main-content">
                             <Navbar className="nav-strip">
-                                <Navbar.Header>
-                                    <Navbar.Brand href="#home">
-                                        <a href="https://npovalyaeva.github.io/">
-                                            <img
-                                                src={logo}
-                                                width="100"
-                                                height="100"
-                                                className="d-inline-block align-top"
-                                                alt="SSAW Weather logo"
-                                            />
-                                        </a>
-                                    </Navbar.Brand>
-                                    <h4 class="site-name">/ ssawinsp</h4>
-                                </Navbar.Header>
+                                <Header/>
                                 <Form>
-                                    <FormControl type="city" placeholder="Enter a City" className="cityInput" inputRef={(ref) => this.cityName =ref} onKeyPress={this.onKeyPress}/>
+                                    <FormControl type="city" placeholder="Enter a City" className="cityInput" inputRef={(ref) => this.cityName = ref} onKeyPress={this.onKeyPress}/>
                                 </Form>
                             </Navbar>
                             <WeatherDisplay key={0} countOfDays={this.state.countOfDays} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
@@ -196,49 +141,16 @@ class App extends Component {
                                 width="40"
                                 height="40"
                                 className="d-inline-block align-top"
-                                alt="SSAW Weather logo"
+                                alt="Next"
                             />
                         </Col>
                     </Row>
                 </Grid>
-                <footer>
-                    <div className="author-strip">
-                        <h6>Nadya Povalyaeva, 2019</h6>
-                    </div>
-                    <div className="sources-strip">
-                        <a href="https://npovalyaeva.github.io/">
-                            <img
-                                src={whiteLogo}
-                                width="40"
-                                height="40"
-                                className="d-inline-block align-top"
-                                alt="SSAW Weather"
-                            />
-                        </a>
-                        <div className="helpful-links">
-                            <a href="https://yandex.com/">
-                                <img
-                                    src={yandexLogo}
-                                    height="30"
-                                    className="d-inline-block align-top"
-                                    alt="GitHub"
-                                />
-                            </a>
-                            <a href="https://github.com/">
-                                <img
-                                    src={githubLogo}
-                                    height="30"
-                                    className="d-inline-block align-top"
-                                    alt="GitHub"
-                                />
-                            </a>
-                        </div>
-                    </div>
-                </footer>
+                <Footer/>
             </div>
         )
     };
-};
+}
 
 const mapStateToProps = (state) => {
     return {

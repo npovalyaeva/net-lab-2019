@@ -26,7 +26,7 @@ export function cities(state = citiesArr, action) {
     }
 }
 
-var citiesArr = [
+let citiesArr = [
         { name: "Minsk", lat: "53.889092", lon : "27.542042" },
         // { name: "Brest", lat: "52.093555", lon : "23.685681" },
         // { name: "Grodno", lat: "53.677834", lon : "23.829529" },
