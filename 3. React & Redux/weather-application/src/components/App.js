@@ -12,31 +12,20 @@ import { Footer } from './Footer';
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
 
-// TODO: РАЗБИТЬ НА БОЛЕЕ МЕЛКИЕ КОМПОНЕНТЫ И ДОБАВИТЬ ИХ В РАЗНЫЕ ФАЙЛЫ
-
 class WeatherDisplay extends PureComponent{
 
-    collectData(place){
+    collectData(place) {
         let URL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${this.props.cities[place].lat}&lon=${this.props.cities[place].lon}&lang=en_USlimit=7&hours=false&extra=false`;
         this.props.fetchData(URL);
     }
 
-    componentWillReceiveProps(nextProps) {
-            if (this.props.activePlace !== nextProps.activePlace) {
-                this.collectData(nextProps.activePlace);
-            } 
-    }
-
-    componentDidMount() {
-        this.collectData(this.props.activePlace);
-    }
-
     render() {
-        let weatherData = this.props.weatherData;
+        this.collectData(this.props.cityName);
+        let weatherData = this.props.weather;
             if (weatherData.now) {
                 return (
                     <div className="weather">
-                        <h1>{weatherData.fact.condition} in {this.props.cities[0].name}</h1>
+                        <h1>{weatherData.fact.condition} in {this.props.cityName}</h1>
                         <div className="weather-content">
                             {(() => {
                                 switch(this.props.countOfDays) {
@@ -63,7 +52,9 @@ class App extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {countOfDays: 1};
+        this.state = {
+            countOfDays: 1
+        };
 
         // Эта привязка обязательна для работы `this` в колбэке.
         this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
@@ -71,6 +62,17 @@ class App extends PureComponent {
         this.onKeyPress = this.onKeyPress.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.activePlace !== nextProps.activePlace) {
+            this.collectData(nextProps.activePlace);
+        } 
+    }
+
+    componentDidMount() {
+        this.collectData(this.props.activePlace);
+    }
+
+    // Объединить в одну функцию
     changeCountOfDaysToTheLeft() {
         this.setState((state) => {
             let count;
@@ -100,9 +102,8 @@ class App extends PureComponent {
     }
 
     findCoordinates(cityName) {
-        console.log(cityName);
         let URL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
-        fetchCity(URL);
+        this.props.fetchCity(URL);
     }
 
     onKeyPress = event => {
@@ -133,7 +134,7 @@ class App extends PureComponent {
                                     <FormControl type="city" placeholder="Enter a City" className="cityInput" inputRef={(ref) => this.cityName = ref} onKeyPress={this.onKeyPress}/>
                                 </Form>
                             </Navbar>
-                            <WeatherDisplay key={0} countOfDays={this.state.countOfDays} cities={this.props.cities} weatherData={this.props.weather} activePlace={this.props.activePlace} fetchData={this.props.fetchData}/>
+                            <WeatherDisplay key={0} countOfDays={1} cityName={this.props.cities[0]}/>
                         </Col>
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
@@ -155,7 +156,7 @@ class App extends PureComponent {
 const mapStateToProps = (state) => {
     return {
         weather: state.weatherData,
-        activePlace: state.activePlace,
+        activePlace: state.currentCity,
         cities: state.cities
     };
 };
@@ -170,4 +171,3 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
 mapStateToProps,
 mapDispatchToProps)(App);
-

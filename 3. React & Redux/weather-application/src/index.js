@@ -1,11 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import configureMyStore from './store/configureStore';
+import configureStore from './store/configureStore';
 
 import App from './components/App';
 
-export const store = configureMyStore();
+const initialState = { currentCity: "Minsk", cities: ['Minsk'] };
+
+export const store = configureStore(initialState);
 
 render(
     <Provider store={store}>
