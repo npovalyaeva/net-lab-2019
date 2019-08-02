@@ -1,29 +1,79 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { fetchData, fetchCity, setActivePlace } from '../actions/act';
 import "bootswatch/dist/flatly/bootstrap.css";
-import { Navbar, Grid, Row, Col, Form, FormControl } from "react-bootstrap";
+import { Navbar, Grid, Row, Col } from "react-bootstrap";
 import '../styles/App.css';
 
-import { Header } from './Header';
-import { OneDayWeather, SeveralDaysWeather } from './WeatherForecast';
-import { Footer } from './Footer';
+import { Header } from '../components/Header';
+import { OneDayWeather, SeveralDaysWeather } from '../components/WeatherForecast';
+import { Footer } from '../components/Footer';
 
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
 
 class WeatherDisplay extends PureComponent{
+    constructor() {
+        super();
+        this.state = {
+            cityData: null,
+            weatherData: null
+        };
+    }
 
-    collectData(placeLat, placeLon) {
-        let URL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${placeLat}&lon=${placeLon}&lang=en_USlimit=7&hours=false&extra=false`;
-        this.props.fetchData(URL);
+    // getCoordinates() {
+        
+    //     return new Promise((getForecast) => {
+
+    //         const cityName = this.props.cityName;
+    //         const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+    //         fetch(yandexGeocoderURL)
+    //         .then(res => res.json())
+    //         .then(json => {
+    //             this.setState({ cityData: json });
+    //         })
+
+    //         getForecast();
+    //     })
+    // }
+
+    getCoordinates() {
+            const cityName = this.props.cityName;
+            const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+            fetch(yandexGeocoderURL)
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                this.setState({ cityData: json });
+            })
+            .then(function() {
+                return this.getForecast();
+            });
+    }
+
+    getForecast() {
+        const coordinates = this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
+        const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
+        //const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=53.902496&lon=27.561481&lang=en_USlimit=7&hours=false&extra=false`;
+
+        fetch(yandexWeatherURL, {
+            method: 'GET',
+            headers: {
+                'X-Yandex-API-Key' : 'b5a43458-5c75-4958-bb67-b59a4142f220'
+            }
+        })
+        .then(res => res.json())
+        .then(json => {
+            this.setState({ weatherData: json });
+        });
+    }
+
+    componentWillMount() {
+        this.getCoordinates();
     }
 
     render() {
-        let weatherData = this.collectData(this.props.currentCity);
+            const weatherData = this.state.weatherData;
 
-
-            if (weatherData.now) {
+            if (weatherData) {
                 return (
                     <div className="weather">
                         <h1>{weatherData.fact.condition} in {this.props.currentCity}</h1>
@@ -35,8 +85,7 @@ class WeatherDisplay extends PureComponent{
                                     default:
                                         return ( <SeveralDaysWeather countOfDays={this.props.countOfDays} sevenDaysWeather={weatherData.forecasts}/> );
                                 }
-                            })()}
-                            
+                            })()}                           
                         </div>
                     </div>
                 );
@@ -62,16 +111,6 @@ class App extends PureComponent {
         this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
         this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
         //this.onKeyPress = this.onKeyPress.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.activePlace !== nextProps.activePlace) {
-            this.collectData(nextProps.activePlace);
-        } 
-    }
-
-    componentDidMount() {
-        this.collectData(this.props.activePlace);
     }
 
     // Объединить в одну функцию
@@ -103,14 +142,7 @@ class App extends PureComponent {
         });
     }
 
-    findCoordinates(cityName) {
-        let URL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
-        this.props.fetchCity(URL);
-    }
-
     render() {
-        let cityData = this.findCoordinates(this.state.currentCity);
-
         return (
             <div className="App">
                 <Grid>
@@ -128,7 +160,7 @@ class App extends PureComponent {
                             <Navbar className="nav-strip">
                                 <Header/>
                             </Navbar>
-                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity} cityData={cityData}/>
+                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity}/>
                         </Col>
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
@@ -147,21 +179,4 @@ class App extends PureComponent {
     };
 }
 
-const mapStateToProps = (state) => {
-    return {
-        weather: state.weatherData,
-        activePlace: state.currentCity,
-        cities: state.cities
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchData: (url) => dispatch(fetchData(url)),
-        setActivePlace: (index) => dispatch(setActivePlace(index))
-    };
-};
-
-export default connect(
-mapStateToProps,
-mapDispatchToProps)(App);
+export default App;
