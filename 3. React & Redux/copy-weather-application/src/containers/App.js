@@ -41,18 +41,15 @@ class WeatherDisplay extends PureComponent{
             fetch(yandexGeocoderURL)
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 this.setState({ cityData: json });
+                //setTimeout(this.getForecast(), 5000);
+                this.getForecast();
             })
-            .then(function() {
-                return this.getForecast();
-            });
     }
 
     getForecast() {
         const coordinates = this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
         const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
-        //const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=53.902496&lon=27.561481&lang=en_USlimit=7&hours=false&extra=false`;
 
         fetch(yandexWeatherURL, {
             method: 'GET',
@@ -76,7 +73,7 @@ class WeatherDisplay extends PureComponent{
             if (weatherData) {
                 return (
                     <div className="weather">
-                        <h1>{weatherData.fact.condition} in {this.props.currentCity}</h1>
+                        <h1>{weatherData.fact.condition} in {this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.name}</h1>
                         <div className="weather-content">
                             {(() => {
                                 switch(this.props.countOfDays) {
