@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import "bootswatch/dist/flatly/bootstrap.css";
-import { Navbar, Grid, Row, Col } from "react-bootstrap";
+import { Navbar, Grid, Row, Col, Form } from "react-bootstrap";
 import '../styles/App.css';
 
 import { Header } from '../components/Header';
@@ -10,14 +10,59 @@ import { Footer } from '../components/Footer';
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
 
-class WeatherDisplay extends Component{
+class WeatherDisplay extends PureComponent{
+    constructor() {
+        super();
+        this.state = {
+            currentCity: null,
+            cityData: null,
+            weatherData: null
+        };
+    }
+
+    getCoordinates(cityName) {
+            console.log(cityName);
+            const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+            fetch(yandexGeocoderURL)
+            .then(res => res.json())
+            .then(json => {
+                if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
+                    this.setState({ cityData: json });
+                    this.getForecast();
+                }
+                else {
+                    this.getCoordinates('Minsk');
+                }
+            })
+    }
+
+    getForecast() {
+        const coordinates = this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
+        const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
+
+        fetch(yandexWeatherURL, {
+            method: 'GET',
+            headers: {
+                'X-Yandex-API-Key' : 'b5a43458-5c75-4958-bb67-b59a4142f220'
+            }
+        })
+        .then(res => res.json())
+        .then(json => {
+            this.setState({ weatherData: json });
+        });
+    }
+
+    componentWillMount() {
+        this.getCoordinates(this.props.cityName);
+    }
+
     render() {
-            const weatherData = this.props.weatherData;
+            const weatherData = this.state.weatherData;
 
             if (weatherData) {
                 return (
                     <div className="weather">
-                        <h1>{weatherData.fact.condition} in {this.props.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.name}</h1>
+                        <h1>{weatherData.fact.condition} in {this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.name}</h1>
                         <div className="weather-content">
                             {(() => {
                                 switch(this.props.countOfDays) {
@@ -39,21 +84,19 @@ class WeatherDisplay extends Component{
     }  
 }
 
-class App extends Component {
+class App extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             countOfDays: 1,
-            currentCity: 'Minsk',
-            cityData: null,
-            weatherData: null
+            currentCity: 'Minsk'
         };
 
         // Эта привязка обязательна для работы `this` в колбэке.
         this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
         this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
-        this.handleKeyUp = this.handleKeyUp.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     // Объединить в одну функцию
@@ -85,51 +128,9 @@ class App extends Component {
         });
     }
 
-    handleKeyUp(event) {
-        const keyCode = event.keyCode || event.which;
-        if (keyCode === 13) {
-            this.setState({currentCity: event.target.value});
-        }
-    };
-
-    getCoordinates(cityName) {
-        console.log(cityName);
-        const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
-        fetch(yandexGeocoderURL)
-        .then(res => res.json())
-        .then(json => {
-            //if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
-                this.setState({ cityData: json });
-                this.getForecast();
-            //}
-            //else {
-            //    this.getCoordinates('Minsk');
-            //}
-        })
-    }
-
-    getForecast() {
-        const coordinates = this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
-        const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
-
-        fetch(yandexWeatherURL, {
-            method: 'GET',
-            headers: {
-                'X-Yandex-API-Key' : 'b5a43458-5c75-4958-bb67-b59a4142f220'
-            }
-        })
-        .then(res => res.json())
-        .then(json => {
-            this.setState({ weatherData: json });
-        });
-    }
-
-    componentWillMount() {
-        this.getCoordinates(this.state.currentCity);
-    }
-
-    componentWillUpdate() {
-        this.getCoordinates(this.state.currentCity);
+    handleChange(event) {
+        this.setState({currentCity: event.target.value});
+        console.log(this.state.currentCity);
     }
 
     render() {
@@ -149,14 +150,21 @@ class App extends Component {
                         <Col className="main-content">
                             <Navbar className="nav-strip">
                                 <Header/>
-                                <input 
-                                    type="text" 
-                                    placeholder="Enter a City"
-                                    className="cityInput"
-                                    onKeyUp={this.handleKeyUp}
-                                />
+                                <Form>
+                                    <input 
+                                        type="city" 
+                                        placeholder="Enter a City" 
+                                        className="cityInput" 
+                                        onChange={this.handleChange}
+                                        onKeyPress={event => {
+                                            if (event.key === 'Enter') {
+                                                // ????????????
+                                            }
+                                        }}
+                                    />
+                                </Form>
                             </Navbar>
-                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity} cityData={this.state.cityData} weatherData={this.state.weatherData}/>
+                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity}/>
                         </Col>
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
