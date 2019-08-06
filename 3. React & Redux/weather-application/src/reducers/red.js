@@ -1,6 +1,15 @@
 export function weatherData(state = {}, action) {
     switch (action.type) {
-        case 'FETCH_DATA_SUCCESS':
+        case 'FETCH_WEATHER_DATA_SUCCESS':
+            return action.fetchedData;
+        default:
+            return state;
+    }
+}
+
+export function cityData(state = {}, action) {
+    switch (action.type) {
+        case 'FETCH_CITY_DATA_SUCCESS':
             return action.fetchedData;
         default:
             return state;
@@ -19,8 +28,7 @@ export function activePlace(state = 0, action) {
 export function cities(state = citiesArr, action) {
     switch (action.type) {
         case 'SET_CITIES':
-            return action.cities ;
-
+            return action.cities;
         default:
             return state;
     }

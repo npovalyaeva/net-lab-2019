@@ -5,9 +5,16 @@ export function setActivePlace(placeIndex) {
     };
 }
 
-export function fetchDataSuccess(fetchedData) {
+export function fetchCityDataSuccess(fetchedData) {
     return {
-        type: 'FETCH_DATA_SUCCESS',
+        type: 'FETCH_CITY_DATA_SUCCESS',
+        fetchedData
+    };
+}
+
+export function fetchWeatherDataSuccess(fetchedData) {
+    return {
+        type: 'FETCH_WEATHER_DATA_SUCCESS',
         fetchedData
     };
 }
@@ -30,7 +37,7 @@ export function fetchData(url) {
         })
         .then(res => res.json())
         .then(json => {
-            dispatch(fetchDataSuccess(json));
+            dispatch(fetchWeatherDataSuccess(json));
         })
         .catch((err)=>console.log(err));
     };
@@ -43,7 +50,7 @@ export function fetchCity(url) {
         .then(res => res.json())
         .then(json => console.log(json))
         .then(json => {
-            dispatch(fetchDataSuccess(json));
+            dispatch(fetchCityDataSuccess(json));
         })
         .catch((err)=>console.log(err));
     };

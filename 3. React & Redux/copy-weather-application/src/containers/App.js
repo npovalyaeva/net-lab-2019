@@ -1,32 +1,23 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { fetchData, fetchCity, setActivePlace } from '../actions/act';
+import React, { Component } from 'react';
 import "bootswatch/dist/flatly/bootstrap.css";
-import { Navbar, Grid, Row, Col, Form, FormControl } from "react-bootstrap";
+import { Navbar, Grid, Row, Col } from "react-bootstrap";
 import '../styles/App.css';
 
-import { Header } from './Header';
-import { OneDayWeather, SeveralDaysWeather } from './WeatherForecast';
-import { Footer } from './Footer';
+import { Header } from '../components/Header';
+import { OneDayWeather, SeveralDaysWeather } from '../components/WeatherForecast';
+import { Footer } from '../components/Footer';
 
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
 
-class WeatherDisplay extends PureComponent{
-
-    collectData(placeLat, placeLon) {
-        let URL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${placeLat}&lon=${placeLon}&lang=en_USlimit=7&hours=false&extra=false`;
-        this.props.fetchData(URL);
-    }
-
+class WeatherDisplay extends Component{
     render() {
-        let weatherData = this.collectData(this.props.currentCity);
+            const weatherData = this.props.weatherData;
 
-
-            if (weatherData.now) {
+            if (weatherData) {
                 return (
                     <div className="weather">
-                        <h1>{weatherData.fact.condition} in {this.props.currentCity}</h1>
+                        <h1>{weatherData.fact.condition} in {this.props.cityName}</h1>
                         <div className="weather-content">
                             {(() => {
                                 switch(this.props.countOfDays) {
@@ -35,8 +26,7 @@ class WeatherDisplay extends PureComponent{
                                     default:
                                         return ( <SeveralDaysWeather countOfDays={this.props.countOfDays} sevenDaysWeather={weatherData.forecasts}/> );
                                 }
-                            })()}
-                            
+                            })()}                           
                         </div>
                     </div>
                 );
@@ -49,29 +39,20 @@ class WeatherDisplay extends PureComponent{
     }  
 }
 
-class App extends PureComponent {
+class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             countOfDays: 1,
-            currentCity: 'Minsk'
+            currentCity: 'Minsk',
+            weatherData: null
         };
 
         // Эта привязка обязательна для работы `this` в колбэке.
         this.changeCountOfDaysToTheLeft = this.changeCountOfDaysToTheLeft.bind(this);
         this.changeCountOfDaysToTheRight = this.changeCountOfDaysToTheRight.bind(this);
-        //this.onKeyPress = this.onKeyPress.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.activePlace !== nextProps.activePlace) {
-            this.collectData(nextProps.activePlace);
-        } 
-    }
-
-    componentDidMount() {
-        this.collectData(this.props.activePlace);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     // Объединить в одну функцию
@@ -103,14 +84,51 @@ class App extends PureComponent {
         });
     }
 
-    findCoordinates(cityName) {
-        let URL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
-        this.props.fetchCity(URL);
+    handleKeyUp(event) {
+        const keyCode = event.keyCode || event.which;
+        if (keyCode === 13) {
+            this.getCoordinates(event.target.value);
+        }
+    };
+
+    getCoordinates(cityName) {
+        const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+        fetch(yandexGeocoderURL)
+        .then(res => res.json())
+        .then(json => {
+            if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
+                this.getForecast(json.response.GeoObjectCollection.featureMember[0].GeoObject);
+            }
+            // else {
+            //    this.getCoordinates('Minsk');
+            // }
+        })
+    }
+
+    getForecast(cityData) {
+        const coordinates = cityData.Point.pos.split(' ');
+        const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
+
+        fetch(yandexWeatherURL, {
+            method: 'GET',
+            headers: {
+                'X-Yandex-API-Key' : 'b5a43458-5c75-4958-bb67-b59a4142f220'
+            }
+        })
+        .then(res => res.json())
+        .then(json => {
+            this.setState({ 
+                weatherData: json,
+                currentCity: cityData.name
+            });
+        });
+    }
+
+    componentWillMount() {
+        this.getCoordinates(this.state.currentCity);
     }
 
     render() {
-        let cityData = this.findCoordinates(this.state.currentCity);
-
         return (
             <div className="App">
                 <Grid>
@@ -127,8 +145,14 @@ class App extends PureComponent {
                         <Col className="main-content">
                             <Navbar className="nav-strip">
                                 <Header/>
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter a City"
+                                    className="cityInput"
+                                    onKeyUp={this.handleKeyUp}
+                                />
                             </Navbar>
-                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity} cityData={cityData}/>
+                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity} weatherData={this.state.weatherData}/>
                         </Col>
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
@@ -147,21 +171,4 @@ class App extends PureComponent {
     };
 }
 
-const mapStateToProps = (state) => {
-    return {
-        weather: state.weatherData,
-        activePlace: state.currentCity,
-        cities: state.cities
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchData: (url) => dispatch(fetchData(url)),
-        setActivePlace: (index) => dispatch(setActivePlace(index))
-    };
-};
-
-export default connect(
-mapStateToProps,
-mapDispatchToProps)(App);
+export default App;
