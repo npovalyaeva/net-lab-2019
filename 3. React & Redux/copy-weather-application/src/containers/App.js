@@ -17,7 +17,7 @@ class WeatherDisplay extends Component{
             if (weatherData) {
                 return (
                     <div className="weather">
-                        <h1>{weatherData.fact.condition} in {this.props.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.name}</h1>
+                        <h1>{weatherData.fact.condition} in {this.props.cityName}</h1>
                         <div className="weather-content">
                             {(() => {
                                 switch(this.props.countOfDays) {
@@ -46,7 +46,6 @@ class App extends Component {
         this.state = {
             countOfDays: 1,
             currentCity: 'Minsk',
-            cityData: null,
             weatherData: null
         };
 
@@ -88,28 +87,26 @@ class App extends Component {
     handleKeyUp(event) {
         const keyCode = event.keyCode || event.which;
         if (keyCode === 13) {
-            this.setState({currentCity: event.target.value});
+            this.getCoordinates(event.target.value);
         }
     };
 
     getCoordinates(cityName) {
-        console.log(cityName);
         const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
         fetch(yandexGeocoderURL)
         .then(res => res.json())
         .then(json => {
-            //if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
-                this.setState({ cityData: json });
-                this.getForecast();
-            //}
-            //else {
+            if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
+                this.getForecast(json.response.GeoObjectCollection.featureMember[0].GeoObject);
+            }
+            // else {
             //    this.getCoordinates('Minsk');
-            //}
+            // }
         })
     }
 
-    getForecast() {
-        const coordinates = this.state.cityData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
+    getForecast(cityData) {
+        const coordinates = cityData.Point.pos.split(' ');
         const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
 
         fetch(yandexWeatherURL, {
@@ -120,15 +117,14 @@ class App extends Component {
         })
         .then(res => res.json())
         .then(json => {
-            this.setState({ weatherData: json });
+            this.setState({ 
+                weatherData: json,
+                currentCity: cityData.name
+            });
         });
     }
 
     componentWillMount() {
-        this.getCoordinates(this.state.currentCity);
-    }
-
-    componentWillUpdate() {
         this.getCoordinates(this.state.currentCity);
     }
 
@@ -156,7 +152,7 @@ class App extends Component {
                                     onKeyUp={this.handleKeyUp}
                                 />
                             </Navbar>
-                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity} cityData={this.state.cityData} weatherData={this.state.weatherData}/>
+                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.state.currentCity} weatherData={this.state.weatherData}/>
                         </Col>
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
