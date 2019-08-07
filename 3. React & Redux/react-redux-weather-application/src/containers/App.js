@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { fetchData } from '../actions/actions';
+import { fetchData } from '../actions/index';
 import "bootswatch/dist/flatly/bootstrap.css";
 import { Navbar, Grid, Row, Col } from "react-bootstrap";
 import '../styles/App.css';
@@ -12,7 +12,7 @@ import { Footer } from '../components/Footer';
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
 
-class WeatherDisplay extends Component{
+class WeatherDisplay extends PureComponent{
     render() {
             const weatherData = this.props.weatherData;
 
@@ -41,7 +41,7 @@ class WeatherDisplay extends Component{
     }  
 }
 
-class App extends Component {
+class App extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -89,7 +89,6 @@ class App extends Component {
     handleKeyUp(event) {
         const keyCode = event.keyCode || event.which;
         if (keyCode === 13) {
-            debugger
             this.props.getWeatherForecast(event.target.value);
         }
     };
@@ -142,10 +141,9 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-    debugger
     return {
-        weatherData: state.getWeather.weatherData,
-        currentCity: state.getWeather.currentCity
+        weatherData: state.weatherData.weatherData,
+        currentCity: state.weatherData.currentCity
     };
 };
 

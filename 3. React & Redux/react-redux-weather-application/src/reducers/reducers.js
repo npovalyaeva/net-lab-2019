@@ -1,11 +1,11 @@
-import { GET_FORECAST } from '../actions/actions'
+import { GET_FORECAST } from '../actions'
 
 const initialState = {
     currentCity: null,
     weatherData: null
 }
 
-export function getWeather(state = initialState, action) {
+export function weatherData(state = initialState, action) {
     switch (action.type) {
         case GET_FORECAST: 
             return { ...state, currentCity: action.currentCity, weatherData: action.weatherData };
@@ -13,6 +13,4 @@ export function getWeather(state = initialState, action) {
             return state
     }
 }
-
-// ---------- ---------- ---------- ---------- ---------- ---------- ----------
 
