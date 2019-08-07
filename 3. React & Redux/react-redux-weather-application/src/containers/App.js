@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getWeatherForecast } from '../actions/actions';
+import { fetchData } from '../actions/actions';
 import "bootswatch/dist/flatly/bootstrap.css";
 import { Navbar, Grid, Row, Col } from "react-bootstrap";
 import '../styles/App.css';
@@ -89,12 +89,16 @@ class App extends Component {
     handleKeyUp(event) {
         const keyCode = event.keyCode || event.which;
         if (keyCode === 13) {
+            debugger
             this.props.getWeatherForecast(event.target.value);
         }
     };
 
+    componentWillMount() {
+        this.props.getWeatherForecast(this.state.currentCity);
+    }
+
     render() {
-        debugger
         return (
             <div className="App">
                 <Grid>
@@ -138,15 +142,16 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
+    debugger
     return {
-        weatherData: state.weatherData,
-        currentCity: state.currentCity
+        weatherData: state.getWeather.weatherData,
+        currentCity: state.getWeather.currentCity
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getWeatherForecast: (currentCity) => dispatch(getWeatherForecast(currentCity))
+        getWeatherForecast: (currentCity) => dispatch(fetchData(currentCity))
     };
 };
 
