@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 
+import { GetIconURL } from '../../constants'; 
+
 export class SeveralDaysWeather extends PureComponent {
 
     render() {
@@ -13,13 +15,13 @@ export class SeveralDaysWeather extends PureComponent {
                 </h3>
                 {(() => {
                     if (this.props.countOfDays > 5)
-                    return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                    return <img src={GetIconURL(item.parts.day_short.icon)} 
                         width="150" height="150" alt={item.parts.day_short.condition}/>
                     else if (this.props.countOfDays > 3)
-                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                        return <img src={GetIconURL(item.parts.day_short.icon)} 
                             width="210" height="210" alt={item.parts.day_short.condition}/>
                     else if (this.props.countOfDays > 1)
-                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                        return <img src={GetIconURL(item.parts.day_short.icon)} 
                             width="250" height="250" alt={item.parts.day_short.condition}/>
                 })()}
                 <h2>

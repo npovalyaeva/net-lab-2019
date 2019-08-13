@@ -1,31 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 
-export class OneDayWeather extends PureComponent {
-
-    render() {
-        let weatherForecast = this.props.oneDayWeather;
-        const iconUrl = `https://yastatic.net/weather/i/icons/blueye/color/svg/${weatherForecast.icon}.svg`;
-
-        return (
-            <div className="one-day-weather" >
-                <img src={iconUrl} width="300" height="300" alt={weatherForecast.condition}/>
-                <h2>
-                    {weatherForecast.temp}°C
-                </h2>
-                <h4>
-                    Feels like {weatherForecast.feels_like}°C
-                </h4>
-                <h6>
-                    Wind Speed: {weatherForecast.wind_speed} m/s
-                </h6>
-                <h6>
-                    Humidity: {weatherForecast.humidity} %
-                </h6>
-            </div>
-        );
-    }
-}
+import { GetIconURL } from '../../constants'; 
 
 export class SeveralDaysWeather extends PureComponent {
 
@@ -39,13 +15,13 @@ export class SeveralDaysWeather extends PureComponent {
                 </h3>
                 {(() => {
                     if (this.props.countOfDays > 5)
-                    return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                    return <img src={GetIconURL(item.parts.day_short.icon)} 
                         width="150" height="150" alt={item.parts.day_short.condition}/>
                     else if (this.props.countOfDays > 3)
-                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                        return <img src={GetIconURL(item.parts.day_short.icon)} 
                             width="210" height="210" alt={item.parts.day_short.condition}/>
                     else if (this.props.countOfDays > 1)
-                        return <img src={`https://yastatic.net/weather/i/icons/blueye/color/svg/${item.parts.day_short.icon}.svg`} 
+                        return <img src={GetIconURL(item.parts.day_short.icon)} 
                             width="250" height="250" alt={item.parts.day_short.condition}/>
                 })()}
                 <h2>

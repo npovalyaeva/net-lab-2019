@@ -1,22 +1,24 @@
+import { GetYandexGeocoderURL, GetYandexWeatherURL, yandexAPIKey } from '../constants';
+
 export const GET_FORECAST = 'GET_FORECAST'
 
-export function getForecast(currentCity, weatherData) {
+export function getForecast(currentCity, factWeatherData, weatherData) {
     return {
         type: GET_FORECAST,
         currentCity: currentCity,
+        factWeatherData: factWeatherData,
         weatherData: weatherData
     };
 }
 
 export function fetchData(cityName) {
-    const yandexGeocoderURL = `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
+    const URL = GetYandexGeocoderURL(cityName);
 
     return (dispatch) => {
-        fetch(yandexGeocoderURL)
+        fetch(URL)
         .then(response => response.json())
         .then(json => {
             if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
-                console.log(json);
                 dispatch(fetchForecast(json.response.GeoObjectCollection.featureMember[0].GeoObject));
             }
         })
@@ -26,19 +28,18 @@ export function fetchData(cityName) {
 
 function fetchForecast(cityData) {
     const coordinates = cityData.Point.pos.split(' ');
-    const yandexWeatherURL = `https://cors-anywhere.herokuapp.com/https://api.weather.yandex.ru/v1/forecast?lat=${coordinates[1]}&lon=${coordinates[0]}&lang=en_USlimit=7&hours=false&extra=false`;
+    const URL = GetYandexWeatherURL(coordinates);
 
     return (dispatch) => {
-        fetch(yandexWeatherURL, {
+        fetch(URL, {
             method: 'GET',
             headers: {
-                'X-Yandex-API-Key' : 'b5a43458-5c75-4958-bb67-b59a4142f220'
+                'X-Yandex-API-Key' : yandexAPIKey
             }
         })
         .then(response => response.json())
         .then(json => {
-            console.log(json);
-            dispatch(getForecast(cityData.name, json));
+            dispatch(getForecast(cityData.name, json.fact, json.forecasts));
         })
         .catch((error) => console.log(error));
     };

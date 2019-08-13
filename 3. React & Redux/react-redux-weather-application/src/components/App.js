@@ -3,52 +3,23 @@ import { connect } from 'react-redux';
 import { fetchData } from '../actions/index';
 import "bootswatch/dist/flatly/bootstrap.css";
 import { Navbar, Grid, Row, Col } from "react-bootstrap";
+
+import { initialCity } from '../constants';
 import '../styles/App.css';
 
-import { Header } from '../components/Header';
-import { OneDayWeather, SeveralDaysWeather } from '../components/WeatherForecast';
-import { Footer } from '../components/Footer';
+import { Header } from './Header';
+import { WeatherDisplay } from './weather-display/WeatherDisplay';
+import { Footer } from './Footer';
 
 import rightArrowImg from '../resources/right-arrow.svg';
 import leftArrowImg from '../resources/left-arrow.svg';
-
-class WeatherDisplay extends PureComponent{
-    render() {
-            const weatherData = this.props.weatherData;
-
-            if (weatherData) {
-                return (
-                    <div className="weather">
-                        <h1>{weatherData.fact.condition} in {this.props.cityName}</h1>
-                        <div className="weather-content">
-                            {(() => {
-                                switch(this.props.countOfDays) {
-                                    case 1:
-                                        return ( <OneDayWeather oneDayWeather={weatherData.fact}/> );
-                                    default:
-                                        return ( <SeveralDaysWeather countOfDays={this.props.countOfDays} sevenDaysWeather={weatherData.forecasts}/> );
-                                }
-                            })()}                           
-                        </div>
-                    </div>
-                );
-            }
-        return (
-            <div>
-                Loading...
-            </div>
-        );
-    }  
-}
 
 class App extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            countOfDays: 1,
-            currentCity: 'Minsk',
-            weatherData: null
+            countOfDays: 1
         };
 
         // Эта привязка обязательна для работы `this` в колбэке.
@@ -94,7 +65,7 @@ class App extends PureComponent {
     };
 
     componentWillMount() {
-        this.props.getWeatherForecast(this.state.currentCity);
+        this.props.getWeatherForecast(initialCity);
     }
 
     render() {
@@ -121,7 +92,7 @@ class App extends PureComponent {
                                     onKeyUp={this.handleKeyUp}
                                 />
                             </Navbar>
-                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.props.currentCity} weatherData={this.props.weatherData}/>
+                            <WeatherDisplay countOfDays={this.state.countOfDays} cityName={this.props.currentCity} factWeatherData={this.props.factWeatherData} weatherData={this.props.weatherData}/>
                         </Col>
                         <Col className="arrow" onClick={this.changeCountOfDaysToTheRight}>
                             <img
@@ -142,6 +113,7 @@ class App extends PureComponent {
 
 const mapStateToProps = (state) => {
     return {
+        factWeatherData: state.weatherData.factWeatherData,
         weatherData: state.weatherData.weatherData,
         currentCity: state.weatherData.currentCity
     };

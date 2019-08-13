@@ -1,3 +1,5 @@
+export const initialCity = 'Minsk';
+
 export function GetYandexGeocoderURL(cityName) {
     return `https://geocode-maps.yandex.ru/1.x/?format=json&?apikey=7d5334f1-6bfb-484f-a173-ebf8c560139b&geocode=${cityName}`;
 }
