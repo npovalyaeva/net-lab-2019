@@ -19,5 +19,21 @@ namespace ELibrary.Controllers
             CreateUserHandler handler = new CreateUserHandler(context);
             return handler.Handle(request);
         }
+
+        [HttpPut("blockUser")]
+        public bool BlockUser(string username, [FromBody] CreateUserCommand request)
+        {
+            UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+            BlockUserHandler handler = new BlockUserHandler(context);
+            return handler.Handle(username, request);
+        }
+
+        [HttpPut("unblockUser")]
+        public bool UnblockUser(string username, [FromBody] CreateUserCommand request)
+        {
+            UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+            UnblockUserHandler handler = new UnblockUserHandler(context);
+            return handler.Handle(username, request);
+        }
     }
 }
