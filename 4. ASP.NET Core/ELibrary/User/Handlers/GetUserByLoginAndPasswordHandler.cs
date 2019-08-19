@@ -24,7 +24,11 @@ namespace User.Handlers
             {
                 connection.Open();
 
-                string query = string.Format("SELECT * FROM [dbo].[Users] WHERE ([username] = N'{0}' OR [email] = N'{1}') AND [password_hash] = N'{2}'",
+                string query = string.Format("SELECT Users.user_id, Users.username, Users.email, Users.first_name, Users.last_name, Users.is_blocked, Roles.name " +
+                    "FROM [dbo].[Users] AS Users " +
+                    "JOIN [dbo].[Roles] AS Roles " +
+                    "ON (Users.role_id = Roles.role_id) " +
+                    "WHERE ([username] = N'{0}' OR [email] = N'{1}') AND [password_hash] = N'{2}'",
                     login, 
                     login,
                     Hash.FindHash(password)
@@ -41,11 +45,11 @@ namespace User.Handlers
                             {
                                 Id = Convert.ToInt32(reader["user_id"]),
                                 Username = reader["username"].ToString(),
-                                RoleId = Convert.ToInt32(reader["role_id"]),
                                 Email = reader["email"].ToString(),
                                 FirstName = reader["first_name"].ToString(),
                                 LastName = reader["last_name"].ToString(),
-                                IsBlocked = Convert.ToInt32(reader["is_blocked"])
+                                IsBlocked = Convert.ToInt32(reader["is_blocked"]),
+                                Role = reader["name"].ToString()
                             });
                         }
                     }
