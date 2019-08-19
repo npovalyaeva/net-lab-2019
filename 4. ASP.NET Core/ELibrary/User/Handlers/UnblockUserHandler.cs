@@ -1,6 +1,5 @@
 ﻿using System;
 
-using Mapster;
 using System.Data.SqlClient;
 using User.Commands;
 using User.Data;
@@ -16,9 +15,8 @@ namespace User.Handlers
             _context = context;
         }
 
-        public bool Handle(string username, CreateUserCommand request)
+        public bool Handle(string username)
         {
-            var model = request.Adapt<Model.User>();
 
             using (SqlConnection connection = _context.GetConnection())
             {

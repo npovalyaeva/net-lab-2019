@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+
+using System.Data.SqlClient;
+using User.Commands;
+using User.Data;
+
+namespace User.Handlers
+{
+    public class GetUserByLoginAndPasswordHandler
+    {
+        private readonly UserContext _context;
+
+        public GetUserByLoginAndPasswordHandler(UserContext context)
+        {
+            _context = context;
+        }
+
+        public List<Model.User> Handle(string login, string password)
+        {
+            List<Model.User> list = new List<Model.User>();
+
+            using (SqlConnection connection = _context.GetConnection())
+            {
+                connection.Open();
+
+                string query = string.Format("SELECT * FROM [dbo].[Users] WHERE ([username] = N'{0}' OR [email] = N'{1}') AND [password_hash] = N'{2}'",
+                    login, 
+                    login,
+                    Hash.FindHash(password)
+                );
+                SqlCommand cmd = new SqlCommand(query, connection);
+
+                try
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new Model.User()
+                            {
+                                Id = Convert.ToInt32(reader["user_id"]),
+                                Username = reader["username"].ToString(),
+                                RoleId = Convert.ToInt32(reader["role_id"]),
+                                Email = reader["email"].ToString(),
+                                FirstName = reader["first_name"].ToString(),
+                                LastName = reader["last_name"].ToString(),
+                                IsBlocked = Convert.ToInt32(reader["is_blocked"])
+                            });
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return list;
+        }
+
+    }
+}

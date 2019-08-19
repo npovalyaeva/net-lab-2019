@@ -20,20 +20,44 @@ namespace ELibrary.Controllers
             return handler.Handle(request);
         }
 
-        [HttpPut("blockUser")]
+        [HttpGet("GetUserByLoginAndPassword")]
+        public IEnumerable<User.Model.User> GetUserByLoginAndPasswordHandler(string login, string password)
+        {
+            UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+            GetUserByLoginAndPasswordHandler handler = new GetUserByLoginAndPasswordHandler(context);
+            return handler.Handle(login, password);
+        }
+
+        [HttpGet("CheckIsUsernameUnique")]
+        public bool CheckUsernameIsUniqueHandler(string username)
+        {
+            UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+            CheckIsUsernameUniqueHandler handler = new CheckIsUsernameUniqueHandler(context);
+            return handler.Handle(username);
+        }
+
+        [HttpGet("CheckIsEmailUnique")]
+        public bool CheckEmailIsUniqueHandler(string email)
+        {
+            UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+            CheckIsEmailUniqueHandler handler = new CheckIsEmailUniqueHandler(context);
+            return handler.Handle(email);
+        }
+
+        [HttpPut("BlockUser")]
         public bool BlockUser(string username, [FromBody] CreateUserCommand request)
         {
             UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
             BlockUserHandler handler = new BlockUserHandler(context);
-            return handler.Handle(username, request);
+            return handler.Handle(username);
         }
 
-        [HttpPut("unblockUser")]
+        [HttpPut("UnblockUser")]
         public bool UnblockUser(string username, [FromBody] CreateUserCommand request)
         {
             UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
             UnblockUserHandler handler = new UnblockUserHandler(context);
-            return handler.Handle(username, request);
+            return handler.Handle(username);
         }
     }
 }

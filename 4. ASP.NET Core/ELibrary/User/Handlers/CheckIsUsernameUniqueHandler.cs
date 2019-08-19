@@ -1,36 +1,42 @@
 ﻿using System;
-
 using System.Data.SqlClient;
-using User.Commands;
+
 using User.Data;
 
 namespace User.Handlers
 {
-    public class BlockUserHandler
+    public class CheckIsUsernameUniqueHandler
     {
         private readonly UserContext _context;
 
-        public BlockUserHandler(UserContext context)
+        public CheckIsUsernameUniqueHandler(UserContext context)
         {
             _context = context;
         }
 
         public bool Handle(string username)
         {
+            bool isUsernameUnique = true;
 
             using (SqlConnection connection = _context.GetConnection())
             {
                 connection.Open();
-                string query = string.Format("UPDATE [dbo].[Users] SET [is_blocked] = 1 WHERE [username] = N'{0}'", username);
+                string query = string.Format("SELECT * FROM [dbo].[Users] WHERE [username] = N'{0}'", username);
                 SqlCommand cmd = new SqlCommand(query, connection);
 
                 try
                 {
-                    cmd.ExecuteNonQuery();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            isUsernameUnique = false;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
-                    string s = ex.Message;
+                    string e = ex.ToString();
                     return false;
                 }
                 finally
@@ -39,7 +45,8 @@ namespace User.Handlers
                 }
             }
 
-            return true;
+            return isUsernameUnique;
         }
+
     }
 }

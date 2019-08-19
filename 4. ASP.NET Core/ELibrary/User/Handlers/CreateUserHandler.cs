@@ -23,13 +23,12 @@ namespace User.Handlers
             using (SqlConnection connection = _context.GetConnection())
             {
                 connection.Open();
-                string query = string.Format("INSERT [dbo].[Users] ([username], [role_id], [email], [password_hash], [first_name], [last_name], [is_blocked]) VALUES (N'{0}', 2, N'{1}', N'{2}', N'{3}', N'{4}', {5})",
+                string query = string.Format("SELECT * FROM [dbo].[Users] WHERE [username] = N'{0}' AND [password_hash] = N'{1}'",
                     model.Username,
                     model.Email,
                     model.PasswordHash, 
                     model.FirstName, 
-                    model.LastName,
-                    model.IsBlocked
+                    model.LastName
                 );
                 SqlCommand cmd = new SqlCommand(query, connection);
                 try
