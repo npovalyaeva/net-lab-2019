@@ -5,7 +5,6 @@ using System.Text;
 
 using Book.Data;
 
-
 namespace Book.Handlers
 {
     public class GetAllBooksHandler

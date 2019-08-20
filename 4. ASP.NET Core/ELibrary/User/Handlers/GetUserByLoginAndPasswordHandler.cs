@@ -56,6 +56,7 @@ namespace User.Handlers
                 }
                 catch (Exception ex)
                 {
+                    string e = ex.ToString();
                     return null;
                 }
                 finally

@@ -21,7 +21,8 @@ namespace Book.Handlers
             using (SqlConnection connection = _context.GetConnection())
             {
                 connection.Open();
-                string query = string.Format("INSERT [dbo].[Books] ([title], [author_id], [year], [cover], [copies_count], [free_copies_count]) VALUES (N'{0}', {1}, {2}, NULL, {3}, {4})",
+                string query = string.Format("INSERT [dbo].[Books] ([title], [author_id], [year], [cover], [copies_count], [free_copies_count]) " +
+                    "VALUES (N'{0}', {1}, {2}, NULL, {3}, {4})",
                     model.Title,
                     model.Author.Id,
                     model.Year,

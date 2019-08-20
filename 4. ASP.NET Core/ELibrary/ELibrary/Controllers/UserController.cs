@@ -45,7 +45,7 @@ namespace ELibrary.Controllers
         }
 
         [HttpPut("BlockUser")]
-        public bool BlockUser(string username, [FromBody] CreateUserCommand request)
+        public bool BlockUser(string username)
         {
             UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
             BlockUserHandler handler = new BlockUserHandler(context);
@@ -53,7 +53,7 @@ namespace ELibrary.Controllers
         }
 
         [HttpPut("UnblockUser")]
-        public bool UnblockUser(string username, [FromBody] CreateUserCommand request)
+        public bool UnblockUser(string username)
         {
             UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
             UnblockUserHandler handler = new UnblockUserHandler(context);

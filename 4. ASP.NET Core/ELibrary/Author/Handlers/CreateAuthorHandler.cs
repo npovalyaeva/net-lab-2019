@@ -23,7 +23,8 @@ namespace Author.Handlers
             using (SqlConnection connection = _context.GetConnection())
             {
                 connection.Open();
-                string query = string.Format("INSERT [dbo].[Authors] ([last_name], [first_name], [patronymic]) VALUES (N'{0}', N'{1}', N'{2}')",
+                string query = string.Format("INSERT [dbo].[Authors] ([last_name], [first_name], [patronymic]) " +
+                    "VALUES (N'{0}', N'{1}', N'{2}')",
                     model.LastName,
                     model.FirstName,
                     model.Patronymic
