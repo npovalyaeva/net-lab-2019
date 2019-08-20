@@ -5,8 +5,6 @@ using Mapster;
 using Reservation.Commands;
 using Reservation.Data;
 
-using User.Model;
-using Book.Model;
 using System;
 
 namespace Reservation.Handlers

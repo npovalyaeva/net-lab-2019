@@ -15,7 +15,7 @@ namespace Reservation.Handlers
             _context = context;
         }
 
-        public bool Handle(string reservationId, int statusId)
+        public bool Handle(int reservationId, int statusId)
         {
 
             using (SqlConnection connection = _context.GetConnection())

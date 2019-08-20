@@ -22,7 +22,7 @@ namespace ELibrary.Controllers
         }
 
         [HttpPut("UpdateReservationStatus")]
-        public bool UpdateReservationStatus(string reservationId, int statusId)
+        public bool UpdateReservationStatus(int reservationId, int statusId)
         {
             ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
             UpdateReservationStatusHandler handler = new UpdateReservationStatusHandler(context);
