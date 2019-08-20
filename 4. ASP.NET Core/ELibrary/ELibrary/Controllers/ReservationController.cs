@@ -28,5 +28,13 @@ namespace ELibrary.Controllers
             UpdateReservationStatusHandler handler = new UpdateReservationStatusHandler(context);
             return handler.Handle(reservationId, statusId);
         }
+
+        [HttpDelete("DeleteReservation")]
+        public bool DeleteTopic(int reservationId)
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            DeleteReservationHandler handler = new DeleteReservationHandler(context);
+            return handler.Handle(reservationId);
+        }
     }
 }
