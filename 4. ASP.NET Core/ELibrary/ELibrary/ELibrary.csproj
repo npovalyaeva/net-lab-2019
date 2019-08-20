@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Author\Author.csproj" />
     <ProjectReference Include="..\Book\Book.csproj" />
+    <ProjectReference Include="..\Comment\Comment.csproj" />
     <ProjectReference Include="..\Reservation\Reservation.csproj" />
     <ProjectReference Include="..\Status\Status.csproj" />
     <ProjectReference Include="..\User\User.csproj" />

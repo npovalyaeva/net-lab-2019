@@ -8,6 +8,7 @@ using AutoMapper;
 
 using Author.Data;
 using Book.Data;
+using Comment.Data;
 using Reservation.Data;
 using Status.Data;
 using User.Data;
@@ -31,6 +32,7 @@ namespace ELibrary
             
             services.Add(new ServiceDescriptor(typeof(AuthorContext), new AuthorContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.Add(new ServiceDescriptor(typeof(BookContext), new BookContext(Configuration.GetConnectionString("DefaultConnection"))));
+            services.Add(new ServiceDescriptor(typeof(CommentContext), new CommentContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.Add(new ServiceDescriptor(typeof(ReservationContext), new ReservationContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.Add(new ServiceDescriptor(typeof(StatusContext), new StatusContext(Configuration.GetConnectionString("DefaultConnection"))));
             services.Add(new ServiceDescriptor(typeof(UserContext), new UserContext(Configuration.GetConnectionString("DefaultConnection"))));
