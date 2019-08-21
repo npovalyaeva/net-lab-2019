@@ -22,7 +22,7 @@ namespace User.Handlers
             {
                 connection.Open();
                 string query = string.Format("UPDATE [dbo].[Users] SET [blocked_reason] = NULL " +
-                    "WHERE [username] = N'{0}' " +
+                    "WHERE [user_id] = {0} " +
                     "UPDATE [dbo].[Users] SET [is_blocked] = 0 " +
                     "WHERE [user_id] = {0}", userId);
                 SqlCommand cmd = new SqlCommand(query, connection);

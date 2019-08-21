@@ -29,6 +29,30 @@ namespace ELibrary.Controllers
             return handler.Handle(reservationId, statusId);
         }
 
+        [HttpGet("GetAllHandedOutReservations")]
+        public IEnumerable<Reservation.Model.Reservation> GetAllHandedOutReservations()
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            GetAllHandedOutReservationsHandler handler = new GetAllHandedOutReservationsHandler(context);
+            return handler.Handle();
+        }
+
+        [HttpGet("GetHandedOutReservationsByAuthorLastName")]
+        public IEnumerable<Reservation.Model.Reservation> GetHandedOutReservationsByAuthorLastName(string authorLastName)
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            GetHandedOutReservationsByAuthorLastNameHandler handler = new GetHandedOutReservationsByAuthorLastNameHandler(context);
+            return handler.Handle(authorLastName);
+        }
+
+        [HttpGet("GetHandedOutReservationsByBookTitle")]
+        public IEnumerable<Reservation.Model.Reservation> GetHandedOutReservationsByBookTitle(string bookTitle)
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            GetHandedOutReservationsByBookTitleHandler handler = new GetHandedOutReservationsByBookTitleHandler(context);
+            return handler.Handle(bookTitle);
+        }
+
         [HttpGet("GetReservationsByBookId")]
         public IEnumerable<Reservation.Model.Reservation> GetReservationsByBookId(int bookId)
         {
