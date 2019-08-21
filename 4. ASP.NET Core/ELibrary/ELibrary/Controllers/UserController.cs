@@ -45,19 +45,19 @@ namespace ELibrary.Controllers
         }
 
         [HttpPut("BlockUser")]
-        public bool BlockUser(string username)
+        public bool BlockUser(int userId, string blockedReason)
         {
             UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
             BlockUserHandler handler = new BlockUserHandler(context);
-            return handler.Handle(username);
+            return handler.Handle(userId, blockedReason);
         }
 
         [HttpPut("UnblockUser")]
-        public bool UnblockUser(string username)
+        public bool UnblockUser(int userId)
         {
             UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
             UnblockUserHandler handler = new UnblockUserHandler(context);
-            return handler.Handle(username);
+            return handler.Handle(userId);
         }
     }
 }

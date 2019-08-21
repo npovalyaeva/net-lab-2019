@@ -27,7 +27,7 @@ namespace Reservation.Handlers
                 string query = string.Format("SELECT Reservations.reservation_id, Reservations.date_of_reservation, " +
                     "Books.book_id, Books.title, Books.year, Books.cover, " +
                     "Authors.author_id, Authors.last_name, Authors.first_name, Authors.patronymic, " +
-                    "Statuses.status_id, Statuses.name" +
+                    "Statuses.status_id, Statuses.name " +
                     "FROM [dbo].[Reservations] AS Reservations " +
                     "JOIN [dbo].[Books] AS Books " +
                     "ON (Reservations.book_id = Books.book_id) " +
