@@ -7,16 +7,16 @@ using User.Data;
 
 namespace User.Handlers
 {
-    public class GetUserByLoginAndPasswordHandler
+    public class GetAllBlockedUsersHandler
     {
         private readonly UserContext _context;
 
-        public GetUserByLoginAndPasswordHandler(UserContext context)
+        public GetAllBlockedUsersHandler(UserContext context)
         {
             _context = context;
         }
 
-        public List<Model.User> Handle(string login, string password)
+        public List<Model.User> Handle()
         {
             List<Model.User> list = new List<Model.User>();
 
@@ -24,14 +24,12 @@ namespace User.Handlers
             {
                 connection.Open();
 
-                string query = string.Format("SELECT Users.user_id, Users.username, Users.email, Users.first_name, Users.last_name, Users.is_blocked, Roles.name " +
+                string query = "SELECT Users.user_id, Users.username, Users.email, Users.first_name, Users.last_name, Users.is_blocked, Users.blocked_reason, " +
+                    "Roles.name " +
                     "FROM [dbo].[Users] AS Users " +
                     "JOIN [dbo].[Roles] AS Roles " +
                     "ON (Users.role_id = Roles.role_id) " +
-                    "WHERE ([username] = N'{0}' OR [email] = N'{0}') AND [password_hash] = N'{1}'",
-                    login, 
-                    Hash.FindHash(password)
-                );
+                    "WHERE [is_blocked] = 1";
                 SqlCommand cmd = new SqlCommand(query, connection);
 
                 try

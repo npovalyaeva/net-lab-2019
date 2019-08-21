@@ -21,9 +21,7 @@ namespace User.Handlers
             using (SqlConnection connection = _context.GetConnection())
             {
                 connection.Open();
-                string query = string.Format("UPDATE [dbo].[Users] SET [blocked_reason] = NULL " +
-                    "WHERE [user_id] = {0} " +
-                    "UPDATE [dbo].[Users] SET [is_blocked] = 0 " +
+                string query = string.Format("UPDATE [dbo].[Users] SET [blocked_reason] = NULL, [is_blocked] = 0 " +
                     "WHERE [user_id] = {0}", userId);
                 SqlCommand cmd = new SqlCommand(query, connection);
 

@@ -17,5 +17,7 @@
         public string LastName { get; set; }
 
         public int IsBlocked { get; set; }
+
+        public string BlockingReason { get; set; }
     }
 }

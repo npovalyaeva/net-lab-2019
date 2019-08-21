@@ -20,6 +20,14 @@ namespace ELibrary.Controllers
             return handler.Handle(request);
         }
 
+        [HttpGet("GetAllBlockedUsers")]
+        public IEnumerable<User.Model.User> GetAllBlockedUsers()
+        {
+            UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+            GetAllBlockedUsersHandler handler = new GetAllBlockedUsersHandler(context);
+            return handler.Handle();
+        }
+
         [HttpGet("GetUserByLoginAndPassword")]
         public IEnumerable<User.Model.User> GetUserByLoginAndPasswordHandler(string login, string password)
         {
