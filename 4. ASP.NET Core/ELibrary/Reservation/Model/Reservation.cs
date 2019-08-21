@@ -12,6 +12,6 @@ namespace Reservation.Model
 
         public User.Model.User User { get; set; }
 
-        public DateTime DateOfReservation { get; }
+        public DateTime DateOfReservation { get; set; }
     }
 }

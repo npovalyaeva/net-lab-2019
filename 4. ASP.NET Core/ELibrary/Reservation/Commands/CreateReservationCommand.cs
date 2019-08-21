@@ -1,4 +1,6 @@
-﻿namespace Reservation.Commands
+﻿using System;
+
+namespace Reservation.Commands
 {
     public class CreateReservationCommand
     {
@@ -10,6 +12,6 @@
 
         public User.Model.User User { get; set; }
 
-        public string DateOfReservation { get; }
+        public DateTime DateOfReservation { get; set; }
     }
 }

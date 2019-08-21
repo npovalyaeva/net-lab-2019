@@ -29,6 +29,22 @@ namespace ELibrary.Controllers
             return handler.Handle(reservationId, statusId);
         }
 
+        [HttpGet("GetReservationsByBookId")]
+        public IEnumerable<Reservation.Model.Reservation> GetReservationsByBookId(int bookId)
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            GetReservationsByBookIdHandler handler = new GetReservationsByBookIdHandler(context);
+            return handler.Handle(bookId);
+        }
+
+        [HttpGet("GetReservationsByUserId")]
+        public IEnumerable<Reservation.Model.Reservation> GetReservationsByUserId(int userId)
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            GetReservationsByUserIdHandler handler = new GetReservationsByUserIdHandler(context);
+            return handler.Handle(userId);
+        }
+
         [HttpDelete("DeleteReservation")]
         public bool DeleteTopic(int reservationId)
         {
