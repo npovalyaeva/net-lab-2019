@@ -24,7 +24,7 @@ namespace User.Handlers
             {
                 connection.Open();
 
-                string query = "SELECT Users.user_id, Users.username, Users.email, Users.first_name, Users.last_name, Users.is_blocked, Users.blocked_reason, " +
+                string query = "SELECT Users.user_id, Users.username, Users.email, Users.first_name, Users.last_name, Users.is_blocked, Users.blocking_reason, " +
                     "Roles.name " +
                     "FROM [dbo].[Users] AS Users " +
                     "JOIN [dbo].[Roles] AS Roles " +
