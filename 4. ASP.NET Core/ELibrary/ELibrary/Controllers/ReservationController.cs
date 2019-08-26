@@ -53,6 +53,14 @@ namespace ELibrary.Controllers
             return handler.Handle(bookTitle);
         }
 
+        [HttpGet("GetHandedOutReservationsByCountOfDays")]
+        public IEnumerable<Reservation.Model.Reservation> GetHandedOutReservationsByCountOfDays(int countOfDays)
+        {
+            ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
+            GetHandedOutReservationsByCountOfDaysHandler handler = new GetHandedOutReservationsByCountOfDaysHandler(context);
+            return handler.Handle(countOfDays);
+        }
+
         [HttpGet("GetReservationsByBookId")]
         public IEnumerable<Reservation.Model.Reservation> GetReservationsByBookId(int bookId)
         {

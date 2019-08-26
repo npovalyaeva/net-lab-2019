@@ -7,19 +7,18 @@ using Reservation.Data;
 
 namespace Reservation.Handlers
 {
-    public class GetHandedOutReservationsByBookTitleHandler
+    public class GetHandedOutReservationsByCountOfDaysHandler
     {
         private readonly ReservationContext _context;
 
-        public GetHandedOutReservationsByBookTitleHandler(ReservationContext context)
+        public GetHandedOutReservationsByCountOfDaysHandler(ReservationContext context)
         {
             _context = context;
         }
 
-        public List<Model.Reservation> Handle(string bookTitle)
+        public List<Model.Reservation> Handle(int countOfDays)
         {
-            // TODO: Change 'using' or create new formatting entity
-            bookTitle = Book.Data.Formatting.FormatString(bookTitle);
+            DateTime dateOfReservation = DateTime.Now.AddDays(-countOfDays);
 
             List<Model.Reservation> list = new List<Model.Reservation>();
 
@@ -39,9 +38,10 @@ namespace Reservation.Handlers
                     "ON (Books.author_id = Authors.author_id) " +
                     "JOIN [dbo].[Users] AS Users " +
                     "ON (Reservations.user_id = Users.user_id) " +
-                    "WHERE ([status_id] = 2 AND [Books].[title] = N'{0}')", 
-                    bookTitle
+                    "WHERE ([status_id] = 2 AND [date_of_reservation] <= '{0}')",
+                    dateOfReservation
                 );
+
 
                 SqlCommand cmd = new SqlCommand(query, connection);
 
