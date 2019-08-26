@@ -18,7 +18,7 @@ namespace Author.Handlers
 
         public bool Handle(CreateAuthorCommand request)
         {
-            var model = request.Adapt<Model.Author>();
+            Model.Author model = request.Adapt<Model.Author>();
 
             using (SqlConnection connection = _context.GetConnection())
             {

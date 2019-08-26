@@ -37,6 +37,14 @@ namespace ELibrary.Controllers
             return handler.Handle();
         }
 
+        [HttpGet("GetBookById")]
+        public IEnumerable<Book.Model.Book> GetBookById(int bookId)
+        {
+            BookContext context = HttpContext.RequestServices.GetService(typeof(BookContext)) as BookContext;
+            GetBookByIdHandler handler = new GetBookByIdHandler(context);
+            return handler.Handle(bookId);
+        }
+
         [HttpGet("GetBooksByAuthorLastName")]
         public IEnumerable<Book.Model.Book> GetBooksByAuthorLastName(string title)
         {

@@ -7,16 +7,16 @@ using Book.Data;
 
 namespace Book.Handlers
 {
-    public class GetBooksByYearHandler
+    public class GetBookByIdHandler
     {
         private readonly BookContext _context;
 
-        public GetBooksByYearHandler(BookContext context)
+        public GetBookByIdHandler(BookContext context)
         {
             _context = context;
         }
 
-        public List<Model.Book> Handle(int year)
+        public List<Model.Book> Handle(int bookId)
         {
             List<Model.Book> list = new List<Model.Book>();
 
@@ -27,7 +27,7 @@ namespace Book.Handlers
                 string query = string.Format("SELECT * FROM [dbo].[Books] AS Books " +
                     "JOIN [dbo].[Authors] AS Authors " +
                     "ON (Books.author_id = Authors.author_id) " +
-                    "WHERE [year] = {0}", year);
+                    "WHERE [book_id] = {0}", bookId);
 
                 SqlCommand cmd = new SqlCommand(query, connection);
 
