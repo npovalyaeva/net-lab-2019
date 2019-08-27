@@ -7,18 +7,28 @@ using System.Threading.Tasks;
 using Reservation.Commands;
 using Reservation.Data;
 using Reservation.Handlers;
+using Microsoft.Extensions.Logging;
 
 namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     public class ReservationController : Controller
     {
+        private readonly ILogger<ReservationController> _logger;
+
+        public ReservationController(ILogger<ReservationController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpPost]
         public bool CreateReservation([FromBody] CreateReservationCommand request)
         {
             ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
             CreateReservationHandler handler = new CreateReservationHandler(context);
-            return handler.Handle(request);
+            bool isSuccess = handler.Handle(request);
+            if (isSuccess) _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Book ID: {0}, User ID: {1}, Status ID: {2}", request.Book.Id, request.User.Id, request.Status.Id));
+            return isSuccess;
         }
 
         [HttpPut("UpdateReservationStatus")]
@@ -26,7 +36,9 @@ namespace ELibrary.Controllers
         {
             ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
             UpdateReservationStatusHandler handler = new UpdateReservationStatusHandler(context);
-            return handler.Handle(reservationId, statusId);
+            bool isSuccess = handler.Handle(reservationId, statusId);
+            if (isSuccess) _logger.LogInformation(string.Format("Reservation was updated. Reservation ID: {0}, Status ID: {1}", reservationId, statusId));
+            return isSuccess;
         }
 
         [HttpGet("GetAllHandedOutReservations")]
@@ -82,7 +94,9 @@ namespace ELibrary.Controllers
         {
             ReservationContext context = HttpContext.RequestServices.GetService(typeof(ReservationContext)) as ReservationContext;
             DeleteReservationHandler handler = new DeleteReservationHandler(context);
-            return handler.Handle(reservationId);
+            bool isSuccess = handler.Handle(reservationId);
+            if (isSuccess) _logger.LogInformation(string.Format("Reservation was deleted. Reservation ID: {0}", reservationId));
+            return isSuccess;
         }
     }
 }

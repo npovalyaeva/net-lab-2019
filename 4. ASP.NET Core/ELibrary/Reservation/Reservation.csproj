@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Book\Book.csproj" />
     <ProjectReference Include="..\Status\Status.csproj" />
     <ProjectReference Include="..\User\User.csproj" />

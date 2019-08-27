@@ -27,7 +27,7 @@ namespace ELibrary
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup));
             services.AddMvc();
             
             services.Add(new ServiceDescriptor(typeof(AuthorContext), new AuthorContext(Configuration.GetConnectionString("DefaultConnection"))));
