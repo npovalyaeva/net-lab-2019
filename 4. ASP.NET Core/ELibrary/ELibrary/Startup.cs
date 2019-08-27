@@ -27,7 +27,7 @@ namespace ELibrary
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
+            //services.AddAutoMapper(typeof(Startup));
             services.AddMvc();
             
             services.Add(new ServiceDescriptor(typeof(AuthorContext), new AuthorContext(Configuration.GetConnectionString("DefaultConnection"))));
@@ -48,22 +48,28 @@ namespace ELibrary
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseWebpackDevMiddleware();
+            }
+
+            app.UseStaticFiles();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "DefaultApi",
+                    template: "api/{controller}/{action}");
+                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ELibrary Swagger");
-            });
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
             });
         }
     }
