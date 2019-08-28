@@ -1,13 +1,17 @@
 {
-  "name": "app",
+  "name": "react-redux-weather-application",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.3.3",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.1",
-    "react-scripts": "3.1.1",
+    "bootstrap": "^4.3.1",
+    "bootswatch": "^4.3.1",
+    "cors-anywhere": "^0.4.1",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "react-scripts": "3.0.1",
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
     "redux-thunk": "^2.3.0"
@@ -15,11 +19,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
