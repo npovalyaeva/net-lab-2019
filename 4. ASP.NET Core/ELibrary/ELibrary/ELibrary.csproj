@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="ClientApp\App\**" />
+    <Compile Remove="wwwroot\**" />
     <Content Remove="ClientApp\App\**" />
+    <Content Remove="wwwroot\**" />
     <EmbeddedResource Remove="ClientApp\App\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="ClientApp\App\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +39,6 @@
     <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
