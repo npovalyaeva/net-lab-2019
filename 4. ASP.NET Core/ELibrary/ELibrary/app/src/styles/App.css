@@ -1,55 +1,55 @@
 @font-face {
-  font-family: 'San Francisco Text Light';
-  src: url('../sources/fonts/SFUIText-Light.eot');
-  src: url('../sources/fonts/SFUIText-Light.eot?#iefix') format('embedded-opentype'),
-  url('../sources/fonts/SFUIText-Light.woff') format('woff'),
-  url('../sources/fonts/SFUIText-Light.ttf') format('truetype');
+  font-family: 'Futura Light';
+  src: url('../sources/fonts/FuturaLightC.eot');
+  src: url('../sources/fonts/FuturaLightC.eot?#iefix') format('embedded-opentype'),
+  url('../sources/fonts/FuturaLightC.woff') format('woff'),
+  url('../sources/fonts/FuturaLightC.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'San Francisco Text Light Italic';
-  src: url('../sources/fonts/SFUIText-LightItalic.eot');
-  src: url('../sources/fonts/SFUIText-LightItalic.eot?#iefix') format('embedded-opentype'),
-  url('../sources/fonts/SFUIText-LightItalic.woff') format('woff'),
-  url('../sources/fonts/SFUIText-LightItalic.ttf') format('truetype');
+  font-family: 'Futura Book';
+  src: url('../sources/fonts/FuturaBookC.eot');
+  src: url('../sources/fonts/FuturaBookC.eot?#iefix') format('embedded-opentype'),
+  url('../sources/fonts/FuturaBookC.woff') format('woff'),
+  url('../sources/fonts/FuturaBookC.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'San Francisco Text Regular';
-  src: url('../sources/fonts/SFUIText-Regular.eot');
-  src: url('../sources/fonts/SFUIText-Regular.eot?#iefix') format('embedded-opentype'),
-  url('../sources/fonts/SFUIText-Regular.woff') format('woff'),
-  url('../sources/fonts/SFUIText-Regular.ttf') format('truetype');
+  font-family: 'Schnyder Wide L Light';
+  src: url('../sources/fonts/SchnyderWideLLight.otf');
   font-weight: normal;
   font-style: normal;
-  }
+}
 
-  body {
-    font-family: 'San Francisco Text Light';
-    margin: 0;
-  }
+body {
+  margin: 0;
+}
 
-  .app-bar {
-    box-shadow: 0 rgba(221, 221, 221, 1) !important;
-  }
+h3 {
+  margin-top: 100px;
+  margin-bottom: 10px;
+  padding: 0 100px;
+  color: #161E5A;
 
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 200px !important;
-    background-color: #FFF;
-    height: 80px;
-  }
+  font-family: 'Schnyder Wide L Light';
+  font-size: 44px;
+  font-weight: normal;
 
-  .login-button {
-    font-family: 'San Francisco Text Light' !important;
-    color: #000 !important;
-  }
+  text-align: center;
+}
 
-  .main-image {
-    box-shadow: inset 0 0 10px 5px rgba(221, 221, 221, 1) !important;
-  }
+h5 {
+  margin-top: 0px;
+  padding: 0 100px;
+  color: #05ADAD;
+  text-transform: uppercase;
+
+  font-family: 'Futura Book';
+
+  text-align: center;
+
+}
