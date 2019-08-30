@@ -39,7 +39,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return View(author);
+            return Json(author);
         }
 
         // GET: Authors/Create
