@@ -11,11 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book", "Book\Book.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Author", "Author\Author.csproj", "{4E6CD8F6-4BB8-4FBD-8D6D-76ED3467C064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reservation", "Reservation\Reservation.csproj", "{2A5F49A3-5188-428E-A1D7-8D49A542BA2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reservation", "Reservation\Reservation.csproj", "{2A5F49A3-5188-428E-A1D7-8D49A542BA2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Status", "Status\Status.csproj", "{BFB912FF-82CC-4A70-ACCA-6570F3E70C48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Status", "Status\Status.csproj", "{BFB912FF-82CC-4A70-ACCA-6570F3E70C48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comment", "Comment\Comment.csproj", "{379E2236-B47F-4CCF-B7F2-E43ABF3A50F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comment", "Comment\Comment.csproj", "{379E2236-B47F-4CCF-B7F2-E43ABF3A50F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{AABE2661-E40B-492D-8E58-A85665F277CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{379E2236-B47F-4CCF-B7F2-E43ABF3A50F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{379E2236-B47F-4CCF-B7F2-E43ABF3A50F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{379E2236-B47F-4CCF-B7F2-E43ABF3A50F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABE2661-E40B-492D-8E58-A85665F277CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABE2661-E40B-492D-8E58-A85665F277CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABE2661-E40B-492D-8E58-A85665F277CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABE2661-E40B-492D-8E58-A85665F277CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
