@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ELibrary.Models;
+using AutoMapper;
 
 namespace ELibrary
 {
@@ -35,6 +36,7 @@ namespace ELibrary
 
             services.AddDbContext<ELibraryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ELibraryDatabase")));
+            services.AddAutoMapper(GetType().Assembly); // ?
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

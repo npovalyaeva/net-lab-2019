@@ -1,30 +1,43 @@
-﻿using System;
+﻿using AutoMapper;
+using ELibrary.Models;
+using ELibrary.Models.ViewModels.Author;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ELibrary.Models;
 
 namespace ELibrary.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AuthorsController : Controller
     {
         private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
 
         public AuthorsController(ELibraryContext context)
         {
             _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
         }
 
         // GET: Authors
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Author.ToListAsync());
+            var authors = await _context.Author.ToListAsync();
+            var res = _mapper.Map<List<Author>, List<AuthorModel>>(authors);
+
+            return Json(_mapper.Map<List<Author>, List<AuthorModel>>(authors));
         }
 
         // GET: Authors/Details/5
+        [HttpGet("details/{id}")]
         public async Task<IActionResult> Details(short? id)
         {
             if (id == null)
@@ -38,9 +51,13 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-
-            return Json(author);
+            return Json(_mapper.Map<Author, AuthorModel>(author));
         }
+
+
+
+
+
 
         // GET: Authors/Create
         public IActionResult Create()
