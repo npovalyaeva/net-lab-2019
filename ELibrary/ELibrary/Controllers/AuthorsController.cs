@@ -31,7 +31,6 @@ namespace ELibrary.Controllers
         public async Task<IActionResult> Index()
         {
             var authors = await _context.Author.ToListAsync();
-            var res = _mapper.Map<List<Author>, List<AuthorModel>>(authors);
 
             return Json(_mapper.Map<List<Author>, List<AuthorModel>>(authors));
         }
@@ -47,6 +46,7 @@ namespace ELibrary.Controllers
 
             var author = await _context.Author
                 .FirstOrDefaultAsync(m => m.AuthorId == id);
+
             if (author == null)
             {
                 return NotFound();
@@ -68,17 +68,16 @@ namespace ELibrary.Controllers
         // POST: Authors/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AuthorId,LastName,FirstName,Patronymic")] Author author)
+        [HttpPost("create")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([FromBody] Author author)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(author);
+                _context.Author.Add(author);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(author);
+            return Json(CreatedAtAction(nameof(Details), new { id = author.AuthorId }, author));
         }
 
         // GET: Authors/Edit/5
