@@ -74,7 +74,7 @@ namespace ELibrary.Models
                 entity.Property(e => e.Year).HasColumnName("year");
 
                 entity.HasOne(d => d.Author)
-                    .WithMany(p => p.Book)
+                    .WithMany(p => p.Books)
                     .HasForeignKey(d => d.AuthorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_books_authors");
@@ -98,13 +98,13 @@ namespace ELibrary.Models
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Book)
-                    .WithMany(p => p.Comment)
+                    .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.BookId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_comments_books");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Comment)
+                    .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_comments_users");
@@ -125,19 +125,19 @@ namespace ELibrary.Models
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Book)
-                    .WithMany(p => p.Reservation)
+                    .WithMany(p => p.Reservations)
                     .HasForeignKey(d => d.BookId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_reservations_books");
 
                 entity.HasOne(d => d.Status)
-                    .WithMany(p => p.Reservation)
+                    .WithMany(p => p.Reservations)
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservations_Statuses");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Reservation)
+                    .WithMany(p => p.Reservations)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_reservations_users");
@@ -213,7 +213,7 @@ namespace ELibrary.Models
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Role)
-                    .WithMany(p => p.User)
+                    .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_users_roles");

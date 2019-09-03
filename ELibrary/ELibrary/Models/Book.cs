@@ -7,8 +7,8 @@ namespace ELibrary.Models
     {
         public Book()
         {
-            Comment = new HashSet<Comment>();
-            Reservation = new HashSet<Reservation>();
+            Comments = new HashSet<Comment>();
+            Reservations = new HashSet<Reservation>();
         }
 
         public int BookId { get; set; }
@@ -20,7 +20,7 @@ namespace ELibrary.Models
         public byte FreeCopiesCount { get; set; }
 
         public virtual Author Author { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Reservation> Reservation { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

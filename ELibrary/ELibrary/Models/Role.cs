@@ -7,12 +7,12 @@ namespace ELibrary.Models
     {
         public Role()
         {
-            User = new HashSet<User>();
+            Users = new HashSet<User>();
         }
 
         public byte RoleId { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<User> User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

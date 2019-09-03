@@ -7,12 +7,12 @@ namespace ELibrary.Models
     {
         public Status()
         {
-            Reservation = new HashSet<Reservation>();
+            Reservations = new HashSet<Reservation>();
         }
 
         public byte StatusId { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Reservation> Reservation { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

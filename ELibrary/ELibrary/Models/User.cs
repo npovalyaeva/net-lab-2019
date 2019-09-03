@@ -7,8 +7,8 @@ namespace ELibrary.Models
     {
         public User()
         {
-            Comment = new HashSet<Comment>();
-            Reservation = new HashSet<Reservation>();
+            Comments = new HashSet<Comment>();
+            Reservations = new HashSet<Reservation>();
         }
 
         public int UserId { get; set; }
@@ -22,7 +22,7 @@ namespace ELibrary.Models
         public string BlockedReason { get; set; }
 
         public virtual Role Role { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Reservation> Reservation { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }
