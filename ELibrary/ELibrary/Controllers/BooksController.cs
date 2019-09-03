@@ -135,7 +135,6 @@ namespace ELibrary.Controllers
 
             var book = await _context.Book
                 .Include(b => b.Author)
-                .Include(b => b.Comments)
                 .FirstOrDefaultAsync(m => m.BookId == id);
 
             if (book == null)
@@ -147,25 +146,20 @@ namespace ELibrary.Controllers
             return Json(_mapper.Map<Book, BookFullInfoModel>(book));
         }
 
-
-
-
-
         // POST: Books/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookId,Title,AuthorId,Year,Cover,CopiesCount,FreeCopiesCount")] Book book)
+        [HttpPost("create")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([FromBody] Book book)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
+                _context.Book
+                    .Add(book);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Author, "AuthorId", "FirstName", book.AuthorId);
-            return View(book);
+            return Json(CreatedAtAction(nameof(Details), new { id = book.BookId }, book));
         }
 
         private bool BookExists(int id)

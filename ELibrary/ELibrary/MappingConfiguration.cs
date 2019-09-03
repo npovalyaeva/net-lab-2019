@@ -30,17 +30,19 @@ namespace ELibrary
                 .ReverseMap();
             CreateMap<Author, AuthorNameModel>()
                 .ReverseMap();
+
             CreateMap<Book, BookBriefInfoModel>()
                 .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author))
                 .ReverseMap();
             CreateMap<Book, BookFullInfoModel>()
-                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author))
-                .IncludeAllDerived()
+                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author))               
                 .ReverseMap();
+            CreateMap<Book, CreateBookModel>()
+                .ReverseMap();
+
             CreateMap<Comment, CommentForBookModel>()
-                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
-                .IncludeAllDerived()
                 .ReverseMap();
+
             CreateMap<User, UserNameModel>()
                 .ReverseMap();
         }
