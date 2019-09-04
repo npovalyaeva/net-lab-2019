@@ -100,7 +100,7 @@ namespace ELibrary.Controllers
             _context.Comment.Update(dbModel);
             await _context.SaveChangesAsync();
 
-            return Json(CreatedAtAction(nameof(Details), new { id = dbModel.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbModel)));;
+            return Json(CreatedAtAction(nameof(Details), new { id = dbModel.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbModel)));
         }
     }
 }
