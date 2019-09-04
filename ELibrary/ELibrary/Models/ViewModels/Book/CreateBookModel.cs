@@ -7,7 +7,6 @@ namespace ELibrary.Models.ViewModels.Book
 {
     public class CreateBookModel
     {
-        public int BookId { get; set; }
         public string Title { get; set; }
         public short AuthorId { get; set; }
         public short Year { get; set; }

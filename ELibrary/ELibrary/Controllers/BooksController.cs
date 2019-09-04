@@ -142,7 +142,6 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            //return Json(book);
             return Json(_mapper.Map<Book, BookFullInfoModel>(book));
         }
 
@@ -151,20 +150,16 @@ namespace ELibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("create")]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody] Book book)
+        public async Task<IActionResult> Create([FromBody] CreateBookModel book)
         {
+            var bdModel = _mapper.Map<CreateBookModel, Book>(book);
             if (ModelState.IsValid)
             {
                 _context.Book
-                    .Add(book);
+                    .Add(bdModel);
                 await _context.SaveChangesAsync();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = book.BookId }, book));
-        }
-
-        private bool BookExists(int id)
-        {
-            return _context.Book.Any(e => e.BookId == id);
+            return Json(CreatedAtAction(nameof(Details), new { id = bdModel.BookId }, _mapper.Map<Book, SuccessBookModel>(bdModel)));
         }
     }
 }
