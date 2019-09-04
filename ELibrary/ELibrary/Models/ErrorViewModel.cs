@@ -1,5 +1,3 @@
-using System;
-
 namespace ELibrary.Models
 {
     public class ErrorViewModel
