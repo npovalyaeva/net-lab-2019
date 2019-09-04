@@ -1,17 +1,13 @@
-﻿using ELibrary.Models.ViewModels.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ELibrary.Models.ViewModels.Comment
 {
-    public class CommentForBookModel
+    public class SuccessCommentModel
     {
         public int CommentId { get; set; }
-        public UserNameModel User { get; set; }
-        public int BookId { get; set; }
         public string Text { get; set; }
-        public DateTime Date { get; set; }
     }
 }
