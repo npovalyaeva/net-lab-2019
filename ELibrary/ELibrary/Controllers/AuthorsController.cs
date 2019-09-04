@@ -36,7 +36,6 @@ namespace ELibrary.Controllers
         }
 
         // GET: Authors/Details/5
-        [HttpGet("details/{id}")]
         public async Task<IActionResult> Details(short? id)
         {
             if (id == null)
@@ -60,21 +59,17 @@ namespace ELibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("create")]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody] Author author)
+        public async Task<IActionResult> Create([FromBody] CreateAuthorModel author)
         {
+            var dbModel = _mapper.Map<CreateAuthorModel, Author>(author);
+
             if (ModelState.IsValid)
             {
                 _context.Author
-                    .Add(author);
+                    .Add(dbModel);
                 await _context.SaveChangesAsync();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = author.AuthorId }, author));
-        }
-
-        private bool AuthorExists(short id)
-        {
-            return _context.Author
-                .Any(e => e.AuthorId == id);
+            return Json(CreatedAtAction(nameof(Details), new { id = dbModel.AuthorId }, _mapper.Map<Author, SuccessAuthorModel>(dbModel)));
         }
     }
 }

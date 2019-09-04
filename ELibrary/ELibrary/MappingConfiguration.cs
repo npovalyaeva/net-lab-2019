@@ -30,6 +30,8 @@ namespace ELibrary
                 .ReverseMap();
             CreateMap<Author, AuthorNameModel>()
                 .ReverseMap();
+            CreateMap<Author, CreateAuthorModel>()
+                .ReverseMap();
             CreateMap<Author, SuccessAuthorModel>()
                 .ReverseMap();
 
