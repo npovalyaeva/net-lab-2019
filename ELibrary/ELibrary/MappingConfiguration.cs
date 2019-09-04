@@ -54,6 +54,16 @@ namespace ELibrary
             CreateMap<Status, StatusModel>()
                 .ReverseMap();
 
+            CreateMap<User, BlockUserModel>()
+                .ReverseMap();
+            CreateMap<User, CreateUserModel>()
+                .ReverseMap();
+            CreateMap<User, SuccessUserModel>()
+                .ReverseMap();
+            CreateMap<User, UserBlockingStatusModel>()
+                .ReverseMap();
+            CreateMap<User, UserModel>()
+                .ReverseMap();
             CreateMap<User, UserNameModel>()
                 .ReverseMap();
         }
