@@ -3,6 +3,7 @@ using ELibrary.Models;
 using ELibrary.Models.ViewModels.Author;
 using ELibrary.Models.ViewModels.Book;
 using ELibrary.Models.ViewModels.Comment;
+using ELibrary.Models.ViewModels.Reservation;
 using ELibrary.Models.ViewModels.Status;
 using ELibrary.Models.ViewModels.User;
 
@@ -49,6 +50,9 @@ namespace ELibrary
             CreateMap<Comment, CreateCommentModel>()
                 .ReverseMap();
             CreateMap<Comment, SuccessCommentModel>()
+                .ReverseMap();
+
+            CreateMap<Reservation, ReservationModel>()
                 .ReverseMap();
 
             CreateMap<Status, StatusModel>()
