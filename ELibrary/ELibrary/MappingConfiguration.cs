@@ -52,7 +52,15 @@ namespace ELibrary
             CreateMap<Comment, SuccessCommentModel>()
                 .ReverseMap();
 
+            CreateMap<Reservation, CreateReservationModel>()
+                .ReverseMap();
+            CreateMap<Reservation, EditReservationModel>()
+                .ReverseMap();
             CreateMap<Reservation, ReservationModel>()
+                .ReverseMap();
+            CreateMap<Reservation, SuccessfulReservationModel>()
+                .ReverseMap();
+            CreateMap<Reservation, SuccessfulRemovalModel>()
                 .ReverseMap();
 
             CreateMap<Status, StatusModel>()
