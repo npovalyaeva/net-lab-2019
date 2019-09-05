@@ -151,6 +151,7 @@ namespace ELibrary.Controllers
         public async Task<IActionResult> Create([FromBody] CreateBookModel book)
         {
             var bdModel = _mapper.Map<CreateBookModel, Book>(book);
+            bdModel.FreeCopiesCount = bdModel.CopiesCount;
             if (ModelState.IsValid)
             {
                 _context.Book
