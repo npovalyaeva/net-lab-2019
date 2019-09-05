@@ -3,9 +3,7 @@ using ELibrary.Data;
 using ELibrary.Models;
 using ELibrary.Models.ViewModels.User;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -121,20 +119,29 @@ namespace ELibrary.Controllers
         // POST: Users/Block/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("block/{id}")]
+        [HttpPost("block")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Block([FromBody] BlockUserModel user)
         {
-            if (ModelState.IsValid)
-            {
-                return NotFound();
-            }
             var dbObject = await _context.User
                 .FirstOrDefaultAsync(m => m.UserId == user.UserId);
 
             dbObject.BlockedReason = user.BlockingReason;
             dbObject.IsBlocked = true;
             _context.User.Update(dbObject);
+
+            var reservations = await _context.Reservation
+                .Where(m => m.UserId == user.UserId)
+                .ToListAsync();
+            foreach (var reservation in reservations)
+            {
+                var book = await _context.Book
+                    .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
+                book.FreeCopiesCount++;
+                _context.Book.Add(book); // Use BooksController
+                _context.Reservation.Remove(reservation); // Use ReservationsController
+            }
+
             await _context.SaveChangesAsync();
 
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, UserBlockingStatusModel>(dbObject)));
