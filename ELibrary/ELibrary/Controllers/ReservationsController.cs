@@ -136,5 +136,90 @@ namespace ELibrary.Controllers
                 .ToListAsync();
             return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
+
+        // GET: Reservations/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = await _context.Reservation
+                .Include(c => c.Book)
+                .Include(c => c.Status)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.ReservationId == id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            return Json(comment);
+        }
+
+        // POST: Reservations/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost("create")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([FromBody] CreateReservationModel reservation)
+        {
+            var dbObject = _mapper.Map<CreateReservationModel, Reservation>(reservation);
+            
+            if (ModelState.IsValid)
+            {
+                var dbBookObject = await _context.Book
+                .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
+
+                dbBookObject.FreeCopiesCount--;
+                dbObject.DateOfReservation = DateTime.Now;
+
+                _context.Reservation
+                    .Add(dbObject);
+                _context.Book
+                    .Update(dbBookObject);
+                await _context.SaveChangesAsync();
+            }
+            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
+        }
+
+        // POST: Reservations/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost("edit")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([FromBody] EditReservationModel reservation)
+        {
+            var dbObject = await _context.Reservation
+                .FirstOrDefaultAsync(m => m.ReservationId == reservation.ReservationId);
+            dbObject.StatusId = reservation.StatusId;
+            dbObject.DateOfReservation = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(dbObject);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ReservationExists(dbObject.ReservationId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
+        }
+
+        private bool ReservationExists(long id)
+        {
+            return _context.Reservation.Any(e => e.ReservationId == id);
+        }
     }
 }
