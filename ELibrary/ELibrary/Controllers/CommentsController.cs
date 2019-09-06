@@ -68,16 +68,16 @@ namespace ELibrary.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody] CreateCommentModel comment)
         {
-            var dbModel = _mapper.Map<CreateCommentModel, Comment>(comment);
+            var dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
 
-            dbModel.Date = DateTime.Now;
+            dbObject.Date = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Comment
-                    .Add(dbModel);
+                    .Add(dbObject);
                 await _context.SaveChangesAsync();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = dbModel.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbModel)));
+            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbObject)));
         }
 
         // POST: Comments/Delete/5
@@ -85,13 +85,13 @@ namespace ELibrary.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? commentId)
         {
-            var dbModel = await _context.Comment.FindAsync(commentId);
-            dbModel.Text = _text;
+            var dbObject = await _context.Comment.FindAsync(commentId);
+            dbObject.Text = _text;
 
-            _context.Comment.Update(dbModel);
+            _context.Comment.Update(dbObject);
             await _context.SaveChangesAsync();
 
-            return Json(CreatedAtAction(nameof(Details), new { id = dbModel.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbModel)));
+            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbObject)));
         }
     }
 }

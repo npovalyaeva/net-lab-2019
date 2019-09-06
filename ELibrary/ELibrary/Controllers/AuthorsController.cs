@@ -49,15 +49,15 @@ namespace ELibrary.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody] CreateAuthorModel author)
         {
-            var dbModel = _mapper.Map<CreateAuthorModel, Author>(author);
+            var dbObject = _mapper.Map<CreateAuthorModel, Author>(author);
 
             if (ModelState.IsValid)
             {
                 _context.Author
-                    .Add(dbModel);
+                    .Add(dbObject);
                 await _context.SaveChangesAsync();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = dbModel.AuthorId }, _mapper.Map<Author, SuccessAuthorModel>(dbModel)));
+            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.AuthorId }, _mapper.Map<Author, SuccessAuthorModel>(dbObject)));
         }
     }
 }
