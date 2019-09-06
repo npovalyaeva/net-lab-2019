@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using ELibrary.Models;
+﻿using ELibrary.Models;
 using ELibrary.Models.ViewModels.Reservation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,12 @@ namespace ELibrary.Controllers
     [ApiController]
     public class ReservationsController : ELibraryController
     {
-        public ReservationsController(ELibraryContext context) : base(context) { }
+        private readonly ILogger<ReservationsController> _logger;
+
+        public ReservationsController(ELibraryContext context, ILogger<ReservationsController> logger) : base(context)
+        {
+            _logger = logger;
+        }
 
         // GET: Reservations
         [HttpGet]
@@ -157,7 +162,7 @@ namespace ELibrary.Controllers
         public async Task<IActionResult> Create([FromBody] CreateReservationModel reservation)
         {
             var dbObject = _mapper.Map<CreateReservationModel, Reservation>(reservation);
-            
+
             if (ModelState.IsValid)
             {
                 var dbBookObject = await _context.Book
@@ -166,11 +171,10 @@ namespace ELibrary.Controllers
                 dbBookObject.FreeCopiesCount--;
                 dbObject.DateOfReservation = DateTime.Now;
 
-                _context.Reservation
-                    .Add(dbObject);
-                _context.Book
-                    .Update(dbBookObject);
+                _context.Reservation.Add(dbObject);
+                _context.Book.Add(dbBookObject);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, Book: {1}, User ID: {2}, Status ID: {3}", dbObject.ReservationId, dbBookObject.Title, dbObject.UserId, dbObject.StatusId));
             }
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
         }
@@ -192,6 +196,7 @@ namespace ELibrary.Controllers
                 {
                     _context.Update(dbObject);
                     await _context.SaveChangesAsync();
+                    _logger.LogInformation(string.Format("Reservation was updated. Reservation ID: {0}, Status ID: {1}", dbObject.ReservationId, dbObject.StatusId));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -206,6 +211,21 @@ namespace ELibrary.Controllers
                 }
             }
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
+        }
+
+        // POST: Reservations/Delete/5
+        [HttpPost("delete/{id}")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var reservation = await _context.Reservation.FindAsync(id);
+            var book = await _context.Book
+                    .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
+            book.FreeCopiesCount++;
+            _context.Book.Update(book);
+            _context.Reservation.Remove(reservation);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         private bool ReservationExists(long id)
