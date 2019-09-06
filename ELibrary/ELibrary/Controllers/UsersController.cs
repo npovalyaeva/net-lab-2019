@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ELibrary.Data;
+﻿using ELibrary.Data;
 using ELibrary.Models;
 using ELibrary.Models.ViewModels.User;
 using Microsoft.AspNetCore.Mvc;

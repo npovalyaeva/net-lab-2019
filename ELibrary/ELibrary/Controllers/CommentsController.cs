@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ELibrary.Models;
+﻿using ELibrary.Models;
 using ELibrary.Models.ViewModels.Comment;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
