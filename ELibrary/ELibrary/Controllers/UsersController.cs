@@ -129,14 +129,12 @@ namespace ELibrary.Controllers
                 var book = await _context.Book
                     .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
                 book.FreeCopiesCount++;
-                _context.Book.Add(book); // Use BooksController
-                _context.Reservation.Remove(reservation); // Use ReservationsController
+                _context.Book.Update(book);
+                _context.Reservation.Remove(reservation);
             }
-
             await _context.SaveChangesAsync();
 
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, UserBlockingStatusModel>(dbObject)));
-
         }
 
         // POST: Users/Unblock/5
