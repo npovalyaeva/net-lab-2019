@@ -12,20 +12,11 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentsController : Controller
+    public class CommentsController : ELibraryController
     {
         private const string _text = "Deleted by Moderator";
 
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
-
-        public CommentsController(ELibraryContext context)
-        {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
-        }
+        public CommentsController(ELibraryContext context) : base(context) { }
 
         // GET: Comments/Book/15
         [HttpGet("book/{bookId}")]

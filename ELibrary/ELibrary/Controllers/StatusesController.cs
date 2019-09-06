@@ -10,18 +10,9 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusesController : Controller
+    public class StatusesController : ELibraryController
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
-
-        public StatusesController(ELibraryContext context)
-        {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
-        }
+        public StatusesController(ELibraryContext context) : base(context) { }
 
         // GET: Statuses
         [HttpGet]

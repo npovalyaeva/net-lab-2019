@@ -12,18 +12,9 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ELibraryController
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
-
-        public UsersController(ELibraryContext context)
-        {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
-        }
+        public UsersController(ELibraryContext context) : base(context) { }
 
         // GET: Users/Blocked
         [HttpGet("blocked")]

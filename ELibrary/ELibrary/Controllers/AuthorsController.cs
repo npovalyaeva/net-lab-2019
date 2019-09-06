@@ -10,18 +10,9 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorsController : Controller
+    public class AuthorsController : ELibraryController
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
-
-        public AuthorsController(ELibraryContext context)
-        {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
-        }
+        public AuthorsController(ELibraryContext context) : base(context) { }
 
         // GET: Authors
         [HttpGet]

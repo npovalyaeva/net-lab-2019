@@ -12,18 +12,9 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservationsController : Controller
+    public class ReservationsController : ELibraryController
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
-
-        public ReservationsController(ELibraryContext context)
-        {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
-        }
+        public ReservationsController(ELibraryContext context) : base(context) { }
 
         // GET: Reservations
         [HttpGet]

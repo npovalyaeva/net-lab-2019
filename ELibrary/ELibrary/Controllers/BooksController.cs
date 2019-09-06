@@ -11,18 +11,9 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BooksController : Controller
+    public class BooksController : ELibraryController
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
-
-        public BooksController(ELibraryContext context)
-        {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
-        }
+        public BooksController(ELibraryContext context) : base(context) { }
 
         // GET: Books
         [HttpGet]
