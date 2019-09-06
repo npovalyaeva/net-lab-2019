@@ -22,7 +22,7 @@ namespace ELibrary.Controllers
                 .Include(b => b.Author);
             var books = await eLibraryContext
                 .ToListAsync();
-            return Json(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
         }
 
         // GET: Books/Free
@@ -40,7 +40,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
         }
 
         // GET: Books/LastName/Dostoyevsky
@@ -63,7 +63,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
         }
 
         // GET: Books/Title/Demons
@@ -86,7 +86,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
         }
 
         // GET: Books/Year/1841
@@ -109,7 +109,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
         }
 
         // GET: Books/Details/5
@@ -130,14 +130,10 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<Book, BookFullInfoModel>(book));
+            return Ok(_mapper.Map<Book, BookFullInfoModel>(book));
         }
 
-        // POST: Books/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("create")]
-        //[ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateBookModel book)
         {
             var bdModel = _mapper.Map<CreateBookModel, Book>(book);
@@ -148,7 +144,7 @@ namespace ELibrary.Controllers
                     .Add(bdModel);
                 await _context.SaveChangesAsync();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = bdModel.BookId }, _mapper.Map<Book, SuccessBookModel>(bdModel)));
+            return CreatedAtAction(nameof(Details), new { id = bdModel.BookId }, _mapper.Map<Book, SuccessBookModel>(bdModel));
         }
     }
 }
