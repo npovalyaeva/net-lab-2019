@@ -63,7 +63,7 @@ namespace ELibrary.Controllers
         // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("create")]
+        [HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody] CreateCommentModel comment)
         {
@@ -80,7 +80,7 @@ namespace ELibrary.Controllers
         }
 
         // POST: Comments/Delete/5
-        [HttpPost("delete/{commentId}")]
+        [HttpPut("/{commentId}")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? commentId)
         {

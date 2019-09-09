@@ -213,9 +213,8 @@ namespace ELibrary.Controllers
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
         }
 
-        // POST: Reservations/Delete/5
-        [HttpPost("delete/{id}")]
-        //[ValidateAntiForgeryToken]
+        // DELETE: Reservations/5
+        [HttpDelete]
         public async Task<IActionResult> Delete(long id)
         {
             var reservation = await _context.Reservation.FindAsync(id);
