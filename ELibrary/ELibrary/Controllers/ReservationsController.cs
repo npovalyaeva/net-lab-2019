@@ -31,7 +31,7 @@ namespace ELibrary.Controllers
                 .Include(r => r.User);
             var reservations = await eLibraryContext
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/Book/3
@@ -49,7 +49,7 @@ namespace ELibrary.Controllers
             var reservations = await eLibraryContext
                 .Where(m => m.BookId == bookId)
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/User/3
@@ -67,7 +67,7 @@ namespace ELibrary.Controllers
             var reservations = await eLibraryContext
                 .Where(m => m.UserId == userId)
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut
@@ -81,7 +81,7 @@ namespace ELibrary.Controllers
             var reservations = await eLibraryContext
                 .Where(m => m.StatusId == 2)
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut/Author/Bulgakov
@@ -96,7 +96,7 @@ namespace ELibrary.Controllers
                 .Where(m => m.StatusId == 2)
                 .Where(m => m.Book.Author.LastName == lastname)
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut/Days/5
@@ -115,7 +115,7 @@ namespace ELibrary.Controllers
                 .Where(m => m.StatusId == 2)
                 .Where(m => m.DateOfReservation <= DateTime.Now.AddDays(Convert.ToDouble(-count)))
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut/Title/Demons
@@ -130,10 +130,9 @@ namespace ELibrary.Controllers
                 .Where(m => m.StatusId == 2)
                 .Where(m => m.Book.Title == title)
                 .ToListAsync();
-            return Json(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
-        // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -154,11 +153,8 @@ namespace ELibrary.Controllers
             return Json(comment);
         }
 
-        // POST: Reservations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("create")]
-        //[ValidateAntiForgeryToken]
+        // POST: Reservations
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateReservationModel reservation)
         {
             var dbObject = _mapper.Map<CreateReservationModel, Reservation>(reservation);
@@ -179,11 +175,8 @@ namespace ELibrary.Controllers
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
         }
 
-        // POST: Reservations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("edit")]
-        //[ValidateAntiForgeryToken]
+        // PUT: Reservations
+        [HttpPut]
         public async Task<IActionResult> Edit([FromBody] EditReservationModel reservation)
         {
             var dbObject = await _context.Reservation

@@ -28,7 +28,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<List<User>, List<UserModel>>(users));
+            return Ok(_mapper.Map<List<User>, List<UserModel>>(users));
         }
 
         // GET: Users/Login
@@ -45,7 +45,7 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<User, UserModel>(user));
+            return Ok(_mapper.Map<User, UserModel>(user));
         }
 
         // GET: Users/Checking
@@ -61,7 +61,7 @@ namespace ELibrary.Controllers
 
             loginModel.IsUnique = (user == null) ? true : false;
 
-            return Json(loginModel);
+            return Ok(loginModel);
         }
 
 
@@ -82,10 +82,10 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<User, UserModel>(user));
+            return Ok(_mapper.Map<User, UserModel>(user));
         }
 
-        // POST: Users/Create
+        // POST: Users
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserModel user)
         {
@@ -100,14 +100,11 @@ namespace ELibrary.Controllers
                 _context.Add(dbObject);
                 await _context.SaveChangesAsync();
             }
-            return Json(_mapper.Map<User, SuccessUserModel>(dbObject));
+            return CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, SuccessUserModel>(dbObject));
         }
 
-        // POST: Users/Block/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("block")]
-        //[ValidateAntiForgeryToken]
+        // PUT: Users/Block/5
+        [HttpPut("block")]
         public async Task<IActionResult> Block([FromBody] BlockUserModel user)
         {
             var dbObject = await _context.User
@@ -130,14 +127,11 @@ namespace ELibrary.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, UserBlockingStatusModel>(dbObject)));
+            return CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, UserBlockingStatusModel>(dbObject));
         }
 
-        // POST: Users/Unblock/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost("unblock/{id}")]
-        //[ValidateAntiForgeryToken]
+        // PUT: Users/Unblock/5
+        [HttpPut("unblock/{id}")]
         public async Task<IActionResult> Unblock(int? id)
         {
             if (id == null)
@@ -152,7 +146,7 @@ namespace ELibrary.Controllers
             _context.User.Update(dbObject);
             await _context.SaveChangesAsync();
 
-            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, UserBlockingStatusModel>(dbObject)));
+            return CreatedAtAction(nameof(Details), new { id = dbObject.UserId }, _mapper.Map<User, UserBlockingStatusModel>(dbObject));
         }
     }
 }

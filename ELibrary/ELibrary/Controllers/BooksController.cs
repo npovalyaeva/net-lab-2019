@@ -133,6 +133,7 @@ namespace ELibrary.Controllers
             return Ok(_mapper.Map<Book, BookFullInfoModel>(book));
         }
 
+        // POST: Books
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateBookModel book)
         {

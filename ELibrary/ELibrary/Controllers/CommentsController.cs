@@ -37,10 +37,9 @@ namespace ELibrary.Controllers
                 return NotFound();
             }
 
-            return Json(_mapper.Map<List<Comment>, List<CommentForBookModel>>(comments));
+            return Ok(_mapper.Map<List<Comment>, List<CommentForBookModel>>(comments));
         }
 
-        // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -60,11 +59,8 @@ namespace ELibrary.Controllers
             return Json(comment);
         }
 
-        // POST: Comments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Comments
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody] CreateCommentModel comment)
         {
             var dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
@@ -79,9 +75,8 @@ namespace ELibrary.Controllers
             return Json(CreatedAtAction(nameof(Details), new { id = dbObject.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbObject)));
         }
 
-        // POST: Comments/Delete/5
+        // PUT: Comments/5
         [HttpPut("/{commentId}")]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? commentId)
         {
             var dbObject = await _context.Comment.FindAsync(commentId);
