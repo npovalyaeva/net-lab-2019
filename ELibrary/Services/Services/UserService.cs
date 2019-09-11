@@ -1,14 +1,13 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
 using ELibrary.Data;
-using ELibrary.Services.Interfaces;
+using Services.Interfaces;
 using Models.ViewModels.User;
-using Services.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ELibrary.Services.Services
+namespace Services.Services
 {
     public class UserService : ELibraryService, IUserService
     {
@@ -102,8 +101,7 @@ namespace ELibrary.Services.Services
 
         public async Task<SuccessUserModel> Create(CreateUserModel user)
         {
-            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password) ||
-                string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName))
+            if (user == null)
             {
                 return null;
             }

@@ -11,7 +11,7 @@ namespace ELibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ELibraryController
+    public class UsersController : Controller
     {
         public UsersController(ELibraryContext context) : base(context) { }
 
@@ -50,7 +50,7 @@ namespace ELibrary.Controllers
 
         // GET: Users/Checking
         [HttpGet("checking/{login}")]
-        public async Task<IActionResult> Checking(string login)
+        public async Task<IActionResult> CheckLogin(string login)
         {
             LoginModel loginModel = new LoginModel();
             loginModel.Login = login;
