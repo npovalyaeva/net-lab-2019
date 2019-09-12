@@ -45,6 +45,8 @@ namespace Services
             CreateMap<Book, SuccessBookModel>()
                 .ReverseMap();
 
+            CreateMap<Comment, CommentModel>()
+                .ReverseMap();
             CreateMap<Comment, CommentForBookModel>()
                 .ReverseMap();
             CreateMap<Comment, CreateCommentModel>()
