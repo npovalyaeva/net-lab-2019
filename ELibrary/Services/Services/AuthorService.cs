@@ -1,5 +1,7 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.Author;
 using Services.Interfaces;
 using System.Collections.Generic;
@@ -7,9 +9,16 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class AuthorService : ELibraryService, IAuthorService
+    public class AuthorService : IAuthorService
     {
-        public AuthorService(ELibraryContext context) : base(context) { }
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
+
+        public AuthorService(ELibraryContext context)
+        {
+            _context = context;
+            _mapper = new MappingConfiguration().Configure().CreateMapper();
+        }
 
         public async Task<List<AuthorModel>> GetAuthors()
         {
@@ -56,7 +65,7 @@ namespace Services.Services
             Author dbObject = _mapper.Map<CreateAuthorModel, Author>(author);
 
             await _context.Author.AddAsync(dbObject);
-            await _context.Author.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // TODO: Where is Id?
             return _mapper.Map<Author, SuccessAuthorModel>(dbObject);

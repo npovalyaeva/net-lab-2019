@@ -1,25 +1,36 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
 using ELibrary.Data;
-using Services.Interfaces;
 using Models.ViewModels.User;
+using Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class UserService : ELibraryService, IUserService
+    public class UserService : IUserService
     {
-        public UserService(ELibraryContext context) : base(context) { }
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
+
+        public UserService(ELibraryContext context)
+        {
+            _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
+        }
 
         public async Task<List<UserModel>> GetBlockedUsers()
         {
             try
             {
-                List<User> users = await _context.User
-                    .Where(m => m.IsBlocked == true)
-                    .ToListAsync();
+                var context = _context.User as IQueryable<List<User>>;
+
+                var users = context
+                    .Where(m => m.IsBlocked == true);
                 if (users == null)
                 {
                     return null;
@@ -40,10 +51,12 @@ namespace Services.Services
             }
             try
             {
-                User user = await _context.User
+                var context = _context.User as IQueryable<User>;
+
+                var user = context
                     .Where(m => (m.Email == authenticationData.Login || m.Username == authenticationData.Login))
                     .Where(m => (m.PasswordHash == Hash.FindHash(authenticationData.Password)))
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefault();
                 if (user == null)
                 {
                     return null;

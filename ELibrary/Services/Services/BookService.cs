@@ -1,5 +1,7 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.Book;
 using Services.Interfaces;
 using System.Collections.Generic;
@@ -7,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class BookService : ELibraryService, IBookService
+    public class BookService : IBookService
     {
-        public BookService(ELibraryContext context) : base(context) { }
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
+
+        public BookService(ELibraryContext context)
+        {
+            _context = context;
+            // var config = new MappingConfiguration().Configure();
+            _mapper = new MappingConfiguration().Configure().CreateMapper();
+        }
 
         public async Task<List<BookBriefInfoModel>> GetBooks()
         {
@@ -36,7 +46,6 @@ namespace Services.Services
             {
                 List<Book> books = await _context.Book
                     .Include(b => b.Author)
-                    .Where(m => m.FreeCopiesCount > 0)
                     .ToListAsync();
                 if (books == null)
                 {
@@ -61,7 +70,6 @@ namespace Services.Services
             {
                 List<Book> books = await _context.Book
                     .Include(b => b.Author)
-                    .Where(m => m.Author.LastName == lastName)
                     .ToListAsync();
                 if (books == null)
                 {
@@ -86,7 +94,6 @@ namespace Services.Services
             {
                 List<Book> books = await _context.Book
                     .Include(b => b.Author)
-                    .Where(m => m.Title == title)
                     .ToListAsync();
                 if (books == null)
                 {
@@ -107,7 +114,6 @@ namespace Services.Services
             {
                 List<Book> books = await _context.Book
                     .Include(b => b.Author)
-                    .Where(m => m.Year == year)
                     .ToListAsync();
                 if (books == null)
                 {
@@ -153,8 +159,8 @@ namespace Services.Services
             {
                 Book dbObject = _mapper.Map<CreateBookModel, Book>(book);
 
-                await _context.Author.AddAsync(dbObject);
-                await _context.Author.SaveChangesAsync();
+                await _context.AddAsync(dbObject);
+                await _context.SaveChangesAsync();
 
                 // TODO: Where is Id?
                 return _mapper.Map<Book, SuccessBookModel>(dbObject);

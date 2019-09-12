@@ -12,6 +12,7 @@ namespace DataLayer
         public ELibraryContext(DbContextOptions<ELibraryContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<Author> Author { get; set; }
