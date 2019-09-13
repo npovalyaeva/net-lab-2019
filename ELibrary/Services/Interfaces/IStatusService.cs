@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface IStatusInterface
+    public interface IStatusService
     {
         Task<List<StatusModel>> GetStatuses();
     }

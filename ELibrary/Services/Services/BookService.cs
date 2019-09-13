@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.Book;
 using Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services.Services
@@ -163,8 +165,8 @@ namespace Services.Services
             {
                 Book dbObject = _mapper.Map<CreateBookModel, Book>(book);
 
-                await _context.Author.AddAsync(dbObject);
-                await _context.Author.SaveChangesAsync();
+                _context.Book.Add(dbObject);
+                await _context.SaveChangesAsync();
 
                 // TODO: Where is Id?
                 return _mapper.Map<Book, SuccessBookModel>(dbObject);

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Interfaces;
+using Services.Services;
 
 namespace ELibrary
 {
@@ -30,6 +32,14 @@ namespace ELibrary
 
             services.AddDbContext<ELibraryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ELibraryDatabase")));
+
+            services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IStatusService, StatusService>();
+            services.AddScoped<IUserService, UserService>();
+
             services.AddAutoMapper(GetType().Assembly); // ?
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -1,12 +1,13 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
 using ELibrary.Data;
-using Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.User;
+using Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace Services.Services
 {
@@ -15,7 +16,7 @@ namespace Services.Services
         private readonly ELibraryContext _context;
         private readonly IMapper _mapper;
 
-        public UserService(ELibraryContext context) : base(context)
+        public UserService(ELibraryContext context)
         {
             _context = context;
 
@@ -117,7 +118,7 @@ namespace Services.Services
             }
 
             bool isUserExists = await _context.User
-                .AnyAsync(m => (m.Email = user.Email || user.Username == m.Username));
+                .AnyAsync(m => (m.Email == user.Email || user.Username == m.Username));
 
             if (isUserExists)
             {
@@ -132,7 +133,7 @@ namespace Services.Services
                 dbObject.IsBlocked = false;
 
                 await _context.User.AddAsync(dbObject);
-                await _context.User.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 // TODO: Where is Id?
                 return _mapper.Map<User, SuccessUserModel>(dbObject);
@@ -159,7 +160,7 @@ namespace Services.Services
                 dbObject.BlockedReason = user.BlockingReason;
                 dbObject.IsBlocked = true;
 
-                await _context.User.UpdateAsync(dbObject);
+                _context.User.Update(dbObject);
 
                 List<Reservation> reservations = await _context.Reservation
                     .Where(m => m.UserId == user.UserId)
@@ -169,11 +170,11 @@ namespace Services.Services
                     Book book = await _context.Book
                         .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
                     book.FreeCopiesCount++;
-                    await _context.Book.UpdateAsync(book);
-                    await _context.Reservation.RemoveAsync(reservation);
+                    _context.Book.Update(book);
+                    _context.Reservation.Remove(reservation);
                 }
                 //             !!!!
-                await _context.Book.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 return _mapper.Map<User, UserBlockingStatusModel>(dbObject);
             }
@@ -198,8 +199,8 @@ namespace Services.Services
                 {
                     dbObject.BlockedReason = null;
                     dbObject.IsBlocked = false;
-                    await _context.User.UpdateAsync(dbObject);
-                    await _context.User.SaveChangesAsync();
+                    _context.User.Update(dbObject);
+                    await _context.SaveChangesAsync();
 
                     return _mapper.Map<User, UserBlockingStatusModel>(dbObject);
                 }

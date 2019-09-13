@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models.ViewModels.Reservation;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services.Services
@@ -130,7 +131,7 @@ namespace Services.Services
                     .Include(r => r.Status)
                     .Include(r => r.User)
                     .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Author.LastName == lastname)
+                    .Where(m => m.Book.Author.LastName == lastName)
                     .ToListAsync();
 
                 if (reservations == null)
@@ -237,9 +238,9 @@ namespace Services.Services
                 dbBookObject.FreeCopiesCount--;
                 dbObject.DateOfReservation = DateTime.Now;
 
-                await _context.Reservation.AddAsync(dbObject);
-                await _context.Book.UpdateAsync(dbBookObject);
-                await _context.Reservation.SaveChangesAsync();
+                _context.Reservation.Add(dbObject);
+                _context.Book.Update(dbBookObject);
+                await _context.SaveChangesAsync();
 
                 _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, Book: {1}, User ID: {2}, Status ID: {3}", dbObject.ReservationId, dbBookObject.Title, dbObject.UserId, dbObject.StatusId));
                 return _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject);
@@ -268,8 +269,8 @@ namespace Services.Services
                 dbObject.StatusId = reservation.StatusId;
                 dbObject.DateOfReservation = DateTime.Now;
 
-                await _context.Reservation.UpdateAsync(dbObject);
-                await _context.Reservation.SaveChangesAsync();
+                _context.Reservation.Update(dbObject);
+                await _context.SaveChangesAsync();
                 _logger.LogInformation(string.Format("Reservation was updated. Reservation ID: {0}, Status ID: {1}", dbObject.ReservationId, dbObject.StatusId));
                 return _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject);
             }
@@ -295,7 +296,7 @@ namespace Services.Services
                 book.FreeCopiesCount++;
                 _context.Book.Update(book);
                 _context.Reservation.Remove(reservation);
-                await _context.Reservation.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 return true;
             }

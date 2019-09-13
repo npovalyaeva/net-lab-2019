@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.Author;
 using Services.Interfaces;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map< List<Author>, List <AuthorModel>>(authors);
+                return _mapper.Map<List<Author>, List <AuthorModel>>(authors);
             }
             catch
             {
@@ -65,8 +66,8 @@ namespace Services.Services
             }
             Author dbObject = _mapper.Map<CreateAuthorModel, Author>(author);
 
-            await _context.Author.AddAsync(dbObject);
-            await _context.Author.SaveChangesAsync();
+            _context.Author.Add(dbObject);
+            await _context.SaveChangesAsync();
 
             // TODO: Where is Id?
             return _mapper.Map<Author, SuccessAuthorModel>(dbObject);

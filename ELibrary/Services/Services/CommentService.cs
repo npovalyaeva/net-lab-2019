@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.Comment;
 using Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services.Services
@@ -29,8 +29,9 @@ namespace Services.Services
             try
             {
                 List<Comment> comments = await _context.Comment
-                    .Include(c => c.UserNameModel)
-                    .FirstOrDefaultAsync(m => m.BookId == bookId);
+                    .Include(c => c.User)
+                    .Where(m => m.BookId == bookId)
+                    .ToListAsync();
                 if (comments == null)
                 {
                     return null;
@@ -48,7 +49,7 @@ namespace Services.Services
             try
             {
                 Comment comment = await _context.Comment
-                    .Include(c => c.UserNameModel)
+                    .Include(c => c.User)
                     .FirstOrDefaultAsync(m => m.CommentId == id);
                 if (comment == null)
                 {
@@ -73,8 +74,8 @@ namespace Services.Services
             {
                 Comment dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
 
-                await _context.Comment.AddAsync(dbObject);
-                await _context.Comment.SaveChangesAsync();
+                _context.Comment.Add(dbObject);
+                await _context.SaveChangesAsync();
 
                 // TODO: Where is Id?
                 return _mapper.Map<Comment, SuccessCommentModel>(dbObject);
@@ -96,8 +97,8 @@ namespace Services.Services
                 }
                 dbObject.Text = _text;
 
-                await _context.Comment.Update(dbObject);
-                await _context.Comment.SaveChangesAsync();
+                _context.Comment.Update(dbObject);
+                await _context.SaveChangesAsync();
                 return _mapper.Map<Comment, SuccessCommentModel>(dbObject);
             }
             catch
