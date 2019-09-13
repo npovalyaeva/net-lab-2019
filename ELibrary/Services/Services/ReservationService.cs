@@ -1,4 +1,5 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
 using Microsoft.Extensions.Logging;
 using Models.ViewModels.Reservation;
@@ -10,11 +11,19 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class ReservationService : ELibraryService, IReservationService
+    public class ReservationService : IReservationService
     {
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
         private readonly ILogger<ReservationService> _logger;
 
-        public ReservationService(ELibraryContext context) : base(context) { }
+        public ReservationService(ELibraryContext context)
+        {
+            _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
+        }
 
         public async Task<List<ReservationModel>> GetReservations()
         {

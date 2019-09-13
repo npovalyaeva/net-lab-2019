@@ -6,12 +6,22 @@ using Models.ViewModels.User;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Services.Services
 {
-    public class UserService : ELibraryService, IUserService
+    public class UserService : IUserService
     {
-        public UserService(ELibraryContext context) : base(context) { }
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
+
+        public UserService(ELibraryContext context) : base(context)
+        {
+            _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
+        }
 
         public async Task<List<UserModel>> GetBlockedUsers()
         {

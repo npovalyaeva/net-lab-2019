@@ -1,4 +1,5 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
 using Models.ViewModels.Book;
 using Services.Interfaces;
@@ -7,9 +8,18 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class BookService : ELibraryService, IBookService
+    public class BookService : IBookService
     {
-        public BookService(ELibraryContext context) : base(context) { }
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
+
+        public BookService(ELibraryContext context)
+        {
+            _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
+        }
 
         public async Task<List<BookBriefInfoModel>> GetBooks()
         {

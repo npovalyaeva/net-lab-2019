@@ -21,6 +21,6 @@ namespace Services.Interfaces
 
         Task<SuccessfulReservationModel> Edit(EditReservationModel reservation);
 
-        bool Delete(long id);
+        Task<bool> Delete(long id);
     }
 }

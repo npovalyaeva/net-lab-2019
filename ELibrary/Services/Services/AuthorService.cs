@@ -1,4 +1,5 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
 using Models.ViewModels.Author;
 using Services.Interfaces;
@@ -7,9 +8,18 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class AuthorService : ELibraryService, IAuthorService
+    public class AuthorService : IAuthorService
     {
-        public AuthorService(ELibraryContext context) : base(context) { }
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
+
+        public AuthorService(ELibraryContext context)
+        {
+            _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
+        }
 
         public async Task<List<AuthorModel>> GetAuthors()
         {

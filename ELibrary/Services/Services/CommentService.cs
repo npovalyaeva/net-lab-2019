@@ -1,4 +1,5 @@
-﻿using DataLayer;
+﻿using AutoMapper;
+using DataLayer;
 using DataLayer.Entities;
 using Models.ViewModels.Comment;
 using Services.Interfaces;
@@ -9,11 +10,19 @@ using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class CommentService : ELibraryService, ICommentService
+    public class CommentService : ICommentService
     {
         private const string _text = "Deleted by Moderator";
+        private readonly ELibraryContext _context;
+        private readonly IMapper _mapper;
 
-        public CommentService(ELibraryContext context) : base(context) { }
+        public CommentService(ELibraryContext context)
+        {
+            _context = context;
+
+            var config = new MappingConfiguration().Configure();
+            _mapper = config.CreateMapper();
+        }
 
         public async Task<List<CommentForBookModel>> GetCommentsByBookId(int bookId)
         {
