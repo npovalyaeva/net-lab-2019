@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer;
+using DataLayer.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Interfaces;
+using Services.Repositories;
 using Services.Services;
 
 namespace ELibrary
@@ -32,6 +34,13 @@ namespace ELibrary
 
             services.AddDbContext<ELibraryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ELibraryDatabase")));
+
+            services.AddScoped<IRepository<Author>, AuthorRepository>();
+            services.AddScoped<IRepository<Book>, BookRepository>();
+            services.AddScoped<IRepository<Comment>, CommentRepository>();
+            services.AddScoped<IRepository<Reservation>, ReservationRepository>();
+            services.AddScoped<IRepository<Status>, StatusRepository>();
+            services.AddScoped<IRepository<User>, UserRepository>();
 
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IBookService, BookService>();

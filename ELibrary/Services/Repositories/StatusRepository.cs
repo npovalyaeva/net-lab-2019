@@ -1,8 +1,9 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Services.Repositories
 {
@@ -15,32 +16,32 @@ namespace Services.Repositories
             _context = context;
         }
 
-        public List<Status> GetAll()
+        public async Task<List<Status>> GetAll()
         {
-            return _context.Status.ToList();
+            return await _context.Status.ToListAsync();
         }
 
-        public Status Get(long id)
+        public async Task<Status> Get(long id)
         {
-            return _context.Status.FirstOrDefault(m => m.StatusId == id);
+            return await _context.Status.FirstOrDefaultAsync(m => m.StatusId == id);
         }
 
-        public void Create(Status model)
+        public async Task Create(Status model)
         {
             _context.Status.Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Status model)
+        public async Task Update(Status model)
         {
             _context.Status.Update(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(Status model)
+        public async Task Delete(Status model)
         {
             _context.Status.Remove(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

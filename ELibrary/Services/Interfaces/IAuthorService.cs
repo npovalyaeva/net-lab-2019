@@ -1,4 +1,4 @@
-﻿using Models.ViewModels.Author;
+﻿using DataLayer.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,8 +6,8 @@ namespace Services.Interfaces
 {
     public interface IAuthorService
     {
-        Task<List<AuthorModel>> GetAuthors();
-        Task<AuthorModel> GetAuthorInfo(short id);
-        Task<SuccessAuthorModel> Create(CreateAuthorModel author);
+        Task<List<Author>> GetAuthors();
+        Task<Author> GetAuthorInfo(short id);
+        Task<Author> Create(Author author);
     }
 }

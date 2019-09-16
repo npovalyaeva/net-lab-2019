@@ -1,8 +1,9 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Services.Repositories
 {
@@ -15,32 +16,32 @@ namespace Services.Repositories
             _context = context;
         }
 
-        public List<Book> GetAll()
+        public async Task<List<Book>> GetAll()
         {
-            return _context.Book.ToList();
+            return await _context.Book.ToListAsync();
         }
 
-        public Book Get(long id)
+        public async Task<Book> Get(long id)
         {
-            return _context.Book.FirstOrDefault(m => m.BookId == id);
+            return await _context.Book.FirstOrDefaultAsync(m => m.BookId == id);
         }
 
-        public void Create(Book model)
+        public async Task Create(Book model)
         {
             _context.Book.Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Book model)
+        public async Task Update(Book model)
         {
             _context.Book.Update(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(Book model)
+        public async Task Delete(Book model)
         {
             _context.Book.Remove(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

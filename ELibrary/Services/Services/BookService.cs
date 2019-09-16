@@ -12,15 +12,11 @@ namespace Services.Services
 {
     public class BookService : IBookService
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepository<Book> _bookRepository;
 
-        public BookService(ELibraryContext context)
+        public BookService(IRepository<Book> bookRepository)
         {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
+            _bookRepository = bookRepository;
         }
 
         public async Task<List<BookBriefInfoModel>> GetBooks()

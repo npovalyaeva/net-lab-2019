@@ -1,4 +1,4 @@
-﻿using Models.ViewModels.Book;
+﻿using DataLayer.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,14 +6,14 @@ namespace Services.Interfaces
 {
     public interface IBookService
     {
-        Task<List<BookBriefInfoModel>> GetBooks();
-        Task<List<BookBriefInfoModel>> GetFreeBooks();
-        Task<List<BookBriefInfoModel>> GetBooksByAuthorLastName(string lastName);
-        Task<List<BookBriefInfoModel>> GetBooksByTitle(string title);
-        Task<List<BookBriefInfoModel>> GetBooksByYear(short year);
+        Task<List<Book>> GetBooks();
+        Task<List<Book>> GetFreeBooks();
+        Task<List<Book>> GetBooksByAuthorLastName(string lastName);
+        Task<List<Book>> GetBooksByTitle(string title);
+        Task<List<Book>> GetBooksByYear(short year);
 
-        Task<BookFullInfoModel> GetBookInfo(int id);
+        Task<Book> GetBookInfo(int id);
 
-        Task<SuccessBookModel> Create(CreateBookModel book);
+        Task<Book> Create(Book book);
     }
 }

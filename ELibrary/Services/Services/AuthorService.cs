@@ -11,28 +11,23 @@ namespace Services.Services
 {
     public class AuthorService : IAuthorService
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepository<Author> _authorRepository;
 
-        public AuthorService(ELibraryContext context)
+        public AuthorService(IRepository<Author> authorRepository)
         {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
+            _authorRepository = authorRepository;
         }
 
-        public async Task<List<AuthorModel>> GetAuthors()
+        public async Task<List<Author>> GetAuthors()
         {
             try
             {
-                List<Author> authors = await _context.Author
-                    .ToListAsync();
+                List<Author> authors = await _authorRepository.GetAll();
                 if (authors == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Author>, List <AuthorModel>>(authors);
+                return authors;
             }
             catch
             {
@@ -40,17 +35,16 @@ namespace Services.Services
             }
         }
 
-        public async Task<AuthorModel> GetAuthorInfo(short id)
+        public async Task<Author> GetAuthorInfo(short id)
         {
             try
             {
-                Author author = await _context.Author
-                    .FirstOrDefaultAsync(m => m.AuthorId == id);
+                Author author = await _authorRepository.Get(id);
                 if (author == null)
                 {
                     return null;
                 }
-                return _mapper.Map<Author, AuthorModel>(author);
+                return author;
             }
             catch
             {
@@ -58,17 +52,14 @@ namespace Services.Services
             }
         }
 
-        public async Task<SuccessAuthorModel> Create(CreateAuthorModel author)
+        public async Task<Author> Create(Author author)
         {
-            if (author == null)
+            if (author != null)
             {
                 return null;
             }
-            Author dbObject = _mapper.Map<CreateAuthorModel, Author>(author);
-            _context.Author.Add(dbObject);
-            await _context.SaveChangesAsync();
-
-            return _mapper.Map<Author, SuccessAuthorModel>(dbObject);
+            await _authorRepository.Create(author);
+            return author;
 
         }
     }

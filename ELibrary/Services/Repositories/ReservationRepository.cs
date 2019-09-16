@@ -1,8 +1,9 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Services.Repositories
 {
@@ -15,32 +16,32 @@ namespace Services.Repositories
             _context = context;
         }
 
-        public List<Reservation> GetAll()
+        public async Task<List<Reservation>> GetAll()
         {
-            return _context.Reservation.ToList();
+            return await _context.Reservation.ToListAsync();
         }
 
-        public Reservation Get(long id)
+        public async Task<Reservation> Get(long id)
         {
-            return _context.Reservation.FirstOrDefault(m => m.ReservationId == id);
+            return await _context.Reservation.FirstOrDefaultAsync(m => m.ReservationId == id);
         }
 
-        public void Create(Reservation model)
+        public async Task Create(Reservation model)
         {
             _context.Reservation.Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Reservation model)
+        public async Task Update(Reservation model)
         {
             _context.Reservation.Update(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(Reservation model)
+        public async Task Delete(Reservation model)
         {
             _context.Reservation.Remove(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()
