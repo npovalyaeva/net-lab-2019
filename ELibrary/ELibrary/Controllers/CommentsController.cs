@@ -1,11 +1,6 @@
-﻿using ELibrary.Models;
-using ELibrary.Models.ViewModels.Comment;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Models.ViewModels.Comment;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -21,75 +16,64 @@ namespace ELibrary.Controllers
             _commentService = commentService;
         }
 
-        // GET: Comments/Book/15
+        // GET: API/Comments/Book/15
         [HttpGet("book/{bookId}")]
         public async Task<IActionResult> GetCommentByBookId(int? bookId)
         {
             if (bookId == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            var eLibraryContext = _context.Comment
-                .Include(b => b.User);
-            var comments = await eLibraryContext
-                .Where(m => m.BookId == bookId)
-                .ToListAsync();
-
-            if (comments == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<List<Comment>, List<CommentForBookModel>>(comments));
-        }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comment
-                .Include(c => c.Book)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.CommentId == id);
+            var comment = await _commentService.GetCommentsByBookId((int)bookId);
             if (comment == null)
             {
                 return NotFound();
             }
-
-            return Json(comment);
+            return Ok(comment);
         }
 
-        // POST: Comments
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCommentModel comment)
+        // GET: API/Comments/3
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
         {
-            var dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
-
-            dbObject.Date = DateTime.Now;
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                _context.Comment
-                    .Add(dbObject);
-                await _context.SaveChangesAsync();
+                return BadRequest();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbObject)));
+            var comment = await _commentService.GetCommentInfo((int)id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(comment);
         }
 
-        // PUT: Comments/5
-        [HttpPut("/{commentId}")]
-        public async Task<IActionResult> Delete(int? commentId)
+        // POST: API/Comments
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateCommentModel comment)
         {
-            var dbObject = await _context.Comment.FindAsync(commentId);
-            dbObject.Text = _text;
+            var dbObject = await _commentService.Create(comment);
+            if (dbObject == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction("Created", dbObject);
+        }
 
-            _context.Comment.Update(dbObject);
-            await _context.SaveChangesAsync();
-
-            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.CommentId }, _mapper.Map<Comment, SuccessCommentModel>(dbObject)));
+        // PUT: API/Comments/5
+        [HttpPut("{commentId}")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var dbObject = await _commentService.EditByModerator((int)id);
+            if (dbObject == null)
+            {
+                return NotFound();
+            }
+            return CreatedAtAction("Updated", dbObject);
         }
     }
 }

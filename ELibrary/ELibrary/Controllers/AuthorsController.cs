@@ -1,22 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Models.ViewModels.Author;
 using Services.Interfaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
 {
-    [Route("api/authors")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private IConfiguration _configuration;
         private readonly IAuthorService _authorService;
 
-        public AuthorsController(IConfiguration configuration, IAuthorService authorService)
+        public AuthorsController(IAuthorService authorService)
         {
-            _configuration = configuration;
             _authorService = authorService;
         }
 
@@ -32,37 +28,30 @@ namespace ELibrary.Controllers
             return Ok(authors);
         }
 
-        //        // POST: Authors
-        //        [HttpPost]
-        //        public async Task<IActionResult> Create([FromBody] CreateAuthorModel author)
-        //        {
-        //            var dbObject = _mapper.Map<CreateAuthorModel, Author>(author);
+        // POST: API/Authors
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateAuthorModel author)
+        {
+            var dbObject = await _authorService.Create(author);
+            if (dbObject == null)
+            {
+                return BadRequest();
+            }
+            return Created("Created", dbObject);
+        }
 
-        //            if (ModelState.IsValid)
-        //            {
-        //                _context.Author
-        //                    .Add(dbObject);
-        //                await _context.SaveChangesAsync();
-        //            }
-        //            return CreatedAtAction(nameof(Details), new { id = dbObject.AuthorId }, _mapper.Map<Author, SuccessAuthorModel>(dbObject));
-        //        }
+        // GET: API/Authors/7
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Details(short id)
+        {
 
-        //        private async Task<IActionResult> Details(short? id)
-        //        {
-        //            if (id == null)
-        //            {
-        //                return NotFound();
-        //            }
+            var author = await _authorService.GetAuthorInfo(id);
 
-        //            var author = await _context.Author
-        //                .FirstOrDefaultAsync(m => m.AuthorId == id);
-
-        //            if (author == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            return Json(_mapper.Map<Author, AuthorModel>(author));
-        //        }
+            if (author == null)
+            {
+                return NotFound();
+            }
+            return Ok(author);
+        }
     }
 }

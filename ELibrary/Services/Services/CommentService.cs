@@ -4,6 +4,7 @@ using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.Comment;
 using Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,11 +74,9 @@ namespace Services.Services
             try
             {
                 Comment dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
-
+                dbObject.Date = DateTime.Now;
                 _context.Comment.Add(dbObject);
                 await _context.SaveChangesAsync();
-
-                // TODO: Where is Id?
                 return _mapper.Map<Comment, SuccessCommentModel>(dbObject);
             }
             catch

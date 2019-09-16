@@ -1,8 +1,7 @@
-﻿using ELibrary.Models;
-using ELibrary.Models.ViewModels.Reservation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Models.ViewModels.Reservation;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,82 +21,72 @@ namespace ELibrary.Controllers
             _reservationService = reservationService;
         }
 
-        // GET: Reservations
+        // GET: API/Reservations
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetReservations();
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
         // GET: Reservations/Book/3
         [HttpGet("book/{bookid}")]
-        public async Task<IActionResult> ByBookId(int? bookId)
+        public async Task<IActionResult> GetByBookId(int? bookId)
         {
             if (bookId == null)
             {
                 return NotFound();
             }
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .Where(m => m.BookId == bookId)
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetReservationsByBookId((int)bookId);
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
-        // GET: Reservations/User/3
+        // GET: API/Reservations/User/3
         [HttpGet("user/{userid}")]
-        public async Task<IActionResult> ByUserId(int? userId)
+        public async Task<IActionResult> GetByUserId(int? userId)
         {
             if (userId == null)
             {
                 return NotFound();
             }
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .Where(m => m.UserId == userId)
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetReservationsByUserId((int)userId);
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
         // GET: Reservations/HandedOut
         [HttpGet("handedout")]
         public async Task<IActionResult> HandedOut()
         {
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .Where(m => m.StatusId == 2)
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetHandedOutReservations();
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
         // GET: Reservations/HandedOut/Author/Bulgakov
         [HttpGet("handedout/author/{lastname}")]
-        public async Task<IActionResult> HandedOutByAuthorName(string lastname)
+        public async Task<IActionResult> HandedOutByAuthorName(string lastName)
         {
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .Where(m => m.StatusId == 2)
-                .Where(m => m.Book.Author.LastName == lastname)
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetHandedOutReservationsByAuthorName(lastName);
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
         // GET: Reservations/HandedOut/Days/5
@@ -108,30 +97,24 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .Where(m => m.StatusId == 2)
-                .Where(m => m.DateOfReservation <= DateTime.Now.AddDays(Convert.ToDouble(-count)))
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetHandedOutReservationsByCountOfDays((int)count);
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
         // GET: Reservations/HandedOut/Title/Demons
         [HttpGet("handedout/title/{title}")]
         public async Task<IActionResult> HandedOutByTitle(string title)
         {
-            var eLibraryContext = _context.Reservation
-                .Include(r => r.Book)
-                .Include(r => r.Status)
-                .Include(r => r.User);
-            var reservations = await eLibraryContext
-                .Where(m => m.StatusId == 2)
-                .Where(m => m.Book.Title == title)
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
+            var reservations = await _reservationService.GetHandedOutReservationsByTitle(title);
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+            return Ok(reservations);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -140,90 +123,50 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-
-            var comment = await _context.Reservation
-                .Include(c => c.Book)
-                .Include(c => c.Status)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
-            if (comment == null)
+            var reservation = await _reservationService.GetReservationInfo((int)id);
+            if (reservation == null)
             {
                 return NotFound();
             }
-
-            return Json(comment);
+            return Ok(reservation);
         }
 
-        // POST: Reservations
+        // POST: API/Reservations
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateReservationModel reservation)
+        public async Task<IActionResult> Create(CreateReservationModel reservation)
         {
-            var dbObject = _mapper.Map<CreateReservationModel, Reservation>(reservation);
-
-            if (ModelState.IsValid)
+            var dbObject = await _reservationService.Create(reservation);
+            if (dbObject == null)
             {
-                var dbBookObject = await _context.Book
-                .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
-
-                dbBookObject.FreeCopiesCount--;
-                dbObject.DateOfReservation = DateTime.Now;
-
-                _context.Reservation.Add(dbObject);
-                _context.Book.Add(dbBookObject);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, Book: {1}, User ID: {2}, Status ID: {3}", dbObject.ReservationId, dbBookObject.Title, dbObject.UserId, dbObject.StatusId));
+                return BadRequest();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
+            return CreatedAtAction("Created", dbObject);
         }
 
-        // PUT: Reservations
+        // PUT: API/Reservations
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] EditReservationModel reservation)
+        public async Task<IActionResult> Edit(EditReservationModel reservation)
         {
-            var dbObject = await _context.Reservation
-                .FirstOrDefaultAsync(m => m.ReservationId == reservation.ReservationId);
-            dbObject.StatusId = reservation.StatusId;
-            dbObject.DateOfReservation = DateTime.Now;
-            if (ModelState.IsValid)
+            var dbObject = await _reservationService.Edit(reservation);
+            if (dbObject == null)
             {
-                try
-                {
-                    _context.Update(dbObject);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation(string.Format("Reservation was updated. Reservation ID: {0}, Status ID: {1}", dbObject.ReservationId, dbObject.StatusId));
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReservationExists(dbObject.ReservationId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                return NotFound();
             }
-            return Json(CreatedAtAction(nameof(Details), new { id = dbObject.ReservationId }, _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject)));
+            return CreatedAtAction("Updated", dbObject);
         }
 
-        // DELETE: Reservations/5
+        // DELETE: API/Reservations/5
         [HttpDelete]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(long? id)
         {
-            var reservation = await _context.Reservation.FindAsync(id);
-            var book = await _context.Book
-                    .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
-            book.FreeCopiesCount++;
-            _context.Book.Update(book);
-            _context.Reservation.Remove(reservation);
-            await _context.SaveChangesAsync();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            bool isSuccessed = await _reservationService.Delete((long)id);
+            if (!isSuccessed)
+                return NotFound();
             return NoContent();
-        }
-
-        private bool ReservationExists(long id)
-        {
-            return _context.Reservation.Any(e => e.ReservationId == id);
         }
     }
 }

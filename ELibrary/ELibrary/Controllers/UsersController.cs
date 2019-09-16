@@ -48,7 +48,7 @@ namespace ELibrary.Controllers
             return Ok(loginModel);
         }
 
-        // GET: API/Users/Details/5
+        // GET: API/Users/5
         [HttpGet("details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -73,7 +73,6 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            //              ??? 
             return Created("Created", userModel);
         }
 

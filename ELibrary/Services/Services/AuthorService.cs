@@ -65,11 +65,9 @@ namespace Services.Services
                 return null;
             }
             Author dbObject = _mapper.Map<CreateAuthorModel, Author>(author);
-
             _context.Author.Add(dbObject);
             await _context.SaveChangesAsync();
 
-            // TODO: Where is Id?
             return _mapper.Map<Author, SuccessAuthorModel>(dbObject);
 
         }

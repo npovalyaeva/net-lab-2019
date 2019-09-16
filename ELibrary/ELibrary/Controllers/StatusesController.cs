@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
 {
-    [Route("api/statuses")]
+    [Route("api/[controller]")]
     [ApiController]
     public class StatusesController : ControllerBase
     {

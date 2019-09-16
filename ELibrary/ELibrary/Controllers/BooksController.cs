@@ -1,10 +1,6 @@
-﻿using ELibrary.Models;
-using ELibrary.Models.ViewModels.Book;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Models.ViewModels.Book;
 using Services.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -20,138 +16,96 @@ namespace ELibrary.Controllers
             _bookService = bookService;
         }
 
-        // GET: Books
+        // GET: API/Books
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var eLibraryContext = _context.Book
-                .Include(b => b.Author);
-            var books = await eLibraryContext
-                .ToListAsync();
-            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            var books = await _bookService.GetBooks();
+            if (books == null)
+            {
+                return NotFound();
+            }
+            return Ok(books);
         }
 
-        // GET: Books/Free
+        // GET: API/Books/Free
         [HttpGet("free")]
         public async Task<IActionResult> GetFreeBooks()
         {
-            var eLibraryContext = _context.Book
-                .Include(b => b.Author);
-            var books = await eLibraryContext
-                .Where(m => m.FreeCopiesCount > 0)
-                .ToListAsync();
-
+            var books = await _bookService.GetFreeBooks();
             if (books == null)
             {
                 return NotFound();
             }
-
-            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(books);
         }
 
-        // GET: Books/LastName/Dostoyevsky
+        // GET: API/Books/Author/Dostoyevsky
         [HttpGet("author/{lastName}")]
         public async Task<IActionResult> GetBooksByAuthorLastName(string lastName)
         {
-            if (lastName == null)
-            {
-                return NotFound();
-            }
-
-            var eLibraryContext = _context.Book
-                .Include(b => b.Author);
-            var books = await eLibraryContext
-                .Where(m => m.Author.LastName == lastName)
-                .ToListAsync();
-
+            var books = await _bookService.GetBooksByAuthorLastName(lastName);
             if (books == null)
             {
                 return NotFound();
             }
-
-            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(books);
         }
 
-        // GET: Books/Title/Demons
+        // GET: API/Books/Title/Demons
         [HttpGet("title/{title}")]
         public async Task<IActionResult> GetBooksByTitle(string title)
         {
-            if (title == null)
-            {
-                return NotFound();
-            }
-
-            var eLibraryContext = _context.Book
-                .Include(b => b.Author);
-            var books = await eLibraryContext
-                .Where(m => m.Title == title)
-                .ToListAsync();
-
+            var books = await _bookService.GetBooksByTitle(title);
             if (books == null)
             {
                 return NotFound();
             }
-
-            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(books);
         }
 
-        // GET: Books/Year/1841
+        // GET: API/Books/Year/1841
         [HttpGet("year/{year}")]
         public async Task<IActionResult> GetBooksByYear(short? year)
         {
             if (year == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            var eLibraryContext = _context.Book
-                .Include(b => b.Author);
-            var books = await eLibraryContext
-                .Where(m => m.Year == year)
-                .ToListAsync();
-
+            var books = await _bookService.GetBooksByYear((short)year);
             if (books == null)
             {
                 return NotFound();
             }
-
-            return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
+            return Ok(books);
         }
 
-        // GET: Books/Details/5
-        [HttpGet("details/{id}")]
+        // GET: API/Books/5
+        [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            var book = await _context.Book
-                .Include(b => b.Author)
-                .FirstOrDefaultAsync(m => m.BookId == id);
-
+            var book = await _bookService.GetBookInfo((int)id);
             if (book == null)
             {
                 return NotFound();
             }
-
-            return Ok(_mapper.Map<Book, BookFullInfoModel>(book));
+            return Ok(book);
         }
 
-        // POST: Books
+        // POST: API/Books
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateBookModel book)
+        public async Task<IActionResult> Create(CreateBookModel book)
         {
-            var bdModel = _mapper.Map<CreateBookModel, Book>(book);
-            bdModel.FreeCopiesCount = bdModel.CopiesCount;
-            if (ModelState.IsValid)
+            var dbObject = await _bookService.Create(book);
+            if (dbObject == null)
             {
-                _context.Book
-                    .Add(bdModel);
-                await _context.SaveChangesAsync();
+                return BadRequest();
             }
-            return CreatedAtAction(nameof(Details), new { id = bdModel.BookId }, _mapper.Map<Book, SuccessBookModel>(bdModel));
+            return Created("Created", dbObject);
         }
     }
 }

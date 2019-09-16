@@ -155,7 +155,6 @@ namespace Services.Services
 
         public async Task<SuccessBookModel> Create(CreateBookModel book)
         {
-            // TODO: Check fields with null
             if (book == null)
             {
                 return null;
@@ -168,7 +167,6 @@ namespace Services.Services
                 _context.Book.Add(dbObject);
                 await _context.SaveChangesAsync();
 
-                // TODO: Where is Id?
                 return _mapper.Map<Book, SuccessBookModel>(dbObject);
             }
             catch

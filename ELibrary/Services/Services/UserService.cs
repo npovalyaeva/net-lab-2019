@@ -134,8 +134,6 @@ namespace Services.Services
 
                 await _context.User.AddAsync(dbObject);
                 await _context.SaveChangesAsync();
-
-                // TODO: Where is Id?
                 return _mapper.Map<User, SuccessUserModel>(dbObject);
             }
 
