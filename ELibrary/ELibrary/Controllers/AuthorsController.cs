@@ -20,7 +20,7 @@ namespace ELibrary.Controllers
             _authorService = authorService;
         }
 
-        // GET: Authors
+        // GET: API/Authors
         [HttpGet]
         public async Task<IActionResult> Index()
         {

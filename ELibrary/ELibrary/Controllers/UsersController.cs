@@ -1,11 +1,6 @@
-﻿using ELibrary.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.User;
 using Services.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -14,12 +9,10 @@ namespace ELibrary.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IConfiguration _configuration;
         private readonly IUserService _userService;
 
-        public UsersController(IConfiguration configuration, IUserService userService)
+        public UsersController(IUserService userService)
         {
-            _configuration = configuration;
             _userService = userService;
         }
 

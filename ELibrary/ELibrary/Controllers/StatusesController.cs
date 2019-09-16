@@ -1,25 +1,30 @@
-﻿//using ELibrary.Models;
-//using ELibrary.Models.ViewModels.Status;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using System.Collections.Generic;
-//using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
+using System.Threading.Tasks;
 
-//namespace ELibrary.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class StatusesController : ELibraryController
-//    {
-//        public StatusesController(ELibraryContext context) : base(context) { }
+namespace ELibrary.Controllers
+{
+    [Route("api/statuses")]
+    [ApiController]
+    public class StatusesController : ControllerBase
+    {
+        private readonly IStatusService _statusService;
 
-//        // GET: Statuses
-//        [HttpGet]
-//        public async Task<IActionResult> Index()
-//        {
-//            var statuses = await _context.Status
-//                .ToListAsync();
-//            return Json(_mapper.Map<List<Status>, List<StatusModel>>(statuses));
-//        }
-//    }
-//}
+        public StatusesController(IStatusService statusService)
+        {
+            _statusService = statusService;
+        }
+
+        // GET: API/Statuses
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var statuses = await _statusService.GetStatuses();
+            if (statuses == null)
+            {
+                return NotFound();
+            }
+            return Ok(statuses);
+        }
+    }
+}
