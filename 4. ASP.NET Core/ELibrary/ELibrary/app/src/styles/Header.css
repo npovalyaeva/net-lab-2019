@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'Futura Light';
+    src: url('../sources/fonts/FuturaLightC.eot');
+    src: url('../sources/fonts/FuturaLightC.eot?#iefix') format('embedded-opentype'),
+    url('../sources/fonts/FuturaLightC.woff') format('woff'),
+    url('../sources/fonts/FuturaLightC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Futura Book';
+    src: url('../sources/fonts/FuturaBookC.eot');
+    src: url('../sources/fonts/FuturaBookC.eot?#iefix') format('embedded-opentype'),
+    url('../sources/fonts/FuturaBookC.woff') format('woff'),
+    url('../sources/fonts/FuturaBookC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Schnyder Wide M Bold';
+    src: url('../sources/fonts/SchnyderWideMBold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.app-bar {
+    box-shadow: none !important;
+}
+
+.toolbar {
+    height: 120px;
+    padding: 0 100px !important;
+    background-color: #EBF0F4;
+
+    font-family: 'Futura Book';
+
+    display: flex;
+    justify-content: space-between;  
+}
+
+.main-name {
+    color: #9D3E3E;
+
+    font-family: 'Schnyder Wide M Bold';
+    font-size: 50px;
+    font-weight: normal;
+}
+
+.login-button {
+    color: #000 !important;
+
+    font-size: 16px !important;
+    font-family: 'Futura Book' !important;
+}

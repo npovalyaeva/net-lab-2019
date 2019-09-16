@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'Futura Light';
+  src: url('../sources/fonts/FuturaLightC.eot');
+  src: url('../sources/fonts/FuturaLightC.eot?#iefix') format('embedded-opentype'),
+  url('../sources/fonts/FuturaLightC.woff') format('woff'),
+  url('../sources/fonts/FuturaLightC.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Futura Book';
+  src: url('../sources/fonts/FuturaBookC.eot');
+  src: url('../sources/fonts/FuturaBookC.eot?#iefix') format('embedded-opentype'),
+  url('../sources/fonts/FuturaBookC.woff') format('woff'),
+  url('../sources/fonts/FuturaBookC.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Schnyder Wide L Light';
+  src: url('../sources/fonts/SchnyderWideLLight.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+}
+
+h3 {
+  margin-top: 100px;
+  margin-bottom: 10px;
+  padding: 0 100px;
+  color: #161E5A;
+
+  font-family: 'Schnyder Wide L Light';
+  font-size: 44px;
+  font-weight: normal;
+
+  text-align: center;
+}
+
+h5 {
+  margin-top: 0px;
+  padding: 0 100px;
+  color: #05ADAD;
+  text-transform: uppercase;
+
+  font-family: 'Futura Book';
+
+  text-align: center;
+
+}
