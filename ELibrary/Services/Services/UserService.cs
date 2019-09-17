@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using DataLayer;
-using DataLayer.Entities;
+﻿using DataLayer.Entities;
 using ELibrary.Data;
-using Microsoft.EntityFrameworkCore;
 using Models.ViewModels.User;
 using Services.Interfaces;
 using System.Collections.Generic;
@@ -34,7 +31,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return users as List<User>;
+                return users.ToList();
             }
             catch
             {
@@ -50,6 +47,7 @@ namespace Services.Services
             }
             try
             {
+                // It's working, buuuuut...
                 var dbList = await _userRepository.GetAll();
                 var users = dbList.Where(m => m.Email == authenticationData.Login || m.Username == authenticationData.Login)
                     .Where(m => m.PasswordHash == Hash.FindHash(authenticationData.Password));
@@ -57,7 +55,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return (users as List<User>)[0];
+                return users.ToList()[0];
             }
             catch
             {
@@ -75,7 +73,7 @@ namespace Services.Services
             {
                 var dbList = await _userRepository.GetAll();
                 var users = dbList.Where(m => m.Email == login || m.Username == login);
-                return (users == null) ? true : false;
+                return (users.ToList().Count == 0) ? true : false;
             }
             catch
             {

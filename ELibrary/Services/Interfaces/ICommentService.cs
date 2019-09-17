@@ -1,5 +1,4 @@
 ﻿using DataLayer.Entities;
-using Models.ViewModels.Comment;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

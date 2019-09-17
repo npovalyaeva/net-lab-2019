@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using DataLayer;
-using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using Models.ViewModels.Status;
+﻿using DataLayer.Entities;
 using Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;

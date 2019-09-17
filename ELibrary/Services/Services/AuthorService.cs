@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using DataLayer;
-using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using Models.ViewModels.Author;
+﻿using DataLayer.Entities;
 using Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -54,7 +50,7 @@ namespace Services.Services
 
         public async Task<Author> Create(Author author)
         {
-            if (author != null)
+            if (author == null)
             {
                 return null;
             }

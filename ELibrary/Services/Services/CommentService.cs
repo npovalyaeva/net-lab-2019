@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using DataLayer;
-using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using Models.ViewModels.Comment;
+﻿using DataLayer.Entities;
 using Services.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +26,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return comments as List<Comment>;
+                return comments.ToList();
             }
             catch
             {

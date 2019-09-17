@@ -49,7 +49,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return reservations as List<Reservation>;
+                return reservations.ToList();
             }
             catch
             {
@@ -67,7 +67,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return reservations as List<Reservation>;
+                return reservations.ToList();
             }
             catch
             {
@@ -85,7 +85,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return reservations as List<Reservation>;
+                return reservations.ToList();
             }
             catch
             {
@@ -105,12 +105,12 @@ namespace Services.Services
                 var dbList = await _reservationRepository.GetAll();
                 var reservations = dbList
                     .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Author.LastName == lastName);
+                    .Where(m => m.Book.Author.LastName.ToLower() == lastName.ToLower());
                 if (reservations == null)
                 {
                     return null;
                 }
-                return reservations as List<Reservation>;
+                return reservations.ToList();
             }
             catch
             {
@@ -130,7 +130,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return reservations as List<Reservation>;
+                return reservations.ToList();
             }
             catch
             {
@@ -150,12 +150,12 @@ namespace Services.Services
                 var dbList = await _reservationRepository.GetAll();
                 var reservations = dbList
                     .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Title == title);
+                    .Where(m => m.Book.Title.ToLower() == title.ToLower());
                 if (reservations == null)
                 {
                     return null;
                 }
-                return reservations as List<Reservation>;
+                return reservations.ToList();
             }
             catch
             {

@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using DataLayer;
-using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using Models.ViewModels.Book;
+﻿using DataLayer.Entities;
 using Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +43,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return books as List<Book>;
+                return books.ToList();
             }
             catch
             {
@@ -65,12 +61,12 @@ namespace Services.Services
             try
             {
                 var dbList = await _bookRepository.GetAll();
-                var books = dbList.Where(m => m.Author.LastName == lastName);
+                var books = dbList.Where(m => m.Author.LastName.ToLower() == lastName.ToLower());
                 if (books == null)
                 {
                     return null;
                 }
-                return books as List<Book>;
+                return books.ToList();
             }
             catch
             {
@@ -88,12 +84,12 @@ namespace Services.Services
             try
             {
                 var dbList = await _bookRepository.GetAll();
-                var books = dbList.Where(m => m.Title == title);
+                var books = dbList.Where(m => m.Title.ToLower() == title.ToLower());
                 if (books == null)
                 {
                     return null;
                 }
-                return books as List<Book>;
+                return books.ToList();
             }
             catch
             {
@@ -112,7 +108,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return books as List<Book>;
+                return books.ToList();
             }
             catch
             {
