@@ -14,15 +14,11 @@ namespace Services.Services
     public class CommentService : ICommentService
     {
         private const string _text = "Deleted by Moderator";
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepository<Comment> _commentRepository;
 
-        public CommentService(ELibraryContext context)
+        public CommentService(IRepository<Comment> commentRepository)
         {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
+            _commentRepository = commentRepository;
         }
 
         public async Task<List<CommentForBookModel>> GetCommentsByBookId(int bookId)

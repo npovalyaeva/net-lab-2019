@@ -11,28 +11,23 @@ namespace Services.Services
 {
     public class StatusService : IStatusService
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepository<Status> _statusRepository;
 
-        public StatusService(ELibraryContext context)
+        public StatusService(IRepository<Status> statusRepository)
         {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
+            _statusRepository = statusRepository;
         }
 
-        public async Task<List<StatusModel>> GetStatuses()
+        public async Task<List<Status>> GetStatuses()
         {
             try
             {
-                List<Status> statuses = await _context.Status
-                    .ToListAsync();
+                List<Status> statuses = await _statusRepository.GetAll();
                 if (statuses == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Status>, List<StatusModel>>(statuses);
+                return statuses;
             }
             catch
             {

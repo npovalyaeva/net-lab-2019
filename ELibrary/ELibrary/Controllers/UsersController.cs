@@ -25,7 +25,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(users);
+            return Ok(_mapper.Map<List<User>, List<UserModel>>(users));
         }
 
         // GET: API/Users/Login
@@ -37,7 +37,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(_mapper.Map<User, UserModel>(user));
         }
 
         // GET: API/Users/Checking

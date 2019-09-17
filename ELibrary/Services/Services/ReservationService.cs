@@ -14,16 +14,13 @@ namespace Services.Services
 {
     public class ReservationService : IReservationService
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
+        
         private readonly ILogger<ReservationService> _logger;
+        private readonly IRepository<Reservation> _reservationRepository;
 
-        public ReservationService(ELibraryContext context)
+        public ReservationService(IRepository<Reservation> reservationRepository)
         {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
+            _reservationRepository = reservationRepository;
         }
 
         public async Task<List<ReservationModel>> GetReservations()

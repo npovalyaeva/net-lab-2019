@@ -13,18 +13,14 @@ namespace Services.Services
 {
     public class UserService : IUserService
     {
-        private readonly ELibraryContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepository<User> _userRepository;
 
-        public UserService(ELibraryContext context)
+        public UserService(IRepository<User> userRepository)
         {
-            _context = context;
-
-            var config = new MappingConfiguration().Configure();
-            _mapper = config.CreateMapper();
+            _userRepository = userRepository;
         }
 
-        public async Task<List<UserModel>> GetBlockedUsers()
+        public async Task<List<User>> GetBlockedUsers()
         {
             try
             {
@@ -35,7 +31,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map<List<User>, List<UserModel>>(users);
+                return users;
             }
             catch
             {
@@ -59,7 +55,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map<User, UserModel>(user);
+                return user;
             }
             catch
             {

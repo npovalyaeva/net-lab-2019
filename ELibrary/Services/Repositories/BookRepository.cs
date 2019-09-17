@@ -18,12 +18,12 @@ namespace Services.Repositories
 
         public async Task<List<Book>> GetAll()
         {
-            return await _context.Book.ToListAsync();
+            return await _context.Book.Include(b => b.Author).ToListAsync();
         }
 
         public async Task<Book> Get(long id)
         {
-            return await _context.Book.FirstOrDefaultAsync(m => m.BookId == id);
+            return await _context.Book.Include(b => b.Author).FirstOrDefaultAsync(m => m.BookId == id);
         }
 
         public async Task Create(Book model)

@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Models.ViewModels.Status;
+using Services;
 using Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -8,11 +13,13 @@ namespace ELibrary.Controllers
     [ApiController]
     public class StatusesController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IStatusService _statusService;
 
         public StatusesController(IStatusService statusService)
         {
             _statusService = statusService;
+            _mapper = new MappingConfiguration().Configure().CreateMapper();
         }
 
         // GET: API/Statuses
@@ -24,7 +31,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(statuses);
+            return Ok(_mapper.Map<List<Status>, List<StatusModel>>(statuses));
         }
     }
 }

@@ -19,18 +19,16 @@ namespace Services.Services
             _bookRepository = bookRepository;
         }
 
-        public async Task<List<BookBriefInfoModel>> GetBooks()
+        public async Task<List<Book>> GetBooks()
         {
             try
             {
-                List<Book> books = await _context.Book
-                    .Include(b => b.Author)
-                    .ToListAsync();
+                List<Book> books = await _bookRepository.GetAll();
                 if (books == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Book>, List<BookBriefInfoModel>>(books);
+                return books;
             }
             catch
             {
@@ -38,19 +36,19 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<BookBriefInfoModel>> GetFreeBooks()
+        public async Task<List<Book>> GetFreeBooks()
         {
             try
             {
-                List<Book> books = await _context.Book
-                    .Include(b => b.Author)
-                    .Where(m => m.FreeCopiesCount > 0)
-                    .ToListAsync();
+                // ???
+                List<Book> dbList = await _bookRepository.GetAll();
+                IEnumerable<Book> books = dbList.Where(m => m.FreeCopiesCount > 0);
+
                 if (books == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Book>, List<BookBriefInfoModel>>(books);
+                return books as List<Book>;
             }
             catch
             {
@@ -58,7 +56,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<BookBriefInfoModel>> GetBooksByAuthorLastName(string lastName)
+        public async Task<List<Book>> GetBooksByAuthorLastName(string lastName)
         {
             if (string.IsNullOrEmpty(lastName))
             {
@@ -75,7 +73,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map<List<Book>, List<BookBriefInfoModel>>(books);
+                return books;
             }
             catch
             {
@@ -83,7 +81,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<BookBriefInfoModel>> GetBooksByTitle(string title)
+        public async Task<List<Book>> GetBooksByTitle(string title)
         {
             if (string.IsNullOrEmpty(title))
             {
@@ -100,7 +98,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map<List<Book>, List<BookBriefInfoModel>>(books);
+                return books;
             }
             catch
             {
@@ -109,7 +107,7 @@ namespace Services.Services
 
         }
 
-        public async Task<List<BookBriefInfoModel>> GetBooksByYear(short year)
+        public async Task<List<Book>> GetBooksByYear(short year)
         {
             try
             {
@@ -121,7 +119,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map<List<Book>, List<BookBriefInfoModel>>(books);
+                return books;
             }
             catch
             {
@@ -130,7 +128,7 @@ namespace Services.Services
         }
 
 
-        public async Task<BookFullInfoModel> GetBookInfo(int id)
+        public async Task<Book> GetBookInfo(int id)
         {
             try
             {
@@ -141,7 +139,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return _mapper.Map<Book, BookFullInfoModel>(book);
+                return book;
             }
             catch
             {
@@ -149,7 +147,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<SuccessBookModel> Create(CreateBookModel book)
+        public async Task<Book> Create(Book book)
         {
             if (book == null)
             {
