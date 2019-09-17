@@ -21,19 +21,17 @@ namespace Services.Services
             _commentRepository = commentRepository;
         }
 
-        public async Task<List<CommentForBookModel>> GetCommentsByBookId(int bookId)
+        public async Task<List<Comment>> GetCommentsByBookId(int bookId)
         {
             try
             {
-                List<Comment> comments = await _context.Comment
-                    .Include(c => c.User)
-                    .Where(m => m.BookId == bookId)
-                    .ToListAsync();
+                List<Comment> dbList = await _commentRepository.GetAll();
+                var comments = dbList.Where(m => m.BookId == bookId);
                 if (comments == null)
                 {
                     return null;
                 }
-                return _mapper.Map< List<Comment>, List<CommentForBookModel>>(comments);
+                return comments as List<Comment>;
             }
             catch
             {
@@ -41,18 +39,16 @@ namespace Services.Services
             }
         }
 
-        public async Task<CommentForBookModel> GetCommentInfo(int id)
+        public async Task<Comment> GetCommentInfo(int id)
         {
             try
             {
-                Comment comment = await _context.Comment
-                    .Include(c => c.User)
-                    .FirstOrDefaultAsync(m => m.CommentId == id);
+                Comment comment = await _commentRepository.Get(id);
                 if (comment == null)
                 {
                     return null;
                 }
-                return _mapper.Map<Comment, CommentForBookModel>(comment);
+                return comment;
             }
             catch
             {
@@ -60,7 +56,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<SuccessCommentModel> Create(CreateCommentModel comment)
+        public async Task<Comment> Create(Comment comment)
         {
             if (comment == null)
             {
@@ -69,11 +65,8 @@ namespace Services.Services
 
             try
             {
-                Comment dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
-                dbObject.Date = DateTime.Now;
-                _context.Comment.Add(dbObject);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<Comment, SuccessCommentModel>(dbObject);
+                await _commentRepository.Create(comment);
+                return comment;
             }
             catch
             {
@@ -81,20 +74,19 @@ namespace Services.Services
             }
         }
 
-        public async Task<SuccessCommentModel> EditByModerator(int id)
+        public async Task<Comment> EditByModerator(int id)
         {
             try
             {
-                Comment dbObject = await _context.Comment.FindAsync(id);
+                Comment dbObject = await _commentRepository.Get(id);
                 if (dbObject == null)
                 {
                     return null;
                 }
                 dbObject.Text = _text;
 
-                _context.Comment.Update(dbObject);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<Comment, SuccessCommentModel>(dbObject);
+                await _commentRepository.Update(dbObject);
+                return dbObject;
             }
             catch
             {

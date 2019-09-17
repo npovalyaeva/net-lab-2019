@@ -23,7 +23,7 @@ namespace Services.Services
         {
             try
             {
-                List<Book> books = await _bookRepository.GetAll();
+                var books = await _bookRepository.GetAll();
                 if (books == null)
                 {
                     return null;
@@ -40,9 +40,8 @@ namespace Services.Services
         {
             try
             {
-                // ???
-                List<Book> dbList = await _bookRepository.GetAll();
-                IEnumerable<Book> books = dbList.Where(m => m.FreeCopiesCount > 0);
+                var dbList = await _bookRepository.GetAll();
+                var books = dbList.Where(m => m.FreeCopiesCount > 0);
 
                 if (books == null)
                 {
@@ -65,15 +64,13 @@ namespace Services.Services
 
             try
             {
-                List<Book> books = await _context.Book
-                    .Include(b => b.Author)
-                    .Where(m => m.Author.LastName == lastName)
-                    .ToListAsync();
+                var dbList = await _bookRepository.GetAll();
+                var books = dbList.Where(m => m.Author.LastName == lastName);
                 if (books == null)
                 {
                     return null;
                 }
-                return books;
+                return books as List<Book>;
             }
             catch
             {
@@ -90,15 +87,13 @@ namespace Services.Services
 
             try
             {
-                List<Book> books = await _context.Book
-                    .Include(b => b.Author)
-                    .Where(m => m.Title == title)
-                    .ToListAsync();
+                var dbList = await _bookRepository.GetAll();
+                var books = dbList.Where(m => m.Title == title);
                 if (books == null)
                 {
                     return null;
                 }
-                return books;
+                return books as List<Book>;
             }
             catch
             {
@@ -111,15 +106,13 @@ namespace Services.Services
         {
             try
             {
-                List<Book> books = await _context.Book
-                    .Include(b => b.Author)
-                    .Where(m => m.Year == year)
-                    .ToListAsync();
+                var dbList = await _bookRepository.GetAll();
+                var books = dbList.Where(m => m.Year == year);
                 if (books == null)
                 {
                     return null;
                 }
-                return books;
+                return books as List<Book>;
             }
             catch
             {
@@ -127,14 +120,11 @@ namespace Services.Services
             }
         }
 
-
         public async Task<Book> GetBookInfo(int id)
         {
             try
             {
-                Book book = await _context.Book
-                    .Include(b => b.Author)
-                    .FirstOrDefaultAsync(m => m.BookId == id);
+                Book book = await _bookRepository.Get(id);
                 if (book == null)
                 {
                     return null;
@@ -156,12 +146,8 @@ namespace Services.Services
 
             try
             {
-                Book dbObject = _mapper.Map<CreateBookModel, Book>(book);
-
-                _context.Book.Add(dbObject);
-                await _context.SaveChangesAsync();
-
-                return _mapper.Map<Book, SuccessBookModel>(dbObject);
+                await _bookRepository.Create(book);
+                return book;
             }
             catch
             {

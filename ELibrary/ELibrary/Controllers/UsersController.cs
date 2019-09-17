@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.User;
+using Services;
 using Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -9,11 +13,13 @@ namespace ELibrary.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         public UsersController(IUserService userService)
         {
             _userService = userService;
+            _mapper = new MappingConfiguration().Configure().CreateMapper();
         }
 
         // GET: API/Users/Blocked
@@ -44,7 +50,11 @@ namespace ELibrary.Controllers
         [HttpGet("checking/{login}")]
         public async Task<IActionResult> CheckLogin(string login)
         {
-            var loginModel = await _userService.CheckIsLoginUnique(login);
+            LoginModel loginModel = new LoginModel();
+            loginModel.Login = login;
+
+            var isUnique = await _userService.CheckIsLoginUnique(login);
+            loginModel.IsUnique = isUnique;
             return Ok(loginModel);
         }
 
@@ -61,19 +71,19 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(_mapper.Map<User, UserModel>(user));
         }
 
         // POST: API/Users
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserModel user)
         {
-            var userModel = await _userService.Create(user);
+            var userModel = await _userService.Create(_mapper.Map<CreateUserModel, User>(user));
             if (userModel == null)
             {
                 return BadRequest();
             }
-            return Created("Created", userModel);
+            return Created("Created", _mapper.Map<User, SuccessUserModel>(userModel));
         }
 
         // PUT: API/Users/Block/5
@@ -88,7 +98,7 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            return Created("Updated", userModel);
+            return Created("Updated", _mapper.Map<User, UserBlockingStatusModel>(userModel));
         }
 
         // PUT: Users/Unblock/5
@@ -104,7 +114,7 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            return Created("Updated", userModel);
+            return Created("Updated", _mapper.Map<User, UserBlockingStatusModel>(userModel));
         }
     }
 }

@@ -18,12 +18,12 @@ namespace Services.Repositories
 
         public async Task<List<Comment>> GetAll()
         {
-            return await _context.Comment.ToListAsync();
+            return await _context.Comment.Include(c => c.User).ToListAsync();
         }
 
         public async Task<Comment> Get(long id)
         {
-            return await _context.Comment.FirstOrDefaultAsync(m => m.CommentId == id);
+            return await _context.Comment.Include(c => c.User).FirstOrDefaultAsync(m => m.CommentId == id);
         }
 
         public async Task Create(Comment model)

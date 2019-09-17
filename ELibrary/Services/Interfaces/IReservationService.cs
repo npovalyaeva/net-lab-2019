@@ -1,4 +1,5 @@
-﻿using Models.ViewModels.Reservation;
+﻿using DataLayer.Entities;
+using Models.ViewModels.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,18 +9,18 @@ namespace Services.Interfaces
 {
     public interface IReservationService
     {
-        Task<List<ReservationModel>> GetReservations();
-        Task<List<ReservationModel>> GetReservationsByBookId(int bookId);
-        Task<List<ReservationModel>> GetReservationsByUserId(int userId);
-        Task<List<ReservationModel>> GetHandedOutReservations();
-        Task<List<ReservationModel>> GetHandedOutReservationsByAuthorName(string lastName);
-        Task<List<ReservationModel>> GetHandedOutReservationsByCountOfDays(int count);
-        Task<List<ReservationModel>> GetHandedOutReservationsByTitle(string title);
-        Task<ReservationModel> GetReservationInfo(long id);
+        Task<List<Reservation>> GetReservations();
+        Task<List<Reservation>> GetReservationsByBookId(int bookId);
+        Task<List<Reservation>> GetReservationsByUserId(int userId);
+        Task<List<Reservation>> GetHandedOutReservations();
+        Task<List<Reservation>> GetHandedOutReservationsByAuthorName(string lastName);
+        Task<List<Reservation>> GetHandedOutReservationsByCountOfDays(int count);
+        Task<List<Reservation>> GetHandedOutReservationsByTitle(string title);
+        Task<Reservation> GetReservationInfo(long id);
 
-        Task<SuccessfulReservationModel> Create(CreateReservationModel reservation);
+        Task<Reservation> Create(Reservation reservation);
 
-        Task<SuccessfulReservationModel> Edit(EditReservationModel reservation);
+        Task<Reservation> Edit(EditReservationModel reservation);
 
         Task<bool> Delete(long id);
     }

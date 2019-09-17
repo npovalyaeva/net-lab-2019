@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.Comment;
+using Services;
 using Services.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -9,27 +14,29 @@ namespace ELibrary.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
 
         public CommentsController(ICommentService commentService)
         {
             _commentService = commentService;
+            _mapper = new MappingConfiguration().Configure().CreateMapper();
         }
 
         // GET: API/Comments/Book/15
         [HttpGet("book/{bookId}")]
-        public async Task<IActionResult> GetCommentByBookId(int? bookId)
+        public async Task<IActionResult> GetCommentsByBookId(int? bookId)
         {
             if (bookId == null)
             {
                 return BadRequest();
             }
-            var comment = await _commentService.GetCommentsByBookId((int)bookId);
-            if (comment == null)
+            var comments = await _commentService.GetCommentsByBookId((int)bookId);
+            if (comments == null)
             {
                 return NotFound();
             }
-            return Ok(comment);
+            return Ok(_mapper.Map<List<Comment>, List<CommentForBookModel>>(comments));
         }
 
         // GET: API/Comments/3
@@ -45,19 +52,22 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(comment);
+            return Ok(_mapper.Map<Comment, CommentForBookModel>(comment));
         }
 
         // POST: API/Comments
         [HttpPost]
         public async Task<IActionResult> Create(CreateCommentModel comment)
         {
-            var dbObject = await _commentService.Create(comment);
-            if (dbObject == null)
+            Comment dbObject = _mapper.Map<CreateCommentModel, Comment>(comment);
+            dbObject.Date = DateTime.Now;
+
+            var dbAnswer = await _commentService.Create(dbObject);
+            if (dbAnswer == null)
             {
                 return BadRequest();
             }
-            return CreatedAtAction("Created", dbObject);
+            return CreatedAtAction("Created", _mapper.Map<Comment, SuccessCommentModel>(dbAnswer));
         }
 
         // PUT: API/Comments/5
@@ -73,7 +83,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return CreatedAtAction("Updated", dbObject);
+            return CreatedAtAction("Updated", _mapper.Map<Comment, SuccessCommentModel>(dbObject));
         }
     }
 }

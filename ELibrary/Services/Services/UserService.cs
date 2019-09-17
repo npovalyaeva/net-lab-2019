@@ -13,10 +13,14 @@ namespace Services.Services
 {
     public class UserService : IUserService
     {
+        private readonly IRepository<Book> _bookRepository;
+        private readonly IRepository<Reservation> _reservationRepository;
         private readonly IRepository<User> _userRepository;
 
-        public UserService(IRepository<User> userRepository)
+        public UserService(IRepository<Book> bookRepository, IRepository<Reservation> reservationRepository, IRepository<User> userRepository)
         {
+            _bookRepository = bookRepository;
+            _reservationRepository = reservationRepository;
             _userRepository = userRepository;
         }
 
@@ -24,14 +28,13 @@ namespace Services.Services
         {
             try
             {
-                List<User> users = await _context.User
-                    .Where(m => m.IsBlocked == true)
-                    .ToListAsync();
+                var dbList = await _userRepository.GetAll();
+                var users = dbList.Where(m => m.IsBlocked == true);
                 if (users == null)
                 {
                     return null;
                 }
-                return users;
+                return users as List<User>;
             }
             catch
             {
@@ -39,7 +42,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<UserModel> Authenticate(AuthenticationModel authenticationData)
+        public async Task<User> Authenticate(AuthenticationModel authenticationData)
         {
             if (string.IsNullOrEmpty(authenticationData.Login) || string.IsNullOrEmpty(authenticationData.Password))
             {
@@ -47,10 +50,45 @@ namespace Services.Services
             }
             try
             {
-                User user = await _context.User
-                    .Where(m => (m.Email == authenticationData.Login || m.Username == authenticationData.Login))
-                    .Where(m => (m.PasswordHash == Hash.FindHash(authenticationData.Password)))
-                    .FirstOrDefaultAsync();
+                var dbList = await _userRepository.GetAll();
+                var users = dbList.Where(m => m.Email == authenticationData.Login || m.Username == authenticationData.Login)
+                    .Where(m => m.PasswordHash == Hash.FindHash(authenticationData.Password));
+                if (users == null)
+                {
+                    return null;
+                }
+                return (users as List<User>)[0];
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> CheckIsLoginUnique(string login)
+        {
+            if (string.IsNullOrEmpty(login))
+            {
+                return false;
+            }
+            try
+            {
+                var dbList = await _userRepository.GetAll();
+                var users = dbList.Where(m => m.Email == login || m.Username == login);
+                return (users == null) ? true : false;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<User> GetUserInfo(int id)
+        {
+            try
+            {
+                var user = await _userRepository.Get(id);
                 if (user == null)
                 {
                     return null;
@@ -63,79 +101,30 @@ namespace Services.Services
             }
         }
 
-        public async Task<LoginModel> CheckIsLoginUnique(string login)
-        {
-            if (string.IsNullOrEmpty(login))
-            {
-                return null;
-            }
-            try
-            {
-                LoginModel loginModel = new LoginModel();
-                loginModel.Login = login;
-
-                User user = await _context.User
-                    .Where(m => m.Email == login || m.Username == login)
-                    .FirstOrDefaultAsync();
-
-                loginModel.IsUnique = (user == null) ? true : false;
-                return loginModel;
-            }
-            catch
-            {
-                return null;
-            }
-
-        }
-
-        public async Task<UserModel> GetUserInfo(int id)
-        {
-            try
-            {
-                User user = await _context.User
-                    .FirstOrDefaultAsync(m => m.UserId == id);
-                if (user == null)
-                {
-                    return null;
-                }
-                return _mapper.Map<User, UserModel>(user);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public async Task<SuccessUserModel> Create(CreateUserModel user)
+        public async Task<User> Create(User user)
         {
             if (user == null)
             {
                 return null;
             }
+            var isUnique = await CheckIsLoginUnique(user.Email) && await CheckIsLoginUnique(user.Username);
 
-            bool isUserExists = await _context.User
-                .AnyAsync(m => (m.Email == user.Email || user.Username == m.Username));
-
-            if (isUserExists)
+            if (!isUnique)
             {
                 return null;
             }
             else
             {
-                User dbObject = _mapper.Map<CreateUserModel, User>(user);
-
-                dbObject.RoleId = 1;
-                dbObject.PasswordHash = Hash.FindHash(user.Password);
-                dbObject.IsBlocked = false;
-
-                await _context.User.AddAsync(dbObject);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<User, SuccessUserModel>(dbObject);
+                user.RoleId = 1;
+                user.PasswordHash = Hash.FindHash(user.PasswordHash);
+                user.IsBlocked = false;
+                await _userRepository.Create(user);
+                return user;
             }
 
         }
 
-        public async Task<UserBlockingStatusModel> Block(BlockUserModel user)
+        public async Task<User> Block(BlockUserModel user)
         {
             if (string.IsNullOrEmpty(user.BlockingReason))
             {
@@ -143,8 +132,7 @@ namespace Services.Services
             }
             try
             {
-                User dbObject = await _context.User
-                    .FirstOrDefaultAsync(m => m.UserId == user.UserId);
+                var dbObject = await _userRepository.Get(user.UserId);
 
                 if (dbObject == null)
                 {
@@ -154,23 +142,20 @@ namespace Services.Services
                 dbObject.BlockedReason = user.BlockingReason;
                 dbObject.IsBlocked = true;
 
-                _context.User.Update(dbObject);
+                await _userRepository.Update(dbObject);
 
-                List<Reservation> reservations = await _context.Reservation
-                    .Where(m => m.UserId == user.UserId)
-                    .ToListAsync();
+                var dbReservationsList = await _reservationRepository.GetAll();
+                var reservations = dbReservationsList.Where(m => m.UserId == user.UserId);
+
                 foreach (var reservation in reservations)
                 {
-                    Book book = await _context.Book
-                        .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
+                    Book book = await _bookRepository.Get(reservation.BookId);
                     book.FreeCopiesCount++;
-                    _context.Book.Update(book);
-                    _context.Reservation.Remove(reservation);
+                    await _bookRepository.Update(book);
+                    await _reservationRepository.Delete(reservation);
                 }
-                //             !!!!
-                await _context.SaveChangesAsync();
 
-                return _mapper.Map<User, UserBlockingStatusModel>(dbObject);
+                return dbObject;
             }
             catch
             {
@@ -178,13 +163,11 @@ namespace Services.Services
             }
         }
 
-        public async Task<UserBlockingStatusModel> Unblock(int id)
+        public async Task<User> Unblock(int id)
         {
             try
             {
-                User dbObject = await _context.User
-                    .FirstOrDefaultAsync(m => m.UserId == id);
-                
+                User dbObject = await _userRepository.Get(id);            
                 if (dbObject == null)
                 {
                     return null;
@@ -193,10 +176,9 @@ namespace Services.Services
                 {
                     dbObject.BlockedReason = null;
                     dbObject.IsBlocked = false;
-                    _context.User.Update(dbObject);
-                    await _context.SaveChangesAsync();
+                    await _userRepository.Update(dbObject);
 
-                    return _mapper.Map<User, UserBlockingStatusModel>(dbObject);
+                    return dbObject;
                 }
             }
             catch

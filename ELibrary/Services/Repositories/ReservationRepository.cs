@@ -18,12 +18,20 @@ namespace Services.Repositories
 
         public async Task<List<Reservation>> GetAll()
         {
-            return await _context.Reservation.ToListAsync();
+            return await _context.Reservation
+                .Include(c => c.Book)
+                .Include(c => c.Status)
+                .Include(c => c.User)
+                .ToListAsync();
         }
 
         public async Task<Reservation> Get(long id)
         {
-            return await _context.Reservation.FirstOrDefaultAsync(m => m.ReservationId == id);
+            return await _context.Reservation
+                .Include(c => c.Book)
+                .Include(c => c.Status)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.ReservationId == id);
         }
 
         public async Task Create(Reservation model)

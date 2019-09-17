@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models.ViewModels.Reservation;
+using Services;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,11 +17,13 @@ namespace ELibrary.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IReservationService _reservationService;
 
         public ReservationsController(IReservationService reservationService)
         {
             _reservationService = reservationService;
+            _mapper = new MappingConfiguration().Configure().CreateMapper();
         }
 
         // GET: API/Reservations
@@ -30,7 +35,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/Book/3
@@ -46,7 +51,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: API/Reservations/User/3
@@ -62,7 +67,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut
@@ -74,7 +79,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut/Author/Bulgakov
@@ -86,7 +91,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut/Days/5
@@ -102,7 +107,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         // GET: Reservations/HandedOut/Title/Demons
@@ -114,7 +119,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservations);
+            return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -128,19 +133,19 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(reservation);
+            return Ok(_mapper.Map<Reservation, ReservationModel>(reservation));
         }
 
         // POST: API/Reservations
         [HttpPost]
         public async Task<IActionResult> Create(CreateReservationModel reservation)
         {
-            var dbObject = await _reservationService.Create(reservation);
+            var dbObject = await _reservationService.Create(_mapper.Map<CreateReservationModel, Reservation>(reservation));
             if (dbObject == null)
             {
                 return BadRequest();
             }
-            return CreatedAtAction("Created", dbObject);
+            return CreatedAtAction("Created", _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject));
         }
 
         // PUT: API/Reservations
@@ -152,7 +157,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return CreatedAtAction("Updated", dbObject);
+            return CreatedAtAction("Updated", _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject));
         }
 
         // DELETE: API/Reservations/5

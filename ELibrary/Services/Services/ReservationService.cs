@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using DataLayer;
-using DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using DataLayer.Entities;
 using Microsoft.Extensions.Logging;
 using Models.ViewModels.Reservation;
 using Services.Interfaces;
@@ -16,28 +13,25 @@ namespace Services.Services
     {
         
         private readonly ILogger<ReservationService> _logger;
+        private readonly IRepository<Book> _bookRepository;
         private readonly IRepository<Reservation> _reservationRepository;
 
-        public ReservationService(IRepository<Reservation> reservationRepository)
+        public ReservationService(IRepository<Book> bookRepository, IRepository<Reservation> reservationRepository)
         {
+            _bookRepository = bookRepository;
             _reservationRepository = reservationRepository;
         }
 
-        public async Task<List<ReservationModel>> GetReservations()
+        public async Task<List<Reservation>> GetReservations()
         {
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
-                    .ToListAsync();
-
+                var reservations = await _reservationRepository.GetAll();
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations;
             }
             catch
             {
@@ -45,22 +39,17 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<ReservationModel>> GetReservationsByBookId(int bookId)
+        public async Task<List<Reservation>> GetReservationsByBookId(int bookId)
         {
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
-                    .Where(m => m.BookId == bookId)
-                    .ToListAsync();
-
+                var dbList = await _reservationRepository.GetAll();
+                var reservations = dbList.Where(m => m.BookId == bookId);
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations as List<Reservation>;
             }
             catch
             {
@@ -68,22 +57,17 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<ReservationModel>> GetReservationsByUserId(int userId)
+        public async Task<List<Reservation>> GetReservationsByUserId(int userId)
         {
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
-                    .Where(m => m.UserId == userId)
-                    .ToListAsync();
-
+                var dbList = await _reservationRepository.GetAll();
+                var reservations = dbList.Where(m => m.UserId == userId);
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations as List<Reservation>;
             }
             catch
             {
@@ -91,22 +75,17 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<ReservationModel>> GetHandedOutReservations()
+        public async Task<List<Reservation>> GetHandedOutReservations()
         {
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
-                    .Where(m => m.StatusId == 2)
-                    .ToListAsync();
-
+                var dbList = await _reservationRepository.GetAll();
+                var reservations = dbList.Where(m => m.StatusId == 2);
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations as List<Reservation>;
             }
             catch
             {
@@ -114,7 +93,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<ReservationModel>> GetHandedOutReservationsByAuthorName(string lastName)
+        public async Task<List<Reservation>> GetHandedOutReservationsByAuthorName(string lastName)
         {
             if (string.IsNullOrEmpty(lastName))
             {
@@ -123,19 +102,15 @@ namespace Services.Services
 
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
+                var dbList = await _reservationRepository.GetAll();
+                var reservations = dbList
                     .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Author.LastName == lastName)
-                    .ToListAsync();
-
+                    .Where(m => m.Book.Author.LastName == lastName);
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations as List<Reservation>;
             }
             catch
             {
@@ -143,23 +118,19 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<ReservationModel>> GetHandedOutReservationsByCountOfDays(int count)
+        public async Task<List<Reservation>> GetHandedOutReservationsByCountOfDays(int count)
         {
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
+                var dbList = await _reservationRepository.GetAll();
+                var reservations = dbList
                     .Where(m => m.StatusId == 2)
-                    .Where(m => m.DateOfReservation <= DateTime.Now.AddDays(Convert.ToDouble(-count)))
-                    .ToListAsync();
-
+                    .Where(m => m.DateOfReservation <= DateTime.Now.AddDays(Convert.ToDouble(-count)));
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations as List<Reservation>;
             }
             catch
             {
@@ -167,7 +138,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<List<ReservationModel>> GetHandedOutReservationsByTitle(string title)
+        public async Task<List<Reservation>> GetHandedOutReservationsByTitle(string title)
         {
             if (string.IsNullOrEmpty(title))
             {
@@ -176,19 +147,15 @@ namespace Services.Services
 
             try
             {
-                List<Reservation> reservations = await _context.Reservation
-                    .Include(r => r.Book)
-                    .Include(r => r.Status)
-                    .Include(r => r.User)
+                var dbList = await _reservationRepository.GetAll();
+                var reservations = dbList
                     .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Title == title)
-                    .ToListAsync();
-
+                    .Where(m => m.Book.Title == title);
                 if (reservations == null)
                 {
                     return null;
                 }
-                return _mapper.Map<List<Reservation>, List<ReservationModel>>(reservations);
+                return reservations as List<Reservation>;
             }
             catch
             {
@@ -196,21 +163,16 @@ namespace Services.Services
             }
         }
 
-        public async Task<ReservationModel> GetReservationInfo(long id)
+        public async Task<Reservation> GetReservationInfo(long id)
         {
             try
             {
-                Reservation reservation = await _context.Reservation
-                    .Include(c => c.Book)
-                    .Include(c => c.Status)
-                    .Include(c => c.User)
-                    .FirstOrDefaultAsync(m => m.ReservationId == id);
-
+                Reservation reservation = await _reservationRepository.Get(id);
                 if (reservation == null)
                 {
                     return null;
                 }
-                return _mapper.Map<Reservation, ReservationModel>(reservation);
+                return reservation;
             }
             catch
             {
@@ -218,7 +180,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<SuccessfulReservationModel> Create(CreateReservationModel reservation)
+        public async Task<Reservation> Create(Reservation reservation)
         {
             if (reservation == null)
             {
@@ -227,28 +189,24 @@ namespace Services.Services
 
             try
             {
-                Reservation dbObject = _mapper.Map<CreateReservationModel, Reservation>(reservation);
-
-                Book dbBookObject = await _context.Book
-                .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
-
+                Book dbBookObject = await _bookRepository.Get(reservation.BookId);
                 dbBookObject.FreeCopiesCount--;
-                dbObject.DateOfReservation = DateTime.Now;
+                reservation.DateOfReservation = DateTime.Now;
 
-                _context.Reservation.Add(dbObject);
-                _context.Book.Update(dbBookObject);
-                await _context.SaveChangesAsync();
+                await _reservationRepository.Create(reservation);
+                await _bookRepository.Update(dbBookObject);
 
-                _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, Book: {1}, User ID: {2}, Status ID: {3}", dbObject.ReservationId, dbBookObject.Title, dbObject.UserId, dbObject.StatusId));
-                return _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject);
+                _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, Book: {1}, User ID: {2}, Status ID: {3}", reservation.ReservationId, dbBookObject.Title, reservation.UserId, reservation.StatusId));
+                return reservation;
             }
             catch
             {
+                _logger.LogInformation(string.Format("Error: Reservation wasn't added. Book ID: {0}, User ID: {1}", reservation.BookId, reservation.UserId));
                 return null;
             }
         }
 
-        public async Task<SuccessfulReservationModel> Edit(EditReservationModel reservation)
+        public async Task<Reservation> Edit(EditReservationModel reservation)
         {
             if (reservation == null)
             {
@@ -257,8 +215,7 @@ namespace Services.Services
 
             try
             {
-                Reservation dbObject = await _context.Reservation
-                    .FirstOrDefaultAsync(m => m.ReservationId == reservation.ReservationId);
+                Reservation dbObject = await _reservationRepository.Get(reservation.ReservationId);
                 if (dbObject == null)
                 {
                     return null;
@@ -266,13 +223,13 @@ namespace Services.Services
                 dbObject.StatusId = reservation.StatusId;
                 dbObject.DateOfReservation = DateTime.Now;
 
-                _context.Reservation.Update(dbObject);
-                await _context.SaveChangesAsync();
+                await _reservationRepository.Update(dbObject);
                 _logger.LogInformation(string.Format("Reservation was updated. Reservation ID: {0}, Status ID: {1}", dbObject.ReservationId, dbObject.StatusId));
-                return _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject);
+                return dbObject;
             }
             catch
             {
+                _logger.LogInformation(string.Format("Error: Reservation wasn't updated. Reservation ID: {0}", reservation.ReservationId));
                 return null;
             }
         }
@@ -281,20 +238,15 @@ namespace Services.Services
         {
             try
             {
-                Reservation reservation = await _context.Reservation
-                    .FindAsync(id);
+                var reservation = await _reservationRepository.Get(id);
                 if (reservation == null)
                 {
                     return false;
                 }
-
-                Book book = await _context.Book
-                    .FirstOrDefaultAsync(m => m.BookId == reservation.BookId);
+                var book = await _bookRepository.Get(reservation.BookId);
                 book.FreeCopiesCount++;
-                _context.Book.Update(book);
-                _context.Reservation.Remove(reservation);
-                await _context.SaveChangesAsync();
-
+                await _bookRepository.Update(book);
+                await _reservationRepository.Delete(reservation);
                 return true;
             }
             catch
