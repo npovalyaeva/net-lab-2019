@@ -25,7 +25,7 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _userRepository.GetAll();
+                var dbList = _userRepository.GetAll();
                 var users = dbList.Where(m => m.IsBlocked == true);
                 if (users == null)
                 {
@@ -48,7 +48,7 @@ namespace Services.Services
             try
             {
                 // It's working, buuuuut...
-                var dbList = await _userRepository.GetAll();
+                var dbList = _userRepository.GetAll();
                 var users = dbList.Where(m => m.Email == authenticationData.Login || m.Username == authenticationData.Login)
                     .Where(m => m.PasswordHash == Hash.FindHash(authenticationData.Password));
                 if (users == null)
@@ -71,7 +71,7 @@ namespace Services.Services
             }
             try
             {
-                var dbList = await _userRepository.GetAll();
+                var dbList = _userRepository.GetAll();
                 var users = dbList.Where(m => m.Email == login || m.Username == login);
                 return (users.ToList().Count == 0) ? true : false;
             }
@@ -142,7 +142,7 @@ namespace Services.Services
 
                 await _userRepository.Update(dbObject);
 
-                var dbReservationsList = await _reservationRepository.GetAll();
+                var dbReservationsList = _reservationRepository.GetAll();
                 var reservations = dbReservationsList.Where(m => m.UserId == user.UserId);
 
                 foreach (var reservation in reservations)

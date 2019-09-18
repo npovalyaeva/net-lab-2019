@@ -29,6 +29,10 @@ namespace ELibrary.Controllers
             List<Author> authors = await _authorService.GetAuthors();
             if (authors == null)
             {
+                return BadRequest();
+            }
+            if (authors.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Author>, List<AuthorModel>>(authors));

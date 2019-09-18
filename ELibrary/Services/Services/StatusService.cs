@@ -1,6 +1,7 @@
 ﻿using DataLayer.Entities;
 using Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services.Services
@@ -18,12 +19,8 @@ namespace Services.Services
         {
             try
             {
-                List<Status> statuses = await _statusRepository.GetAll();
-                if (statuses == null)
-                {
-                    return null;
-                }
-                return statuses;
+                var entityList = _statusRepository.GetAll();
+                return entityList.ToList();
             }
             catch
             {

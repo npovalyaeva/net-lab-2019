@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using Services.Filters;
 using Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,12 @@ namespace Services.Services
         {
             try
             {
-                var books = await _bookRepository.GetAll();
+                var books = _bookRepository.GetAll();
                 if (books == null)
                 {
                     return null;
                 }
-                return books;
+                return books.ToList();
             }
             catch
             {
@@ -36,13 +37,8 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _bookRepository.GetAll();
-                var books = dbList.Where(m => m.FreeCopiesCount > 0);
-
-                if (books == null)
-                {
-                    return null;
-                }
+                var entityList = _bookRepository.GetAll();
+                var books = BookFilter.FilterFreeBooks(entityList);
                 return books.ToList();
             }
             catch
@@ -60,8 +56,8 @@ namespace Services.Services
 
             try
             {
-                var dbList = await _bookRepository.GetAll();
-                var books = dbList.Where(m => m.Author.LastName.ToLower() == lastName.ToLower());
+                var entityList = _bookRepository.GetAll();
+                var books = BookFilter.FilterByAuthorLastName(entityList, lastName);
                 if (books == null)
                 {
                     return null;
@@ -83,8 +79,8 @@ namespace Services.Services
 
             try
             {
-                var dbList = await _bookRepository.GetAll();
-                var books = dbList.Where(m => m.Title.ToLower() == title.ToLower());
+                var entityList = _bookRepository.GetAll();
+                var books = BookFilter.FilterByTitle(entityList, title);
                 if (books == null)
                 {
                     return null;
@@ -102,8 +98,8 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _bookRepository.GetAll();
-                var books = dbList.Where(m => m.Year == year);
+                var entityList = _bookRepository.GetAll();
+                var books = BookFilter.FilterByYear(entityList, year);
                 if (books == null)
                 {
                     return null;
@@ -139,7 +135,7 @@ namespace Services.Services
             {
                 return null;
             }
-
+            book.FreeCopiesCount = book.CopiesCount;
             try
             {
                 await _bookRepository.Create(book);

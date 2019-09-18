@@ -29,6 +29,10 @@ namespace ELibrary.Controllers
             var statuses = await _statusService.GetStatuses();
             if (statuses == null)
             {
+                return BadRequest();
+            }
+            if (statuses.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Status>, List<StatusModel>>(statuses));

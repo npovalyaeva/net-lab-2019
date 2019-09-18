@@ -34,13 +34,17 @@ namespace ELibrary.Controllers
             var comments = await _commentService.GetCommentsByBookId((int)bookId);
             if (comments == null)
             {
+                return BadRequest();
+            }
+            if (comments.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Comment>, List<CommentForBookModel>>(comments));
         }
 
         // GET: API/Comments/3
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -67,11 +71,11 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction("Created", _mapper.Map<Comment, SuccessCommentModel>(dbAnswer));
+            return Created("Created", _mapper.Map<Comment, SuccessCommentModel>(dbAnswer));
         }
 
         // PUT: API/Comments/5
-        [HttpPut("{commentId}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -83,7 +87,7 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return CreatedAtAction("Updated", _mapper.Map<Comment, SuccessCommentModel>(dbObject));
+            return Created("Updated", _mapper.Map<Comment, SuccessCommentModel>(dbObject));
         }
     }
 }

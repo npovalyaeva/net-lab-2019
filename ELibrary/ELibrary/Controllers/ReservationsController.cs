@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Models.ViewModels.Reservation;
 using Services;
 using Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -33,6 +29,10 @@ namespace ELibrary.Controllers
             var reservations = await _reservationService.GetReservations();
             if (reservations == null)
             {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
@@ -48,6 +48,10 @@ namespace ELibrary.Controllers
             }
             var reservations = await _reservationService.GetReservationsByBookId((int)bookId);
             if (reservations == null)
+            {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
             {
                 return NotFound();
             }
@@ -65,6 +69,10 @@ namespace ELibrary.Controllers
             var reservations = await _reservationService.GetReservationsByUserId((int)userId);
             if (reservations == null)
             {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
@@ -77,6 +85,10 @@ namespace ELibrary.Controllers
             var reservations = await _reservationService.GetHandedOutReservations();
             if (reservations == null)
             {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
@@ -88,6 +100,10 @@ namespace ELibrary.Controllers
         {
             var reservations = await _reservationService.GetHandedOutReservationsByAuthorName(lastName);
             if (reservations == null)
+            {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
             {
                 return NotFound();
             }
@@ -105,6 +121,10 @@ namespace ELibrary.Controllers
             var reservations = await _reservationService.GetHandedOutReservationsByCountOfDays((int)count);
             if (reservations == null)
             {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
@@ -116,6 +136,10 @@ namespace ELibrary.Controllers
         {
             var reservations = await _reservationService.GetHandedOutReservationsByTitle(title);
             if (reservations == null)
+            {
+                return BadRequest();
+            }
+            if (reservations.Count == 0)
             {
                 return NotFound();
             }
@@ -145,7 +169,7 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction("Created", _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject));
+            return Created("Created", _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject));
         }
 
         // PUT: API/Reservations
@@ -157,11 +181,11 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return CreatedAtAction("Updated", _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject));
+            return Created("Updated", _mapper.Map<Reservation, SuccessfulReservationModel>(dbObject));
         }
 
         // DELETE: API/Reservations/5
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)

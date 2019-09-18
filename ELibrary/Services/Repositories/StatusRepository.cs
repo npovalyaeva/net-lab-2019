@@ -3,6 +3,7 @@ using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services.Repositories
@@ -16,9 +17,10 @@ namespace Services.Repositories
             _context = context;
         }
 
-        public async Task<List<Status>> GetAll()
+        public IQueryable<Status> GetAll()
         {
-            return await _context.Status.ToListAsync();
+            var entityList = _context.Status as IQueryable<Status>;
+            return entityList;
         }
 
         public async Task<Status> Get(long id)

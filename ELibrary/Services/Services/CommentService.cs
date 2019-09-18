@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using Services.Filters;
 using Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,8 @@ namespace Services.Services
         {
             try
             {
-                List<Comment> dbList = await _commentRepository.GetAll();
-                var comments = dbList.Where(m => m.BookId == bookId);
-                if (comments == null)
-                {
-                    return null;
-                }
+                var entityList = _commentRepository.GetAll();
+                var comments = CommentFilter.FilterByBookId(entityList, bookId);
                 return comments.ToList();
             }
             catch

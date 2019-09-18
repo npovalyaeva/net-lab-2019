@@ -29,6 +29,10 @@ namespace ELibrary.Controllers
             List<Book> books = await _bookService.GetBooks();
             if (books == null)
             {
+                return BadRequest();
+            }
+            if (books.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
@@ -40,6 +44,10 @@ namespace ELibrary.Controllers
         {
             var books = await _bookService.GetFreeBooks();
             if (books == null)
+            {
+                return BadRequest();
+            }
+            if (books.Count == 0)
             {
                 return NotFound();
             }
@@ -53,6 +61,10 @@ namespace ELibrary.Controllers
             var books = await _bookService.GetBooksByAuthorLastName(lastName);
             if (books == null)
             {
+                return BadRequest();
+            }
+            if (books.Count == 0)
+            {
                 return NotFound();
             }
             return Ok(_mapper.Map<List<Book>, List<BookBriefInfoModel>>(books));
@@ -64,6 +76,10 @@ namespace ELibrary.Controllers
         {
             var books = await _bookService.GetBooksByTitle(title);
             if (books == null)
+            {
+                return BadRequest();
+            }
+            if (books.Count == 0)
             {
                 return NotFound();
             }
@@ -80,6 +96,10 @@ namespace ELibrary.Controllers
             }
             var books = await _bookService.GetBooksByYear((short)year);
             if (books == null)
+            {
+                return BadRequest();
+            }
+            if (books.Count == 0)
             {
                 return NotFound();
             }

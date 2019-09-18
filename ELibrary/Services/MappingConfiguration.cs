@@ -71,6 +71,7 @@ namespace Services
             CreateMap<User, BlockUserModel>()
                 .ReverseMap();
             CreateMap<User, CreateUserModel>()
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 .ReverseMap();
             CreateMap<User, SuccessUserModel>()
                 .ReverseMap();

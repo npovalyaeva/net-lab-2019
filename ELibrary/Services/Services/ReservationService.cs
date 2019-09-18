@@ -1,6 +1,7 @@
 ﻿using DataLayer.Entities;
 using Microsoft.Extensions.Logging;
 using Models.ViewModels.Reservation;
+using Services.Filters;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,27 +12,24 @@ namespace Services.Services
 {
     public class ReservationService : IReservationService
     {
-        
+        // TODO: Check
         private readonly ILogger<ReservationService> _logger;
         private readonly IRepository<Book> _bookRepository;
         private readonly IRepository<Reservation> _reservationRepository;
 
-        public ReservationService(IRepository<Book> bookRepository, IRepository<Reservation> reservationRepository)
+        public ReservationService(IRepository<Book> bookRepository, IRepository<Reservation> reservationRepository, ILogger<ReservationService> logger)
         {
             _bookRepository = bookRepository;
             _reservationRepository = reservationRepository;
+            _logger = logger;
         }
 
         public async Task<List<Reservation>> GetReservations()
         {
             try
             {
-                var reservations = await _reservationRepository.GetAll();
-                if (reservations == null)
-                {
-                    return null;
-                }
-                return reservations;
+                var entityList = _reservationRepository.GetAll();
+                return entityList.ToList();
             }
             catch
             {
@@ -43,12 +41,8 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _reservationRepository.GetAll();
-                var reservations = dbList.Where(m => m.BookId == bookId);
-                if (reservations == null)
-                {
-                    return null;
-                }
+                var entityList = _reservationRepository.GetAll();
+                var reservations = ReservationFilter.FilterByBookId(entityList, bookId);
                 return reservations.ToList();
             }
             catch
@@ -61,12 +55,8 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _reservationRepository.GetAll();
-                var reservations = dbList.Where(m => m.UserId == userId);
-                if (reservations == null)
-                {
-                    return null;
-                }
+                var entityList = _reservationRepository.GetAll();
+                var reservations = ReservationFilter.FilterByUserId(entityList, userId);
                 return reservations.ToList();
             }
             catch
@@ -79,12 +69,8 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _reservationRepository.GetAll();
-                var reservations = dbList.Where(m => m.StatusId == 2);
-                if (reservations == null)
-                {
-                    return null;
-                }
+                var entityList = _reservationRepository.GetAll();
+                var reservations = ReservationFilter.FilterByStatusId(entityList, 2);
                 return reservations.ToList();
             }
             catch
@@ -102,14 +88,8 @@ namespace Services.Services
 
             try
             {
-                var dbList = await _reservationRepository.GetAll();
-                var reservations = dbList
-                    .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Author.LastName.ToLower() == lastName.ToLower());
-                if (reservations == null)
-                {
-                    return null;
-                }
+                var entityList = _reservationRepository.GetAll();
+                var reservations = ReservationFilter.FilterByStatusIdAndAuthorName(entityList, 2, lastName);
                 return reservations.ToList();
             }
             catch
@@ -122,14 +102,8 @@ namespace Services.Services
         {
             try
             {
-                var dbList = await _reservationRepository.GetAll();
-                var reservations = dbList
-                    .Where(m => m.StatusId == 2)
-                    .Where(m => m.DateOfReservation <= DateTime.Now.AddDays(Convert.ToDouble(-count)));
-                if (reservations == null)
-                {
-                    return null;
-                }
+                var entityList = _reservationRepository.GetAll();
+                var reservations = ReservationFilter.FilterByStatusIdAndCountOfDays(entityList, 2, count);
                 return reservations.ToList();
             }
             catch
@@ -147,14 +121,8 @@ namespace Services.Services
 
             try
             {
-                var dbList = await _reservationRepository.GetAll();
-                var reservations = dbList
-                    .Where(m => m.StatusId == 2)
-                    .Where(m => m.Book.Title.ToLower() == title.ToLower());
-                if (reservations == null)
-                {
-                    return null;
-                }
+                var entityList = _reservationRepository.GetAll();
+                var reservations = ReservationFilter.FilterByStatusIdAndTitle(entityList, 2, title);
                 return reservations.ToList();
             }
             catch
@@ -196,7 +164,7 @@ namespace Services.Services
                 await _reservationRepository.Create(reservation);
                 await _bookRepository.Update(dbBookObject);
 
-                _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, Book: {1}, User ID: {2}, Status ID: {3}", reservation.ReservationId, dbBookObject.Title, reservation.UserId, reservation.StatusId));
+                _logger.LogInformation(string.Format("New copy was added to the 'Reservations' table. Reservation ID: {0}, User ID: {1}, Status ID: {2}", reservation.ReservationId, reservation.UserId, reservation.StatusId));
                 return reservation;
             }
             catch

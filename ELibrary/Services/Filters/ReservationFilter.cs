@@ -21,7 +21,7 @@ namespace Services.Filters
             return list.Where(m => m.StatusId == statusId);
         }
 
-        public static  IQueryable<Reservation> GetHandedOutReservationsByAuthorName(IQueryable<Reservation> list, int statusId, string lastName)
+        public static  IQueryable<Reservation> FilterByStatusIdAndAuthorName(IQueryable<Reservation> list, int statusId, string lastName)
         {
             return string.IsNullOrEmpty(lastName) ? list :
                 list
@@ -36,7 +36,7 @@ namespace Services.Filters
                 .Where(m => m.DateOfReservation <= DateTime.Now.AddDays(Convert.ToDouble(-count)));
         }
 
-        public static  IQueryable<Reservation> GetHandedOutReservationsByTitle(IQueryable<Reservation> list, int statusId, string title)
+        public static  IQueryable<Reservation> FilterByStatusIdAndTitle(IQueryable<Reservation> list, int statusId, string title)
         {
             return string.IsNullOrEmpty(title) ? list :
                 list

@@ -29,7 +29,11 @@ namespace ELibrary.Controllers
             var users = await _userService.GetBlockedUsers();
             if (users == null)
             {
-                return NotFound();
+                return BadRequest();
+            }
+            if (users.Count == 0)
+            {
+                return BadRequest();
             }
             return Ok(_mapper.Map<List<User>, List<UserModel>>(users));
         }
@@ -59,7 +63,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Users/5
-        [HttpGet("details/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -87,9 +91,6 @@ namespace ELibrary.Controllers
         }
 
         // PUT: API/Users/Block/5
-
-        // TODO: Review
-
         [HttpPut("block")]
         public async Task<IActionResult> Block(BlockUserModel user)
         {
