@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { ErrorMessage } from './ErrorMessage';
 import { Button, TextField } from '@material-ui/core';
 
 import '../../styles/registration-page/Registration.css';
 
-export class Registration extends PureComponent {
+export class Authorisation extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -95,67 +94,38 @@ export class Registration extends PureComponent {
     render() {
         return (
             <form className="registration" noValidate autoComplete="on">
-                <ErrorMessage formErrors={this.state.formErrors}/>
                 <TextField
-                    label="First Name *"
-                    className="first-name-input"
-                    onChange={this.handleUserInput}
-                    value={this.state.firstName}
-                    name="firstName"
-                    margin="normal"
-                />
-                <TextField
-                    label="Last Name *"
-                    className="last-name-input"
-                    onChange={this.handleUserInput}
-                    value={this.state.lastName}
-                    name="lastName"
-                    margin="normal"
-                />
-                <TextField
-                    label="Username *"
-                    className="username-input"
-                    onChange={this.handleUserInput}
-                    value={this.state.username}
-                    name="username"
-                    margin="normal"
-                />
-                <TextField
-                    label="Email *"
+                    label="Login"
                     className="email-input"
-                    onChange={this.handleUserInput}
-                    value={this.state.email}
-                    type="email"
-                    name="email"
+                    value={this.state.login}
+                    name="login"
                     autoComplete="email"
                     margin="normal"
                     // TODO: Add error property
                 />
                 <TextField
-                    label="Password *"
+                    label="Password"
                     className="password-input"
-                    onChange={this.handleUserInput}
                     value={this.state.password}
                     type="password"
                     name="password"
-                    margin="normal"
-                />
-                <TextField
-                    label="Repeat Password *"
-                    className="repeat-password-input"
-                    onChange={this.handleUserInput}
-                    value={this.state.passwordRepeat}
-                    type="password"
-                    name="passwordRepeat"
                     margin="normal"
                 />
                 <Button 
                     type="submit"
                     variant="contained" 
                     color="primary" 
-                    className="sign-up-button"
+                    className="sign-in-button"
                     onClick={this.handleClick}
                     disabled={!this.state.formValid}>
+                    Sign In
+                </Button>
+                <Button 
+                    type="submit"
+                    variant="contained" 
+                    color="primary" 
+                    className="sign-up-button"
+                    onClick={this.handleClick}>
                     Sign Up
                 </Button>
             </form>

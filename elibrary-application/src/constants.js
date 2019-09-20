@@ -13,3 +13,13 @@ export const yandexAPIKey = 'b5a43458-5c75-4958-bb67-b59a4142f220';
 export function GetIconURL(icon) {
     return `https://yastatic.net/weather/i/icons/blueye/color/svg/${icon}.svg`;
 }
+
+export function GetUserURL(icon) {
+    return `https://yastatic.net/weather/i/icons/blueye/color/svg/${icon}.svg`;
+}
+
+
+
+
+
+export const userURL = 'https://localhost:44324/api/users';
