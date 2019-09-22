@@ -1,3 +1,15 @@
+export function GetBooksURL(filter) {
+    return `https://localhost:44324/api/books/${filter}`;
+}
+
+
+
+
+// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+
+
+
+
 export const initialCity = 'Minsk';
 
 export function GetYandexGeocoderURL(cityName) {
@@ -19,7 +31,3 @@ export function GetUserURL(icon) {
 }
 
 
-
-
-
-export const userURL = 'https://localhost:44324/api/users';

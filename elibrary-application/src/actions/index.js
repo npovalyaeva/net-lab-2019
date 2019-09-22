@@ -1,45 +1,25 @@
-import { GetYandexGeocoderURL, GetYandexWeatherURL, yandexAPIKey } from '../constants';
+import { GetBooksURL } from '../constants';
 
-export const GET_FORECAST = 'GET_FORECAST'
+export const GET_BOOKS = 'GET_BOOKS'
 
-export function getForecast(currentCity, factWeatherData, weatherData) {
+export function getBooks(filter, booksData) {
     return {
-        type: GET_FORECAST,
-        currentCity: currentCity,
-        factWeatherData: factWeatherData,
-        weatherData: weatherData
+        type: GET_BOOKS,
+        filter: filter,
+        booksData: booksData
     };
 }
 
-export function fetchData(cityName) {
-    const URL = GetYandexGeocoderURL(cityName);
-
-    return (dispatch) => {
-        fetch(URL)
-        .then(response => response.json())
-        .then(json => {
-            if (parseInt(json.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData.found, 10) > 0) {
-                dispatch(fetchForecast(json.response.GeoObjectCollection.featureMember[0].GeoObject));
-            }
-        })
-        .catch((error) => console.log(error));
-    };
-}
-
-function fetchForecast(cityData) {
-    const coordinates = cityData.Point.pos.split(' ');
-    const URL = GetYandexWeatherURL(coordinates);
+export function fetchData(filter) {
+    const URL = GetBooksURL(filter);
 
     return (dispatch) => {
         fetch(URL, {
-            method: 'GET',
-            headers: {
-                'X-Yandex-API-Key' : yandexAPIKey
-            }
+            method: 'GET'
         })
         .then(response => response.json())
         .then(json => {
-            dispatch(getForecast(cityData.name, json.fact, json.forecasts));
+            dispatch(getBooks(filter, json));
         })
         .catch((error) => console.log(error));
     };

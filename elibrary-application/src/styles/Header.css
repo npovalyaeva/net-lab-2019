@@ -1,0 +1,14 @@
+header {
+    height: 100px;
+    background-color: #E8E669;
+
+    padding: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.login-button {
+    height: 30px;
+}

@@ -1,24 +1,45 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 import { Header } from "./Header";
+import { Main } from "./main-page/Main";
 import { Registration } from "./registration-page/Registration";
 import { Authorisation } from "./authorisation-page/Authorisation";
 import { Footer } from "./Footer";
+
+import { fetchData } from '../actions/index';
+
+import '../styles/App.css'
 
 class App extends PureComponent {
     render() {
         return (
             <React.Fragment>
                 <Header/>
-                <Authorisation/>
-                {/* <Registration/> */}
+                <div className="main-content">
+                    <Main getBooks={this.props.getBooks} />
+                </div>              
                 <Footer/>
             </React.Fragment>
         )
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        booksData: state.booksData.booksData
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getBooks: (filter) => dispatch(fetchData(filter))
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps)(App);
 
 
 // import { fetchData } from '../actions/index';
