@@ -1,0 +1,17 @@
+.list-of-books {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+
+    margin: 0 20px;
+}
+
+.book-card {
+    margin: 10px;
+    width: 345px;
+}
+
+.book-image {
+    height: 140;
+}

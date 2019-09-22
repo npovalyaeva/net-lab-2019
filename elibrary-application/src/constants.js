@@ -2,6 +2,10 @@ export function GetBooksURL(filter) {
     return `https://localhost:44324/api/books/${filter}`;
 }
 
+export function GetAuthorsURL() {
+    return `https://localhost:44324/api/authors/`;
+}
+
 
 
 

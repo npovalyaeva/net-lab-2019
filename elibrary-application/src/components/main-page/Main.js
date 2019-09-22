@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { Filter } from "./Filter"
+import { BooksList } from "./BooksList"
+
 import '../../styles/main-page/Main.css';
 
 export class Main extends PureComponent {
-    constructor(props) {
-        super(props);  
-    }
     
     componentWillMount() {
         this.props.getBooks('');
@@ -18,9 +18,12 @@ export class Main extends PureComponent {
 
         if (booksData) {
             return (
-                <div className="list-of-books">
-                    
-                </div>
+                <React.Fragment>
+                    <Filter filter={this.props.filter}/>
+                    <div className="list-of-books">
+                        <BooksList booksData={this.props.booksData}/>
+                    </div>
+                </React.Fragment>
             );
         }
         
