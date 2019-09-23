@@ -20,7 +20,7 @@ namespace Services.Services
             try
             {
                 var entityList = _authorRepository.GetAll();
-                return entityList.ToList();
+                return entityList.OrderBy(m => m.LastName).ToList();
             }
             catch
             {

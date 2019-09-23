@@ -67,6 +67,12 @@ namespace ELibrary
                 app.UseHsts();
             }
 
+            app.Use((context, next) =>
+            {
+                context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+                return next.Invoke();
+            });
+
             app.UseHttpsRedirection();
             //app.UseStaticFiles();
             //app.UseCookiePolicy();
