@@ -6,9 +6,10 @@ import { Main } from "./main-page/Main";
 import { Registration } from "./registration-page/Registration";
 import { Authorisation } from "./authorisation-page/Authorisation";
 import { BookCreating } from "./book-creating-page/BookCreating";
+import { AuthorCreating } from "./author-creating-page/AuthorCreating";
 import { Footer } from "./Footer";
 
-import { fetchAuthors, fetchBooks } from '../actions/index';
+import { createAuthor, fetchAuthors, fetchBooks } from '../actions/index';
 
 import '../styles/App.css'
 
@@ -19,7 +20,8 @@ class App extends PureComponent {
                 <Header/>
                 <div className="main-content">
                     {/* <Main getBooks={this.props.getBooks} booksData={this.props.booksData} filter={this.props.filter}/> */}
-                    <BookCreating getAuthors={this.props.getAuthors} authorsData={this.props.authorsData}/>
+                    {/* <BookCreating getAuthors={this.props.getAuthors} authorsData={this.props.authorsData}/> */}
+                    <AuthorCreating createAuthor={this.props.createAuthor}/>
                 </div>              
                 <Footer/>
             </React.Fragment>
@@ -36,6 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        createAuthor: (author) => dispatch(createAuthor(author)),
         getAuthors: () => dispatch(fetchAuthors()),
         getBooks: (filter) => dispatch(fetchBooks(filter))
     };

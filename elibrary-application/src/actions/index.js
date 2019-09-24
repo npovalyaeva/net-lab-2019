@@ -19,6 +19,23 @@ export function getBooks(filter, booksData) {
     };
 }
 
+export function createAuthor(author) {
+    const URL = GetAuthorsURL();
+
+    return (dispatch) => {
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(author),
+        })
+        .then(res => res.json())
+        .then(response => console.log('Success:', JSON.stringify(response)))
+        .catch(error => console.error('Error:', error));
+    };
+}
+
 export function fetchAuthors() {
     const URL = GetAuthorsURL();
 
