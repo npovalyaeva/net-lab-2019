@@ -1,15 +1,22 @@
 ﻿using AutoMapper;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces;
 using Services.Repositories;
 using Services.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 
 namespace ELibrary
 {
@@ -48,6 +55,46 @@ namespace ELibrary
             services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<IStatusService, StatusService>();
             services.AddScoped<IUserService, UserService>();
+
+            var key = Encoding.ASCII.GetBytes(Configuration["secretKey"]);
+            var validationParameters = new TokenValidationParameters
+            {
+                ClockSkew = TimeSpan.Zero,
+
+                ValidateAudience = true,
+                ValidAudience = Configuration["Jwt:audience"],
+
+                ValidAudiences = new[] { Configuration["Jwt:audience"] },
+                AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters vp) =>
+                    audiences.Any(a => a == vp.ValidAudience),
+
+                ValidateIssuer = true,
+                ValidIssuer = Configuration["Jwt:issuer"],
+
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuerSigningKey = true,
+
+                RequireExpirationTime = true,
+                ValidateLifetime = true
+            };
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = validationParameters;
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ModeratorOnly", policy =>
+                                  policy.RequireClaim(ClaimTypes.Role, "Moderator"));
+            });
+
 
             services.AddAutoMapper(GetType().Assembly); // ?
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
