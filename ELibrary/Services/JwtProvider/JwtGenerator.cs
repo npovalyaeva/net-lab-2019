@@ -1,5 +1,6 @@
 ﻿using DataLayer.Entities;
 using Microsoft.IdentityModel.Tokens;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +8,7 @@ using System.Security.Claims;
 
 namespace Services.JwtProvider
 {
-    public class JwtGenerator
+    public class JwtGenerator : IJwtGenerator
     {
         private readonly JwtOptions _options;
         private IEnumerable<Claim> _userClaims;

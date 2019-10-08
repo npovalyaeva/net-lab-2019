@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces;
+using Services.JwtProvider;
 using Services.Repositories;
 using Services.Services;
 using System;
@@ -77,6 +78,11 @@ namespace ELibrary
                 RequireExpirationTime = true,
                 ValidateLifetime = true
             };
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>(serviceProvider =>
+                new JwtGenerator(new JwtOptions(validationParameters,
+                                                Configuration["Jwt:tokenName"]))
+            );
 
             services.AddAuthentication(options =>
             {
