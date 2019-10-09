@@ -3,7 +3,6 @@ using DataLayer.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.User;
 using Services;
@@ -30,6 +29,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Users/Blocked
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("blocked")]
         public async Task<IActionResult> GetBlockedUsers()
         {
@@ -46,8 +46,8 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Users/Login
-        [HttpPost("login")]
         [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<IActionResult> Authenticate(AuthenticationModel authenticationData)
         {
             var user = await _userService.Authenticate(authenticationData);
@@ -113,8 +113,8 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Users
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> Create(CreateUserModel user)
         {
             var userModel = await _userService.Create(_mapper.Map<CreateUserModel, User>(user));
@@ -126,6 +126,7 @@ namespace ELibrary.Controllers
         }
 
         // PUT: API/Users/Block/5
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("block")]
         public async Task<IActionResult> Block(BlockUserModel user)
         {
@@ -138,6 +139,7 @@ namespace ELibrary.Controllers
         }
 
         // PUT: Users/Unblock/5
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("unblock/{id}")]
         public async Task<IActionResult> Unblock(int? id)
         {
@@ -154,9 +156,9 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Users/Signout
-        [HttpPost("signout")]
         [Authorize]
         [ValidateAntiForgeryToken]
+        [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);

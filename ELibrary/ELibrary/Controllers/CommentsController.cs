@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.Comment;
 using Services;
@@ -24,6 +25,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Comments/Book/15
+        [AllowAnonymous]
         [HttpGet("book/{bookId}")]
         public async Task<IActionResult> GetCommentsByBookId(int? bookId)
         {
@@ -60,6 +62,7 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Comments
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateCommentModel comment)
         {
@@ -75,6 +78,7 @@ namespace ELibrary.Controllers
         }
 
         // PUT: API/Comments/5
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
