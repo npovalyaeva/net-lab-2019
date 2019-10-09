@@ -3,6 +3,7 @@ using DataLayer;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -79,6 +80,11 @@ namespace ELibrary
                 ValidateLifetime = true
             };
 
+            var hostingEnvironment = services.BuildServiceProvider().GetService<IHostingEnvironment>();
+            services.AddDataProtection(options =>
+                options.ApplicationDiscriminator = hostingEnvironment.ApplicationName)
+           .SetApplicationName(hostingEnvironment.ApplicationName);
+
             services.AddScoped<IJwtGenerator, JwtGenerator>(serviceProvider =>
                 new JwtGenerator(new JwtOptions(validationParameters,
                                                 Configuration["Jwt:tokenName"]))
@@ -97,8 +103,8 @@ namespace ELibrary
             });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ModeratorOnly", policy =>
-                                  policy.RequireClaim(ClaimTypes.Role, "Moderator"));
+                options.AddPolicy("AdminOnly", policy =>
+                                  policy.RequireClaim(ClaimTypes.Role, "Administrator"));
             });
 
 
@@ -123,12 +129,15 @@ namespace ELibrary
             app.Use((context, next) =>
             {
                 context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+                context.Response.Headers["Access-Control-Allow-Methods"] = "GET, PUT, POST, DELETE";
+                context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Accept";
                 return next.Invoke();
             });
 
             app.UseHttpsRedirection();
             //app.UseStaticFiles();
             //app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc();
             app.UseMvc(routes =>
