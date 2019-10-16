@@ -1,0 +1,50 @@
+.mainContent {
+    height: 500px;
+    border-top: 100px;
+    background-color: #F3F1F0;
+    display: flex;
+    justify-content: space-around;
+}
+
+a {
+    text-decoration: none;
+}
+
+.authorEditForm {
+    margin-top: 70px;
+}
+
+.bookEditForm {
+    margin-top: 70px;
+}
+
+.signUpForm {
+    margin-top: 70px;
+}
+
+.signUpContent {
+    height: 700px;
+    border-top: 100px;
+    background-color: #94CFC4;
+    display: flex;
+    justify-content: space-around;
+}
+
+.signInForm {
+    margin-top: 70px;
+}
+
+.signInContent {
+    height: 500px;
+    border-top: 100px;
+    background-color: #9BD4FF;
+    display: flex;
+    justify-content: space-around;
+}
+
+.blockContent {
+    height: 500px;
+    background-color: #F2C3B1;
+    display: flex;
+    justify-content: space-around;
+}

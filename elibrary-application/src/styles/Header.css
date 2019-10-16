@@ -1,14 +1,14 @@
-header {
-    height: 100px;
-    background-color: #E8E669;
-
-    padding: 10px;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+a {
+    text-decoration: none;
 }
 
-.login-button {
-    height: 30px;
+button {
+    margin: 5px !important;
+}
+
+.nav {
+    margin: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

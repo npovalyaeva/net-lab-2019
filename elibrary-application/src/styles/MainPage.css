@@ -1,0 +1,116 @@
+a {
+    text-decoration: none;
+}
+
+.mainContent {
+    height: 500px;
+    background-color: #9BD3CB;
+    display: flex;
+    justify-content: space-around;
+}
+
+.welcomeText {
+    height: 100px;
+    margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.profile {
+    margin-top: 50px;
+    
+}
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    margin-top: 150px;
+    margin-bottom: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-blocked-users {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-area {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.blockedUsers {
+    margin-top: 100px;
+    margin-bottom: 150px;
+}
+
+.blocked-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.switch {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.book-area-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.commentFields {
+    margin-left: 10px;
+}
+
+
+.list-of-books {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+
+    margin: 0 20px;
+}
+
+.book-card {
+    margin: 10px;
+    width: 345px;
+}
+
+.book-image {
+    height: 140;
+}
+
+.blockingMessage {
+    margin-bottom: 300px;
+}
