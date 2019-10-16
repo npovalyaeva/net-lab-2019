@@ -54,10 +54,6 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            if (reservations.Count == 0)
-            {
-                return NotFound();
-            }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
@@ -74,10 +70,6 @@ namespace ELibrary.Controllers
             if (reservations == null)
             {
                 return BadRequest();
-            }
-            if (reservations.Count == 0)
-            {
-                return NotFound();
             }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
@@ -109,10 +101,6 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            if (reservations.Count == 0)
-            {
-                return NotFound();
-            }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
@@ -130,10 +118,6 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            if (reservations.Count == 0)
-            {
-                return NotFound();
-            }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }
 
@@ -146,10 +130,6 @@ namespace ELibrary.Controllers
             if (reservations == null)
             {
                 return BadRequest();
-            }
-            if (reservations.Count == 0)
-            {
-                return NotFound();
             }
             return Ok(_mapper.Map<List<Reservation>, List<ReservationModel>>(reservations));
         }

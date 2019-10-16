@@ -38,10 +38,6 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            if (users.Count == 0)
-            {
-                return BadRequest();
-            }
             return Ok(_mapper.Map<List<User>, List<UserModel>>(users));
         }
 
