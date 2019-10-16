@@ -1,0 +1,15 @@
+.copyrihtn-text {
+    color: #fff;
+}
+
+footer {
+    height: 250px;
+    background-color: #333333;
+    display: flex;
+    justify-content: space-around;
+    border-top: 50px;
+}
+
+.copyright {
+    margin: 50px;
+}

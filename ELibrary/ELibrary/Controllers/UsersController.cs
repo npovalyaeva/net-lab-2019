@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.User;
 using Services;
 using Services.Interfaces;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ELibrary.Controllers
@@ -15,14 +19,17 @@ namespace ELibrary.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private IJwtGenerator _jwtGenerator;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IJwtGenerator jwtGenerator)
         {
+            _jwtGenerator = jwtGenerator;
             _userService = userService;
             _mapper = new MappingConfiguration().Configure().CreateMapper();
         }
 
         // GET: API/Users/Blocked
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("blocked")]
         public async Task<IActionResult> GetBlockedUsers()
         {
@@ -31,15 +38,12 @@ namespace ELibrary.Controllers
             {
                 return BadRequest();
             }
-            if (users.Count == 0)
-            {
-                return BadRequest();
-            }
             return Ok(_mapper.Map<List<User>, List<UserModel>>(users));
         }
 
-        // GET: API/Users/Login
-        [HttpGet("login")]
+        // POST: API/Users/Login
+        [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<IActionResult> Authenticate(AuthenticationModel authenticationData)
         {
             var user = await _userService.Authenticate(authenticationData);
@@ -47,7 +51,8 @@ namespace ELibrary.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<User, UserModel>(user));
+            var token = _jwtGenerator.GenerateAccessToken(user);
+            return Ok(new { token });
         }
 
         // GET: API/Users/Checking
@@ -60,6 +65,31 @@ namespace ELibrary.Controllers
             var isUnique = await _userService.CheckIsLoginUnique(login);
             loginModel.IsUnique = isUnique;
             return Ok(loginModel);
+        }
+
+        // GET: API/Users/Profile
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetAccountInfo()
+        {
+            try
+            {
+                string email = HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+                var user = await _userService.GetUserInfo(email);
+
+                if (user != null)
+                {
+                    return Ok(_mapper.Map<User, UserModel>(user));
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         // GET: API/Users/5
@@ -79,6 +109,7 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Users
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserModel user)
         {
@@ -91,6 +122,7 @@ namespace ELibrary.Controllers
         }
 
         // PUT: API/Users/Block/5
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("block")]
         public async Task<IActionResult> Block(BlockUserModel user)
         {
@@ -103,6 +135,7 @@ namespace ELibrary.Controllers
         }
 
         // PUT: Users/Unblock/5
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("unblock/{id}")]
         public async Task<IActionResult> Unblock(int? id)
         {
@@ -116,6 +149,16 @@ namespace ELibrary.Controllers
                 return BadRequest();
             }
             return Created("Updated", _mapper.Map<User, UserBlockingStatusModel>(userModel));
+        }
+
+        // POST: API/Users/Signout
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost("signout")]
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+            return Ok();
         }
     }
 }

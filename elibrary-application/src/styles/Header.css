@@ -1,0 +1,14 @@
+a {
+    text-decoration: none;
+}
+
+button {
+    margin: 5px !important;
+}
+
+.nav {
+    margin: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

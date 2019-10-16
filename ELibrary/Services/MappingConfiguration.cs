@@ -4,6 +4,7 @@ using Models.ViewModels.Author;
 using Models.ViewModels.Book;
 using Models.ViewModels.Comment;
 using Models.ViewModels.Reservation;
+using Models.ViewModels.Role;
 using Models.ViewModels.Status;
 using Models.ViewModels.User;
 
@@ -63,6 +64,9 @@ namespace Services
             CreateMap<Reservation, SuccessfulReservationModel>()
                 .ReverseMap();
             CreateMap<Reservation, SuccessfulRemovalModel>()
+                .ReverseMap();
+
+            CreateMap<Role, RoleModel>()
                 .ReverseMap();
 
             CreateMap<Status, StatusModel>()

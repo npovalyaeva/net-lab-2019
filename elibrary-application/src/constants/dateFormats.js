@@ -1,0 +1,8 @@
+export const dateFormats = {
+    RESERVATION_DISPLAY_FORMAT: 'dddd, DD/MM/YYYY',
+    CALENDAR_DISPLAY_FORMAT: 'DD/MM/YYYY',
+    REQUEST_DATE_FORMAT: 'YYYY/MM/DD',
+    CREATION_TIME_FORMAT: 'YYYY-MM-DD[T]HH:mm:ss',
+    MOVE_IN_TIME_FORMAT: 'HH:mm:ss',
+    TIMER_FORMAT: 'HH:mm:ss'
+}

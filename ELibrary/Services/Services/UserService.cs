@@ -99,6 +99,26 @@ namespace Services.Services
             }
         }
 
+        public async Task<User> GetUserInfo(string email)
+        {
+            try
+            {
+                var dbList = _userRepository.GetAll();
+                var users = dbList.Where(m => m.Email == email);
+                //return (users.ToList().Count == 0) ? true : false;
+                if (users.ToList().Count == 0)
+                {
+                    return null;
+                }
+                var listOfUsers = users.ToList();
+                return listOfUsers[0];
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<User> Create(User user)
         {
             if (user == null)

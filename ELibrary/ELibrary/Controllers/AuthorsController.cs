@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.Author;
 using Services;
@@ -24,6 +25,7 @@ namespace ELibrary.Controllers
 
         // GET: API/Authors
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             List<Author> authors = await _authorService.GetAuthors();
@@ -39,6 +41,7 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Authors
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateAuthorModel author)
         {

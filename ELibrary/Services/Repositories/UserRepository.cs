@@ -20,12 +20,12 @@ namespace Services.Repositories
         public IQueryable<User> GetAll()
         {
             var entityList = _context.User as IQueryable<User>;
-            return entityList;
+            return entityList.Include(b => b.Role);
         }
 
         public async Task<User> Get(long id)
         {
-            return await _context.User.FirstOrDefaultAsync(m => m.UserId == id);
+            return await _context.User.Include(b => b.Role).FirstOrDefaultAsync(m => m.UserId == id);
         }
 
         public async Task Create(User model)

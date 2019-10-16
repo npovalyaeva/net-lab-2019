@@ -2,7 +2,6 @@
 using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

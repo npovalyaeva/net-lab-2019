@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels.Book;
 using Services;
@@ -23,6 +24,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Books
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -39,6 +41,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Books/Free
+        [AllowAnonymous]
         [HttpGet("free")]
         public async Task<IActionResult> GetFreeBooks()
         {
@@ -55,6 +58,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Books/Author/Dostoyevsky
+        [AllowAnonymous]
         [HttpGet("author/{lastName}")]
         public async Task<IActionResult> GetBooksByAuthorLastName(string lastName)
         {
@@ -71,6 +75,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Books/Title/Demons
+        [AllowAnonymous]
         [HttpGet("title/{title}")]
         public async Task<IActionResult> GetBooksByTitle(string title)
         {
@@ -87,6 +92,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Books/Year/1841
+        [AllowAnonymous]
         [HttpGet("year/{year}")]
         public async Task<IActionResult> GetBooksByYear(short? year)
         {
@@ -107,6 +113,7 @@ namespace ELibrary.Controllers
         }
 
         // GET: API/Books/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -123,6 +130,7 @@ namespace ELibrary.Controllers
         }
 
         // POST: API/Books
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateBookModel book)
         {

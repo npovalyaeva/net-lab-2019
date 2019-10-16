@@ -1,15 +1,24 @@
 ﻿using AutoMapper;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces;
+using Services.JwtProvider;
 using Services.Repositories;
 using Services.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 
 namespace ELibrary
 {
@@ -49,6 +58,56 @@ namespace ELibrary
             services.AddScoped<IStatusService, StatusService>();
             services.AddScoped<IUserService, UserService>();
 
+            var key = Encoding.ASCII.GetBytes(Configuration["secretKey"]);
+            var validationParameters = new TokenValidationParameters
+            {
+                ClockSkew = TimeSpan.Zero,
+
+                ValidateAudience = true,
+                ValidAudience = Configuration["Jwt:audience"],
+
+                ValidAudiences = new[] { Configuration["Jwt:audience"] },
+                AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters vp) =>
+                    audiences.Any(a => a == vp.ValidAudience),
+
+                ValidateIssuer = true,
+                ValidIssuer = Configuration["Jwt:issuer"],
+
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuerSigningKey = true,
+
+                RequireExpirationTime = true,
+                ValidateLifetime = true
+            };
+
+            var hostingEnvironment = services.BuildServiceProvider().GetService<IHostingEnvironment>();
+            services.AddDataProtection(options =>
+                options.ApplicationDiscriminator = hostingEnvironment.ApplicationName)
+           .SetApplicationName(hostingEnvironment.ApplicationName);
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>(serviceProvider =>
+                new JwtGenerator(new JwtOptions(validationParameters,
+                                                Configuration["Jwt:tokenName"]))
+            );
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = validationParameters;
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy =>
+                                  policy.RequireClaim(ClaimTypes.Role, "Administrator"));
+            });
+
+
             services.AddAutoMapper(GetType().Assembly); // ?
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -67,9 +126,18 @@ namespace ELibrary
                 app.UseHsts();
             }
 
+            app.Use((context, next) =>
+            {
+                context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+                context.Response.Headers["Access-Control-Allow-Methods"] = "GET, PUT, POST, DELETE";
+                context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Accept";
+                return next.Invoke();
+            });
+
             app.UseHttpsRedirection();
             //app.UseStaticFiles();
             //app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc();
             app.UseMvc(routes =>
