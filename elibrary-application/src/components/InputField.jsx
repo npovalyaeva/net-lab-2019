@@ -8,12 +8,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 const InputField = ({ input, defaultValue, label, type, errorMessage }) => (
     (() => {
-        if (typeof errorMessage === 'undefined') {
+        if (typeof errorMessage === 'undefined' || errorMessage === null) {
             return (
-                <FormControl className={label}>
-                    <InputLabel htmlFor={label}>{label}</InputLabel>
+                <FormControl className={label.toLowerCase()}>
+                    <InputLabel htmlFor={label.toLowerCase()}>{label}</InputLabel>
                     <Input {...input}
-                        id={label}
+                        id={label.toLowerCase()}
                         type={type}
                         value={defaultValue}
                         aria-describedby="component-error-text"
@@ -23,10 +23,10 @@ const InputField = ({ input, defaultValue, label, type, errorMessage }) => (
         }
         else {
             return (
-                <FormControl className={label} error>
-                    <InputLabel htmlFor={label}>{label}</InputLabel>
+                <FormControl className={label.toLowerCase()} error>
+                    <InputLabel htmlFor={label.toLowerCase()}>{label}</InputLabel>
                     <Input {...input}
-                        id={label}
+                        id={label.toLowerCase()}
                         type={type}
                         value={defaultValue}
                         aria-describedby="component-error-text"
