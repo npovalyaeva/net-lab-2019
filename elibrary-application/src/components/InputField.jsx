@@ -6,16 +6,16 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 
-const InputField = ({ input, defaultValue, label, type, errorMessage }) => (
+const InputField = ({ input, value, label, type, error }) => (
     (() => {
-        if (typeof errorMessage === 'undefined' || errorMessage === null) {
+        if (typeof error === 'undefined' || error === null) {
             return (
                 <FormControl className={label.toLowerCase()}>
                     <InputLabel htmlFor={label.toLowerCase()}>{label}</InputLabel>
                     <Input {...input}
                         id={label.toLowerCase()}
                         type={type}
-                        value={defaultValue}
+                        value={value}
                         aria-describedby="component-error-text"
                     />
                 </FormControl>
@@ -28,10 +28,10 @@ const InputField = ({ input, defaultValue, label, type, errorMessage }) => (
                     <Input {...input}
                         id={label.toLowerCase()}
                         type={type}
-                        value={defaultValue}
+                        value={value}
                         aria-describedby="component-error-text"
                     />
-                    <FormHelperText id="component-error-text">{errorMessage}</FormHelperText>
+                    <FormHelperText id="component-error-text">{error}</FormHelperText>
                 </FormControl>
             )
         }

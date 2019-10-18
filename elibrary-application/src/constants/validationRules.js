@@ -2,6 +2,11 @@ export const isRequired = value => value ? null : 'Field is required.';
 
 export const isNumber = value => isNaN(value) ? 'A number is required.' : null;
 
+export const arePasswordsEquals = (password, passwordConfirmation) => {
+    return password == passwordConfirmation ?
+        null : 'Passwords are not equals.';
+}
+
 export const maxValue = (max) => {
     return value => value && value > max ?
         `Maximum value is ${max}.` :
